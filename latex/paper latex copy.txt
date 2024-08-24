@@ -1,0 +1,470 @@
+\documentclass[12pt]{article}
+
+\usepackage[
+  paper=a4paper,
+  left=12.5mm,
+  right=25mm,
+  top=25mm,
+  bottom=40mm,
+  bindingoffset=10mm]{geometry}		% page and binding margins can be adjust here
+  
+\usepackage{apacite} 				% % literature-References: American Psycholog. Assoc.
+\usepackage{natbib}					
+
+\setcitestyle{round,aysep={}} 		% indexation in (round) parentheses, between the author year
+%\usepackage[latin1]{inputenc} 		% mutated vowel (Umlaute) in the text
+\usepackage[english]{babel}				% orthography
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}				% font family
+\usepackage{microtype}				% for micro typography (for a better typeface)
+\usepackage{blindtext}
+\usepackage{graphicx} 				% for including graphs (pdf,png - but do avoid jpg)
+\graphicspath{{./Graphics/}}          % path to the pictures
+
+\usepackage{url}					%  formatting URL (e.g. in the literature) 
+\usepackage[colorlinks,linkcolor=black,citecolor=black,urlcolor=black]{hyperref} 				% For hperlinks in PDF-documents   
+  
+\usepackage{tabularx} 				% for a better configuration of tables
+\usepackage{longtable} 		
+\usepackage{multicol}				
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{varioref}
+		
+\usepackage[active]{srcltx}
+
+\usepackage{listings}				% algorithm
+
+\usepackage{mdwlist}				% lists
+
+\usepackage{setspace} 				% setting of the lines (rows)
+\newtheorem{mydef}{Merksatz}  		% if examples or mnemotechnic verses are used with continuous numeration 
+\newtheorem{bsp}{Beispiel}
+
+\usepackage{todonotes}				% for the creation of ToDos in the editor
+\usepackage{lscape}					% for the rotation of pages
+\usepackage{amsmath}				% for the writting of mathematical formula
+\usepackage{calc}
+\usepackage{footnote}				% footnotes
+\usepackage{tablefootnote}			% footnotes in tables
+\hyphenation{voll-st\"andigen}		% for defining word devisions globally
+
+\setcounter{tocdepth}{2}			% levels which are displayed in the table of contents
+
+
+
+
+%_______________________________________________________ warum dieses Thema, motivation
+
+
+
+
+
+--- bis hier habe ich verglichen
+
+
+
+
+
+\begin{frame}{Two Problems with Regression Trees}
+    \begin{figure}
+        \centering
+        \begin{subfigure}{.45\textwidth}
+            \centering
+            \includegraphics[width=1\linewidth]{Greedy Classification Tree.png}
+            \caption{Greedy Classification Tree}
+            \label{fig:sub7}  % Changed label to be unique
+        \end{subfigure}%
+        \begin{subfigure}{.45\textwidth}
+            \centering
+            \includegraphics[width=1\linewidth]{Better overfitting.png}
+            \caption{Better Overfitting}
+            \label{fig:sub8}  % Changed label to be unique
+        \end{subfigure}
+        \caption{Two Problems that can arise with Trees}
+        \label{fig:sub9}  % Changed label to be unique
+    \end{figure}
+    \begin{itemize}
+        \item Overfitting and non-Optimal Splitting
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Pruning}
+    \begin{itemize}
+        \item \textbf{Cost complexity pruning} counteracts overfitting by removing non-essential splits.
+        \item Lets us grow a large Tree and then 
+        \begin{align*}
+            \sum_{m=1}^{|T|} \sum_{i: x_i \in R_m} (y_i - \hat{y}_{R_j})^2 + \alpha|T|.
+        \end{align*}
+    \begin{itemize}
+        \item Select a parameter \( \alpha \).
+        \item For each \( \alpha \), find the subtree that minimizes the cost.
+           \item Use cross-validation to select the best \( \alpha \).
+         \item Instead of evaluating a Model on the data we trained it on we evaluate it on a separate set.
+        \end{itemize}
+        \item \textbf{Objective:} Achieve a good tradeoff between bias and variance.
+       \item Large \( \alpha \) results in very small trees, small \( \alpha \) in larger trees.
+    \end{itemize}
+\end{frame}
+
+
+
+
+
+\begin{frame}{Ensemble methods}
+    \begin{itemize}
+        \item Even with pruning trees often perform worse than linear other ML methods
+        \item Ensemble methods improve results by combining many regression trees. Each one contributes a small part to the overall prediction.
+        \item Each tree can be independent of previous trees (e.g. Random Forests)
+        \item Or can be grown on the residuals of the current fit (e.g. Bayesian Additive Regression Trees (BART))
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{BART}
+    \begin{itemize}
+        \item BART models the response as a sum of many tree-based models plus noise.
+        \item \textbf{Model:}
+        \begin{equation}
+            Y_i = \sum_{j=1}^{m} g(X_i; T_j, M_j) + \epsilon_i.
+        \end{equation}
+        \item BART calculates the residuals of the current sum of Trees.
+        \item Then modifies one Tree to decrease the residuals.
+        \item Then take the average over all but the burn-in iterations.
+        \item Unlike single trees, BART avoids overfitting by averaging the predictions of many trees.
+        \item BART provides a probabilistic prediction, giving a measure of uncertainty.
+    \end{itemize}
+\end{frame}
+
+
+Trees capture interaction effects better. For example, a large Y is only indicative of red if X is small.
+
+\section{Overfitting and Pruning}
+\subsection{The Problem of Overfitting}
+Two main problems can arise with regression trees: overfitting and non-optimal splitting.
+
+\subsection{Cost Complexity Pruning}
+Cost complexity pruning counteracts overfitting by removing non-essential splits. We grow a large tree and then prune it using the following formula:
+
+\begin{equation}
+    \sum_{m=1}^{|T|} \sum_{i: x_i \in R_m} (y_i - \hat{y}_{R_j})^2 + \alpha|T|
+\end{equation}
+
+The process involves:
+\begin{itemize}
+    \item Selecting a parameter $\alpha$
+    \item For each $\alpha$, finding the subtree that minimizes the cost
+    \item Using cross-validation to select the best $\alpha$
+\end{itemize}
+
+The objective is to achieve a good tradeoff between bias and variance. A large $\alpha$ results in very small trees, while a small $\alpha$ results in larger trees.
+
+
+
+\section{Ensemble Methods and BART}
+\subsection{Introduction to Ensemble Methods}
+Even with pruning, trees often perform worse than other ML methods. Ensemble methods improve results by combining many regression trees, with each contributing a small part to the overall prediction. These can be independent of previous trees (e.g., Random Forests) or grown on the residuals of the current fit (e.g., Bayesian Additive Regression Trees - BART).
+
+\subsection{Bayesian Additive Regression Trees (BART)}
+BART models the response as a sum of many tree-based models plus noise:
+
+\begin{equation}
+    Y_i = \sum_{j=1}^{m} g(X_i; T_j, M_j) + \epsilon_i
+\end{equation}
+
+BART calculates the residuals of the current sum of Trees, then modifies one Tree to decrease the residuals. It then takes the average over all but the burn-in iterations. Unlike single trees, BART avoids overfitting by averaging the predictions of many trees and provides a probabilistic prediction, giving a measure of uncertainty.
+
+
+
+%_______________________________________________________ simulationen 
+
+
+\begin{frame}{Simulation: Linear Data}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+            \centering
+                \includegraphics[width=1\linewidth]{Linear Data before.png}
+                \caption{Linear Relation between Variables}
+                \label{fig:sub2}  % Changed label to be unique
+            \end{figure}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{itemize}
+            \vspace{0.7cm}
+                \item We will run all simulations 400 times.
+                 \item For now the regression trees will have 4 terminal Nodes.
+                \item And we will always compare the Mean Squared Error (MSE).
+                \item Data generated as: $Y = \beta_0 + \beta_1X + \epsilon$
+                \item Where $\epsilon \sim N(0, \sigma^2)$
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Simulation: Linear Data}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=1\linewidth]{OLS vs Tree.png}
+            \caption{Linear Relation between Variables}
+            \label{fig:sub4}  % Changed label to be unique
+            \end{figure}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+        
+            \begin{itemize}
+                        \vspace{0.7cm}
+
+            \item We will run all simulations 400 times.
+                 \item For now the regression trees will have 4 terminal Nodes.
+                \item And we will always compare the Mean Squared Error (MSE).
+                \vspace{1cm}
+                \item \textbf{Results:}
+                \item \textbf{MSE} for OLS model: \textbf{0.9917} 
+                \item \textbf{MSE} for regression tree model: \textbf{1.4935} 
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+
+\begin{frame}{Simulation: Non-linear Data}
+    
+        \begin{figure}
+            \centering
+            \includegraphics[scale=0.6]{NLD.png}
+            \caption{Data with non-linear relationship}
+            \label{fig:sub5}  % Changed label to be unique
+        \end{figure}
+        \vspace{-0.5cm}
+        \begin{itemize}
+        \item Non-Linear Data generated using 4 normal distributions
+        \item NW \& SE = red, NE \& SW = blue
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Simulation: Non-linear Data}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.6]{NLD Pred.png}
+        \caption{Data with Prediction}
+        \label{fig:sub6}  % Changed label to be unique
+    \end{figure}
+    \vspace{-0.5cm}
+    \begin{itemize}
+        \item Classification Tree MSE: 0.3757
+        \item Linear Classification MSE: 0.5103
+        \item \textbf{Trees capture interaction:} e.g. Large Y is only indicative of red if X is small.
+    \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}{Simulation: Finding the optimal Tree size}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.40]{Pruning.png}
+        \caption{Training and Cross-Validation Error}
+        \label{fig:sub10}  % Changed label to be unique
+    \end{figure}
+    \begin{itemize}
+        \item Pruning helps against overfitting and improves overall performance
+        \item Original Tree MSE on Test set = 198.2861 
+        \item Pruned Tree MSE on Test set = 173.861 
+        \item Sweet spot balances variance and bias, minimizing overfitting.
+        \item Training set used to build model, test set to evaluate performance
+    \end{itemize}
+\end{frame}
+
+
+
+\section{Comparing Regression Trees and Linear Regression}
+\subsection{Performance on Linear Data}
+We ran simulations 400 times with regression trees having 4 terminal nodes. We compared the Mean Squared Error (MSE) for both methods. The data was generated as: $Y = \beta_0 + \beta_1X + \epsilon$, where $\epsilon \sim N(0, \sigma^2)$.
+
+Results:
+\begin{itemize}
+    \item MSE for OLS model: 0.9917 
+    \item MSE for regression tree model: 1.4935 
+\end{itemize}
+
+\subsection{Performance on Non-linear Data}
+We generated non-linear data using 4 normal distributions (NW \& SE = red, NE \& SW = blue). The results showed:
+
+\begin{itemize}
+    \item Classification Tree MSE: 0.3757
+    \item Linear Classification MSE: 0.5103
+\end{itemize}
+
+
+
+
+\subsection{Finding the Optimal Tree Size}
+In our simulation:
+\begin{itemize}
+    \item Original Tree MSE on Test set = 198.2861 
+    \item Pruned Tree MSE on Test set = 173.861 
+\end{itemize}
+
+The sweet spot balances variance and bias, minimizing overfitting. We use a training set to build the model and a test set to evaluate performance.
+
+
+
+%_______________________________________________________ auf echte Daten 
+
+
+
+%_______________________________________________________ schlussbemerkungen _________________________________________________________________
+
+
+
+%_______________________________________________________ Ergebnisse kurz zusammenfassung
+
+
+
+
+
+\begin{frame}{Conclusion and Discussion}
+    \begin{itemize}
+        \item Regression trees are powerful for non-linear and interactive effects.
+        \begin{itemize}
+            \item Will often outperform linear regression.
+        \end{itemize}
+        \item They are also very easy to interpret.
+        \item Trees require pruning to combat overfitting.
+        \item By averaging independent Trees or fitting trees on the residuals ensemble methods can improve results.
+        \item BART is a sophisticated method offering good results in many scenarios.
+    \end{itemize}
+\end{frame}
+%_______________________________________________________ Offene Fragen
+
+\section{Conclusion}
+Regression trees are powerful tools for handling non-linear and interactive effects, often outperforming linear regression in these scenarios. They are also very easy to interpret. However, trees require pruning to combat overfitting. Ensemble methods, by averaging independent trees or fitting trees on the residuals, can significantly improve results. BART, in particular, is a sophisticated method offering good results in many scenarios. While regression trees have their strengths, it's important to choose the right tool for each specific data analysis task.
+
+
+
+%_______________________________________________________ References _________________________________________________________________
+
+
+\begin{frame}{References}
+    \begin{itemize}
+        \item James, G., Witten, D., Hastie, T., Tibshirani, R. (2021). An Introduction to Statistical Learning with Applications in R (Second Edition). Springer.
+        \item Tan, Y. V., Roy, J. (2019). Bayesian additive regression trees and the General BART model. Statistics in Medicine, Band/Volume 38(25), 5048-5069.
+        \item Chipman, H. A., George, E. I., McCulloch, R. E. (2010). BART: Bayesian additive regression trees. The Annals of Applied Statistics, Band/Volume 4(1), 266-298.
+        \item Townshend, R. Lecture 10 - Decision Trees and Ensemble Methods | Stanford CS229: Machine Learning (Autumn 2018). https://www.youtube.com/watch?v=wr9gUr-eWdA, accessed 21.05.24.
+    \vspace{0.5cm}
+
+        \item All images were made using R.
+        \item Also thanks to Claude and ChatGPT for making \LaTeX\ a lot nicer to use.
+    \end{itemize}
+\end{frame}
+\end{document}
+
+
+
+
+
+\section{Introduction}
+TESTHELLO This is a template for the seminar paper. Right now, the template contains different examples that you might find helpful once you write down your results in \LaTeX, a software system for document preparation. A lot of useful information can be found at the \href{https://www.overleaf.com/learn/latex/Creating_a_document_in_LaTeX}{\textbf{Overleaf}}-Homepage. Overleaf also provides a convenient online editor that is ideal to collaborate on joint projects and access your project from different devices. Feel free to use it in your group! Other open source editors to work on your device offline are available on the internet as well. An easy way to get started is the \href{https://miktex.org/download}{\underline{MikTeX-distribution}}. Once you installed MikTeX, a nice open source editor is \href{https://www.texstudio.org/}{\underline{TeXstudio}}. \\
+\LaTeX is widely used in academia. It is especially common in quantitative fields because writing and formatting equations, graphs and tables is very convenient. It is also easy to insert graphs, create tables and (most importantly!) correctly cite your sources. \\
+To help you get a feeling for \LaTeX, this template is structured in the following way: Section \ref{sec:math_mode} will introduce how to write equations while graphs, tables and citations are discussed in \ref{sec:results}. Like any scientific paper the last section \ref{sec:conclusion} is the conclusion that provides a high level summary of the most important findings of the paper!
+
+\section{Methodology}\label{sec:math_mode}
+The mathmode allows to easily write equations, using various mathematical operators, greek letters, symbols and formatting environments. In the following paragraphs will introduce the most important commands and functions based on different examples. This is done using \textbf{math mode}.\footnote{to highlight words or phrases, it is also possible to write text in \textit{italic}, \textbf{bold} or \textsf{sans serif}.}
+\subsection{Some examples for math mode}
+To include mathematical expressions like $x = 7$ in the written text use one \$-sign to start and close the . Two \$-signs indent the expression on a new line $$a^2 + b^2 = c^2.$$ Greek letters can be written using a \texttt{\textbackslash} and the greek letter spelled out. For example, the change of a variable $\zeta_t$ is often denoted as
+$$ \Delta \zeta_t = \zeta_t - \zeta_{t-1}$$
+ Equations can also be numerated and labeled using the command \texttt{\textbackslash begin\{equation\}} and \texttt{\textbackslash end\{equation\}} For example equation (\ref{eq:nd}) shows the distribution function $F(x)$ of a normal distributed random variable $x \sim \mathcal{N}(\mu,\sigma^2)$ that is given as
+\begin{equation}\label{eq:nd}
+	F(x) = \frac{1}{\sqrt{2\pi \sigma^2}}\int_{-\infty}^{x}e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+\end{equation}
+Using \texttt{equation*} suppresses the numbering.
+\begin{equation*}
+x_t = \mu_t + \sum_{i=0}^{\infty}\psi_i u_{t-i}
+\end{equation*}
+The same holds for \texttt{\textbackslash begin\{align\}} and \texttt{\textbackslash end\{align\}} which can be used to align several expressions (note that \texttt{align} numbers every line).
+\begin{align*}
+x_t &= c + \alpha x_{t-1} + u_t \\
+x_t &= c + \alpha Lx_t + u_t  \\
+(1-\alpha L)x_t &= c + u_t \\
+x_t &= \frac{c}{1-\alpha} + \sum_{i=0}^{\infty}\alpha^ix_{t-i} \quad (\longrightarrow \text{Wold Representation})
+\end{align*}
+The \texttt{\&}-sign indicates where the expressions should be aligned and \texttt{\textbackslash \textbackslash} marks the line breaks.
+Adjusting the size of brackets works with the commands \texttt{\textbackslash left} and \texttt{\textbackslash right} in front of the brackets. For example, for a Cobb-Douglas function $f(L,K) = L^{\alpha}K^{(1-\alpha)}$ it holds that
+\begin{equation}
+	\frac{\partial f(L,K)}{\partial L} = \alpha \left[\frac{K}{L}\right]^{(1-\alpha)} \quad \text{and} \quad \frac{\partial f(L,K)}{\partial K} = (1-\alpha)\left[\frac{L}{K}\right]^{\alpha} \quad \forall \; 0 < \alpha < 1
+\end{equation}
+
+
+\section{Results}\label{sec:results}
+\LaTeX also provides an environment to create tables, for example to create customized regression outputs or summary statistics. Additionally, it provides an easy and efficient way to cite other sources using BibTeX. Examples for both features are given in the next subsections. 
+\subsection{Example: Figures and Tables}
+
+Table \ref{tab:exmpl1} is an example of how a table is generated and can be included in the text.
+\begin{table}[h]
+	\centering
+	\begin{tabular}{l|c r}
+		\hline
+		\textbf{Left} & \textbf{Middle} & \textbf{Right} \\ \hline \hline
+		text & text & text \\ 
+		in these & in these & in these \\ 
+		cells & cells & cells \\
+		will be & will be & will be \\
+		left aligned & centered & right aligned \\ \hline
+	\end{tabular}
+	\caption{Example how to create and insert tables}
+	\label{tab:exmpl1}
+\end{table} 
+To draw vertical lines use $|$ in the \texttt{\textbackslash begin\{\}} command. For horizontal lines use \texttt{\textbackslash hline}. The \texttt{\&}-signs indicate cells and \texttt{\textbackslash \textbackslash} marks a line break. For complicated or large tables, there are also convenient \href{https://www.tablesgenerator.com/}{\textbf{websites}} that can help you generate the appropriate \LaTeX-Code.
+It is always useful to illustrate your method, simulations, data set or other results using figures and plots. This section shows how to include and refer to them in your text in \LaTeX.
+\subsection{Example Figures}
+It is always useful to illustrate your method, simulations, data set or other results using figures and plots. This section shows how to include and refer to them in your text in \LaTeX.
+% compared to \ref{}, \vref{} autmatically adds the page that the grafic or table apprears to your text. It is quite convenient, but comes at the risk that sometimes the sentences are no longer gramatically correct. 
+Figure \vref{fig:bsp1} is an example of how an image file can be included in the text. 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./Graphics/bsp1.png}
+	\caption{Example how to insert graphics}
+	\label{fig:bsp1}
+\end{figure}
+It is important that the relevant file is stored in the folder Graphics. The size of the figures can be controlled using the argument \texttt{width} or alternatively with the argument \texttt{scale}. 
+Similar to equations, figures can be labeled using the command \texttt{\textbackslash label\{fig:fig\_name\}} and later referred to in the text using \texttt{\textbackslash ref{fig:fig\_name}}. Possible file types include but are not limited to PDF, JPG, PNG or EPS.
+
+\subsection{Example: Citations}
+To include citations, \LaTeX  uses the BibTeX tool. Before a source can be cited in a document, it has to be stored in the Bibtex-file called \texttt{sources.bib}. The file is saved in the folder \texttt{Literature} and should not be moved or renamed. Once the relevant information about the source is entered and saved in the BibTeX-file, the command \texttt{\textbackslash cite\{\}} can be used to include the citation in the document. Furthermore, the source will then automatically be displayed in the section \textbf{References} at the end of the document. Some examples that are already saved in the \texttt{sources.bib} file are \cite{brink2005anfertigung}, \cite{gopen1990science} and \cite{johnson1993get}. Note that many scientific journals provide the information about the articles in BibTeX format on their homepages so it is easy to copy and include them. Looking up sources in Google Scholar is also an easy way to find the information in BibTeX format as can be seen in Figure \ref{fig:bibtex_ex}. 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.4]{Graphics/Bibtex_ex1.PNG}
+    \caption{Citations in BibTeX-format can easily be obtained from Google Scholar.}
+    \label{fig:bibtex_ex}
+\end{figure} 
+
+\section{Conclusion}\label{sec:conclusion}
+This document provides an overview of the most important concepts and functions to work in \LaTeX, a common software system to prepare academic texts. Based on different examples, this templates illustrates how to write equations, insert graphs, create tables and consistently cite your references. \textcolor{red}{However, while \LaTeX is a powerful tool, it requires time to familiarize with the commands and debugging your code can slow you down. Consequently, this can make working in \LaTeX tedious and slow in the beginning so it is important to start writing down projects early enough!}
+% -----------------------------------
+\newpage
+\bibliographystyle{apacite}				% by natbib in german
+\bibliography{./Literature/sources}		% including literature sources
+\newpage
+%\input{./Literature/declaration} 			% % statutory declaration - "`Eidesstattliche Erklärung"'
+
+\end{document}
+
+
+
+
+
+
+
+
+
+This is a template for the seminar paper. Right now, the template contains different examples that you might find helpful once you write down your results in \LaTeX, a software system for document preparation. A lot of useful information can be found at the \href{https://www.overleaf.com/learn/latex/Creating_a_document_in_LaTeX}{\textbf{Overleaf}}-Homepage. Overleaf also provides a convenient online editor that is ideal to collaborate on joint projects and access your project from different devices. Feel free to use it in your group! Other open source editors to work on your device offline are available on the internet as well. An easy way to get started is the \href{https://miktex.org/download}{\underline{MikTeX-distribution}}. Once you installed MikTeX, a nice open source editor is \href{https://www.texstudio.org/}{\underline{TeXstudio}}. \\

@@ -39,7 +39,6 @@ citestyle=bwl-FU
 
 
 
-
 \begin{frame}{Motivation}
     \begin{itemize}
         \item Linear regression performs poorly on many kinds of data.
