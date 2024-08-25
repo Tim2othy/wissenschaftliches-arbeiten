@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+ \documentclass[12pt]{article}
 
 \usepackage[
   paper=a4paper,
@@ -43,8 +43,6 @@
 \newtheorem{mydef}{Merksatz}  		% if examples or mnemotechnic verses are used with continuous numeration 
 \newtheorem{bsp}{Beispiel}
 
-\usepackage{todonotes}				% for the creation of ToDos in the editor
-\usepackage{lscape}					% for the rotation of pages
 \usepackage{amsmath}				% for the writting of mathematical formula
 \usepackage{calc}
 \usepackage{footnote}				% footnotes
@@ -52,11 +50,12 @@
 \hyphenation{voll-st\"andigen}		% for defining word devisions globally
 
 \setcounter{tocdepth}{2}			% levels which are displayed in the table of contents
-%_______________________________________________________ document__________________________________________________
+
+ %__________________________________document____________________________
+
 
 \begin{document}
 \include{./Title/title} 			% title
-
 \onehalfspacing                  	
 % line spacing which is set to 1.5 from this point on
 %\tableofcontents 					% table of contents
@@ -64,152 +63,88 @@
 % -----------------------------------
 \pagenumbering{arabic}% Arabic page numbers (and reset to 1)
 
-%_______________________________________________________ Inhaltsverzeichnis _____________________________________________
 
-\section{Outline of the Paper}
+
 \begin{enumerate}
-    \item Motivation
-    \item Basics of Regression Trees
-    \item Comparing regression Trees and Linear Regression
-    \item Overfitting and Pruning
-    \item Ensemble methods and BART
-    \item Conclusion
-    \item References
+    \item Introduction
+    \item Explaining Regression Trees
+    \item Testing Regression Trees with Simulations
+    \item Using Regression Trees housing Market Data
+    \item Conclusions
 \end{enumerate}
 
-%_______________________________________________________ Einleitung ______________________________________________
 
 \section{Introduction}
-In this paper, we explore the topic of regression trees, a powerful machine learning technique for predictive modeling. Linear regression often performs poorly on many kinds of data, especially those with non-linear relationships and interaction effects. Regression trees offer an alternative approach that can be useful in many situations. We will discuss their advantages over traditional linear regression methods, cover the basics of regression trees, compare them with linear regression, address the issue of overfitting, and introduce advanced ensemble methods like Bayesian Additive Regression Trees (BART).
+While linear regression, probably the most used method by empirical economist can be useful in many situations, it can be useful to look at where it fails, and different methods excel. Regression trees have been used in many situations, with many extension being developed greatly improving their usefulness. In this paper I will first give a short exposition on Regression Trees, their theory and extensions and applicatios and contrast them with linear regression. I will perform easily understandable simulations comparing Regression Trees and Linear Regression. Show how Regression Trees can be used on a Dataset on the housing Market.
 
-%_______________________________________________________ warum dieses Thema, motivation
 
-\subsection{Motivation}
+ %_______________________________________________________ warum dieses Thema, motivation
+
 Linear regression performs poorly on many kinds of data, particularly those with non-linear relationships and interaction effects. What might be a better approach for these situations? Regression Trees can be useful in many situations where linear regression falls short.
+
+Regression trees are, a powerful machine learning technique for predictive modeling. Regression trees offer an alternative approach that can be useful in many situations. We will discuss their advantages over traditional linear regression methods, cover the basics of regression trees, compare them with linear regression, address the issue of overfitting, and introduce advanced ensemble methods like Bayesian Additive Regression Trees (BART).
 
 [Figure: Can you guess where regression trees and where linear regression will perform better?]
 
 
 
-%_______________________________________________________ einordnung in die Literatur 
+ %_______________________________________________________ einordnung in die Literatur 
+
+Hastie and Tibshirani's an Introduction to Statistical Learning serves as an eccelent introduction to Regression trees, while Tan and Roy (2019) can give a deeper dive on BART a powerful ensemble method. 
+
+ %_______________________________________________________ was habe ich herausgefunden 
+
+The simulations show how regression trees outperform linear regression on datasets with non lenear relationships. etc.
+
+ %_______________________________________________________ inhaltsangabe, zusammenfassung 
 
 
 
 
-%_______________________________________________________ was habe ich herausgefunden 
+ %_______________________________________________________ hauptteil _______________________________________________
 
-%_______________________________________________________ inhaltsangabe, zusammenfassung 
+\section{Regression Trees}
 
+Regression Trees are a machine learning method, that splits the predictor space into subregions and makes predictios for each region. In doing so it doesn't make assumptions about linearity or non-interaction between different dimensions.
 
-%_______________________________________________________ kurze gliederung der arbeit 
-
-
-
-
-%_______________________________________________________ hauptteil _______________________________________________
-
-
-%_______________________________________________________ modellbeschreibung
-
-%_______________________________________________________ methodik
-
-%_______________________________________________________ theorie 
-
-
-
-
-\section{Basics of Regression Trees}
-Regression trees split the predictor space into regions that minimize the RSS given by:
+Regression trees split the predictor space into regions that minimize the residual sum of squares given by:
 
 \begin{equation}
     \sum_{j=1}^{J} \sum_{i \in R_j} ( y_i- \hat{ y}_{R_j} )^2
 \end{equation}
 
-In each region $\hat{y}$ simply takes on the mean of all observations in that region. Typically, we can't find the optimal regions. Instead, we use a greedy algorithm called Recursive binary splitting to find the optimal split to minimize prediction error at each stage.
 
-\subsection{Main Differences Between Linear Regression and Trees}
-\begin{itemize}
-    \item Regression trees do not assume a linear relationship between predictors and the response.
-    \item Trees capture interaction effects naturally.
-\end{itemize}
+In each region, $\hat{y}$ simply takes on the mean of all observations in that region. Typically, we can't find the optimal regions. Instead, we use a greedy algorithm called Recursive binary splitting to find the optimal split to minimize prediction error at each stage. One will typicall continue the algorithm until some threshold is reached, such as each new split not leading to much improvment.
 
+This model is clearly quite different from regular linear regression. Regression trees do not assume a linear relationship between predictors and the response. They also have more parameters that can be tweaked e.g. how many splits to perform. 
 
+One other major benifit of Trees over Linear Regression is thet they capture interaction effects naturally. If for example being blong typically increases pay, but only for women, a Regression Tree will ofnet naturally split along gender and then, for women only, along haircolor. Whearas in a linear Regression the researcher would have to manually include terms for all interaction effects they want to study.
 
+%%%%%%Problems
+\subsection{Pruning}
 
-\section{Basics of Regression Trees}
-\subsection{Motivation}
-Linear regression performs poorly on many kinds of data, especially those with non-linear relationships and interaction effects. Regression trees offer a better approach for these situations.
+Some of the main problems with Regression Trees are that they are easily prone to overfitting and that the greedy nature of the splitting algorithm doesn't necessarily create the best possible, or even close to the best possible carving up of the predictor space.
 
-\subsection{How Regression Trees Work}
-Regression trees split the predictor space into regions that minimize the Residual Sum of Squares (RSS) given by:
-
-\begin{equation}
-    \sum_{j=1}^{J} \sum_{i \in R_j} ( y_i- \hat{y}_{R_j} )^2
-\end{equation}
-
-In each region, $\hat{y}$ simply takes on the mean of all observations in that region. Typically, we can't find the optimal regions. Instead, we use a greedy algorithm called Recursive binary splitting to find the optimal split to minimize prediction error at each stage.
-
-\subsection{Main Differences Between Linear Regression and Trees}
-\begin{itemize}
-    \item Regression trees do not assume a linear relationship between predictors and the response.
-    \item Trees capture interaction effects naturally.
-\end{itemize}
-
-
---- bis hier habe ich verglichen    
-
-\section{Problems with Regression Trees}
-Two main problems can arise with regression trees: overfitting and non-optimal splitting.
-
-[Figure: Two Problems that can arise with Trees]
-
-\section{Pruning}
-Cost complexity pruning counteracts overfitting by removing non-essential splits. We grow a large Tree and then use the following formula:
+Cost complexity pruning (or pruning) is one popular way to improve Regression Trees. It counteracts overfitting by removing non-essential splits. We grow a large Tree and then use the following formula:
 
 \begin{equation}
     \sum_{m=1}^{|T|} \sum_{i: x_i \in R_m} (y_i - \hat{y}_{R_j})^2 + \alpha|T|
 \end{equation}
 
 The process involves:
-\begin{itemize}
-    \item Selecting a parameter $\alpha$
-    \item For each $\alpha$, finding the subtree that minimizes the cost
-    \item Using cross-validation to select the best $\alpha$
-    \item Instead of evaluating a Model on the data we trained it on we evaluate it on a separate set.
-    \item Achieve a good tradeoff between bias and variance.
-    \item Large \( \alpha \) results in very small trees, small \( \alpha \) in larger trees.
-\end{itemize}
 
-
-\section{Overfitting and Pruning}
-\subsection{The Problem of Overfitting}
-Two main problems can arise with regression trees: overfitting and non-optimal splitting.
-
-\subsection{Cost Complexity Pruning}
-Cost complexity pruning counteracts overfitting by removing non-essential splits. We grow a large tree and then prune it using the following formula:
-
-\begin{equation}
-    \sum_{m=1}^{|T|} \sum_{i: x_i \in R_m} (y_i - \hat{y}_{R_j})^2 + \alpha|T|
-\end{equation}
-
-The process involves:
-\begin{itemize}
-    \item Selecting a parameter $\alpha$
-    \item For each $\alpha$, finding the subtree that minimizes the cost
-    \item Using cross-validation to select the best $\alpha$
-\end{itemize}
-
+Selecting a parameter $\alpha$
+For each $\alpha$, finding the subtree that minimizes the cost
+Using cross-validation to select the best $\alpha$
+Instead of evaluating a Model on the data we trained it on we evaluate it on a separate set.
+Achieve a good tradeoff between bias and variance.
+Large \( \alpha \) results in very small trees, small \( \alpha \) in larger trees.
 The objective is to achieve a good tradeoff between bias and variance. A large $\alpha$ results in very small trees, while a small $\alpha$ results in larger trees.
 
 
-
-
-The objective is to achieve a good tradeoff between bias and variance. A large $\alpha$ results in very small trees, while a small $\alpha$ results in larger trees.
-
-\section{Ensemble Methods}
+\subsection{Ensemble Methods}
 Even with pruning, trees often perform worse than other ML methods. Ensemble methods improve results by combining many regression trees. Each one contributes a small part to the overall prediction. These can be independent of previous trees (e.g., Random Forests) or grown on the residuals of the current fit (e.g., Bayesian Additive Regression Trees - BART).
 
-\subsection{Bayesian Additive Regression Trees (BART)}
 BART models the response as a sum of many tree-based models plus noise:
 
 \begin{equation}
@@ -218,28 +153,23 @@ BART models the response as a sum of many tree-based models plus noise:
 
 BART calculates the residuals of the current sum of Trees, then modifies one Tree to decrease the residuals. It then takes the average over all but the burn-in iterations. Unlike single trees, BART avoids overfitting by averaging the predictions of many trees and provides a probabilistic prediction, giving a measure of uncertainty.
 
+ %_______________________________________________________ modellbeschreibung
 
 
-
-\section{Ensemble Methods and BART}
-\subsection{Introduction to Ensemble Methods}
-Even with pruning, trees often perform worse than other ML methods. Ensemble methods improve results by combining many regression trees, with each contributing a small part to the overall prediction. These can be independent of previous trees (e.g., Random Forests) or grown on the residuals of the current fit (e.g., Bayesian Additive Regression Trees - BART).
-
-\subsection{Bayesian Additive Regression Trees (BART)}
-BART models the response as a sum of many tree-based models plus noise:
-
-\begin{equation}
-    Y_i = \sum_{j=1}^{m} g(X_i; T_j, M_j) + \epsilon_i
-\end{equation}
-
-BART calculates the residuals of the current sum of Trees, then modifies one Tree to decrease the residuals. It then takes the average over all but the burn-in iterations. Unlike single trees, BART avoids overfitting by averaging the predictions of many trees and provides a probabilistic prediction, giving a measure of uncertainty.
+ %_______________________________________________________ methodik
 
 
-%_______________________________________________________ simulationen 
+ %_______________________________________________________ theorie 
+
+
+ %_______________________________________________________ simulationen 
 
 \section{Simulations}
 
-\subsection{Linear Data}
+Simulations can serve as a testing ground for statistical methos, allowing for easyer repetability and eleminating many of the complications that arise when using datasets.
+
+On two datasets 
+
 We ran simulations 400 times with regression trees having 4 terminal nodes. We compared the Mean Squared Error (MSE) for both methods. The data was generated as: $Y = \beta_0 + \beta_1X + \epsilon$, where $\epsilon \sim N(0, \sigma^2)$.
 
 Results:
@@ -248,8 +178,9 @@ Results:
     \item MSE for regression tree model: 1.4935 
 \end{itemize}
 
+
 \subsection{Non-linear Data}
-We generated non-linear data using 4 normal distributions (NW & SE = red, NE & SW = blue). The results showed:
+We generated non-linear data using 4 normal distributions (NW and SE = red, NE and SW = blue). The results showed:
 
 \begin{itemize}
     \item Classification Tree MSE: 0.3757
@@ -258,7 +189,7 @@ We generated non-linear data using 4 normal distributions (NW & SE = red, NE & S
 
 Trees capture interaction effects better. For example, a large Y is only indicative of red if X is small.
 
-\subsection{Finding the Optimal Tree Size}
+ \subsection{Finding the Optimal Tree Size}
 In our simulation:
 \begin{itemize}
     \item Original Tree MSE on Test set = 198.2861 
@@ -268,34 +199,42 @@ In our simulation:
 The sweet spot balances variance and bias, minimizing overfitting. We use a training set to build the model and a test set to evaluate performance.
 
 
-%_______________________________________________________ auf echte Daten 
+ %_______________________________________________________ auf echte Daten 
+
+\section{Applying Regression Trees To Housing Market Data}
+
+
+and so on
 
 
 
-%_______________________________________________________ schlussbemerkungen __________________________________________
-
-%_______________________________________________________ Ergebnisse kurz zusammenfassung
+ %_______________________________________________________ schlussbemerkungen __________________________________________
 
 
 
-
-%_______________________________________________________ Offene Fragen
-
-
-
-\section{Conclusion}
+ \section{Conclusion}
 Regression trees are powerful tools for handling non-linear and interactive effects, often outperforming linear regression in these scenarios. They are also very easy to interpret. However, trees require pruning to combat overfitting. Ensemble methods, by averaging independent trees or fitting trees on the residuals, can significantly improve results. BART, in particular, is a sophisticated method offering good results in many scenarios. While regression trees have their strengths, it's important to choose the right tool for each specific data analysis task.
 
-%_______________________________________________________ References ______________________________________________
+ 
+ %_______________________________________________________ Ergebnisse kurz zusammenfassung
 
-\section{References}
+\subsection{Results and short summary}
+and so on
+
+
+ %_______________________________________________________ Offene Fragen
+
+This is a very important area of research and clearly there are still many open questions.
+
+
+ \section{References}
 \begin{itemize}
     \item James, G., Witten, D., Hastie, T., Tibshirani, R. (2021). An Introduction to Statistical Learning with Applications in R (Second Edition). Springer.
     \item Tan, Y. V., Roy, J. (2019). Bayesian additive regression trees and the General BART model. Statistics in Medicine, Band/Volume 38(25), 5048-5069.
     \item Chipman, H. A., George, E. I., McCulloch, R. E. (2010). BART: Bayesian additive regression trees. The Annals of Applied Statistics, Band/Volume 4(1), 266-298.
     \item Townshend, R. Lecture 10 - Decision Trees and Ensemble Methods | Stanford CS229: Machine Learning (Autumn 2018). https://www.youtube.com/watch?v=wr9gUr-eWdA, accessed 21.05.24.
+    \item All images were made using R. Also thanks to Claude and ChatGPT for making \LaTeX\ a lot nicer to use.
 \end{itemize}
 
-All images were made using R. Also thanks to Claude and ChatGPT for making \LaTeX\ a lot nicer to use.
 
 \end{document}
