@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.8.26)  27 AUG 2024 19:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.8.26)  27 AUG 2024 20:06
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/term_paper/term_paper.tex
-(c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/term_paper/term_paper.tex
+**c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/Hausarbeit/main.tex
+(c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/Hausarbeit/main.tex
 LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-07-20>
 (c:/texlive/2024/texmf-dist/tex/latex/base/article.cls
@@ -568,8 +568,8 @@ File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count355
 \l__pdf_internal_box=\box111
-) (./term_paper.aux)
-\openout1 = `term_paper.aux'.
+) (./main.aux (./Title/title.aux))
+\openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 57.
 LaTeX Font Info:    ... okay on input line 57.
@@ -672,32 +672,73 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 Package hyperref Info: Link coloring ON on input line 57.
- (./term_paper.out) (./term_paper.out)
+ (./main.out) (./main.out)
 \@outlinefile=\write3
-\openout3 = `term_paper.out'.
+\openout3 = `main.out'.
 
 \c@lstlisting=\count363
+
+:<+ ./Title/title.tex
+\openout2 = `./Title/title.aux'.
+
+(./Title/title.tex
+Package epstopdf Info: Source file: <./Graphics/UNI_Bonn_Logo_Standard_RZ.eps>
+(epstopdf)                    date: 2024-08-27 20:00:36
+(epstopdf)                    size: 1703474 bytes
+(epstopdf)             Output file: <./Graphics/UNI_Bonn_Logo_Standard_RZ-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-08-27 20:01:21
+(epstopdf)                    size: 12804 bytes
+(epstopdf)             Command: <repstopdf --outfile=./Graphics/UNI_Bonn_Logo_Standard_RZ-eps-converted-to.pdf ./Graphics/UNI_Bonn_Logo_Standard_RZ.eps>
+(epstopdf)             \includegraphics on input line 14.
+Package epstopdf Info: Output file is already uptodate.
+<./Graphics/UNI_Bonn_Logo_Standard_RZ-eps-converted-to.pdf, id=48, 147.55125pt x 57.21375pt>
+File: ./Graphics/UNI_Bonn_Logo_Standard_RZ-eps-converted-to.pdf Graphic file (type pdf)
+<use ./Graphics/UNI_Bonn_Logo_Standard_RZ-eps-converted-to.pdf>
+Package pdftex.def Info: ./Graphics/UNI_Bonn_Logo_Standard_RZ-eps-converted-to.pdf  used on input line 14.
+(pdftex.def)             Requested size: 184.9401pt x 71.71254pt.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 47.
+ (c:/texlive/2024/texmf-dist/tex/latex/lm/ot1lmr.fd
+File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 47.
+ (c:/texlive/2024/texmf-dist/tex/latex/lm/omllmm.fd
+File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 47.
+ (c:/texlive/2024/texmf-dist/tex/latex/lm/omslmsy.fd
+File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 47.
+ (c:/texlive/2024/texmf-dist/tex/latex/lm/omxlmex.fd
+File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <14.4> on input line 47.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 47.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 47.
 
 
 [1
 
-{c:/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}]
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 112.
- (c:/texlive/2024/texmf-dist/tex/latex/lm/ot1lmr.fd
-File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 112.
- (c:/texlive/2024/texmf-dist/tex/latex/lm/omllmm.fd
-File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 112.
- (c:/texlive/2024/texmf-dist/tex/latex/lm/omslmsy.fd
-File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 112.
- (c:/texlive/2024/texmf-dist/tex/latex/lm/omxlmex.fd
-File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
+
+
+{c:/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc} <./Graphics/UNI_Bonn_Logo_Standard_RZ-eps-converted-to.pdf>])
+:<-
+
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.109 
+       [1
+
+
+
+
+]
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <12> on input line 112.
 LaTeX Font Info:    External font `lmex10' loaded for size
@@ -716,27 +757,27 @@ File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 
 [4]
 
-[5] (./term_paper.aux)
+[5] (./main.aux (./Title/title.aux))
  ***********
 LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-07-20>
  ***********
-Package rerunfilecheck Info: File `term_paper.out' has not changed.
+Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 26A4D5BFA3CC629D04F33B2308034DAB;1588.
  ) 
 Here is how much of TeX's memory you used:
- 16940 strings out of 473579
- 265721 string characters out of 5732263
- 1935960 words of memory out of 5000000
- 39476 multiletter control sequences out of 15000+600000
- 592294 words of font info for 97 fonts, out of 8000000 for 9000
+ 17026 strings out of 473579
+ 267603 string characters out of 5732263
+ 1934960 words of memory out of 5000000
+ 39534 multiletter control sequences out of 15000+600000
+ 606827 words of font info for 115 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 75i,5n,79p,1068b,553s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi6.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy8.pfb>
-Output written on term_paper.pdf (5 pages, 128058 bytes).
+ 75i,5n,79p,1062b,553s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi6.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy8.pfb>
+Output written on main.pdf (6 pages, 165194 bytes).
 PDF statistics:
- 148 PDF objects out of 1000 (max. 8388607)
- 118 compressed objects within 2 object streams
+ 160 PDF objects out of 1000 (max. 8388607)
+ 125 compressed objects within 2 object streams
  25 named destinations out of 1000 (max. 500000)
- 20569 words of extra memory for PDF output out of 20736 (max. 10000000)
+ 28766 words of extra memory for PDF output out of 29859 (max. 10000000)
 
