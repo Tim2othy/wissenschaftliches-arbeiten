@@ -125,6 +125,9 @@ One other major benifit of Trees over Linear Regression is thet they capture int
 
 Some of the main problems with Regression Trees are that they are easily prone to overfitting and that the greedy nature of the splitting algorithm doesn't necessarily create the best possible, or even close to the best possible carving up of the predictor space.
 
+
+
+
 Cost complexity pruning (or pruning) is one popular way to improve Regression Trees. It counteracts overfitting by removing non-essential splits. We grow a large Tree and then use the following formula:
 
 \begin{equation}
@@ -172,6 +175,14 @@ On two datasets
 
 We ran simulations 400 times with regression trees having 4 terminal nodes. We compared the Mean Squared Error (MSE) for both methods. The data was generated as: $Y = \beta_0 + \beta_1X + \epsilon$, where $\epsilon \sim N(0, \sigma^2)$.
 
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{OLS vs Tree.png}
+    \caption{Linear Relation between Variables}
+    \label{fig:sub4}  % Changed label to be unique
+\end{figure}
+
+
 Results:
 \begin{itemize}
     \item MSE for OLS model: 0.9917 
@@ -182,6 +193,15 @@ Results:
 \subsection{Non-linear Data}
 We generated non-linear data using 4 normal distributions (NW and SE = red, NE and SW = blue). The results showed:
 
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.6]{NLD Pred.png}
+    \caption{Data with Prediction}
+    \label{fig:sub6}  % Changed label to be unique
+\end{figure}
+
+
 \begin{itemize}
     \item Classification Tree MSE: 0.3757
     \item Linear Classification MSE: 0.5103
@@ -189,14 +209,39 @@ We generated non-linear data using 4 normal distributions (NW and SE = red, NE a
 
 Trees capture interaction effects better. For example, a large Y is only indicative of red if X is small.
 
- \subsection{Finding the Optimal Tree Size}
+
+
+
+Here you can see how the split that was made in the original tree was not the best possible split. It was greedy and couldn't look ahead.
+
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{Greedy Classification Tree.png}
+    \caption{Greedy Classification Tree}
+    \label{fig:sub7}  % Changed label to be unique
+\end{figure}%
+
+
+\subsection{Finding the Optimal Tree Size}
 In our simulation:
 \begin{itemize}
     \item Original Tree MSE on Test set = 198.2861 
     \item Pruned Tree MSE on Test set = 173.861 
 \end{itemize}
 
+
 The sweet spot balances variance and bias, minimizing overfitting. We use a training set to build the model and a test set to evaluate performance.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.40]{Pruning.png}
+    \caption{Training and Cross-Validation Error}
+    \label{fig:sub10}  % Changed label to be unique
+\end{figure}
+
 
 
  %_______________________________________________________ auf echte Daten 

@@ -275,11 +275,27 @@ INPUT c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc
 INPUT c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc
 INPUT c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc
 INPUT c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc
+INPUT ./Graphics/OLS vs Tree.png
+INPUT ./Graphics/OLS vs Tree.png
+INPUT ./Graphics/OLS vs Tree.png
+INPUT ./Graphics/OLS vs Tree.png
 INPUT c:/texlive/2024/texmf-dist/tex/latex/lm/ts1lmr.fd
 INPUT c:/texlive/2024/texmf-dist/tex/latex/lm/ts1lmr.fd
 INPUT c:/texlive/2024/texmf-dist/tex/latex/lm/ts1lmr.fd
 INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/ts1-lmr12.tfm
+INPUT ./Graphics/NLD Pred.png
+INPUT ./Graphics/NLD Pred.png
+INPUT ./Graphics/NLD Pred.png
+INPUT ./Graphics/NLD Pred.png
 INPUT c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc
+INPUT ./Graphics/Greedy Classification Tree.png
+INPUT ./Graphics/Greedy Classification Tree.png
+INPUT ./Graphics/Greedy Classification Tree.png
+INPUT ./Graphics/Greedy Classification Tree.png
+INPUT ./Graphics/Pruning.png
+INPUT ./Graphics/Pruning.png
+INPUT ./Graphics/Pruning.png
+INPUT ./Graphics/Pruning.png
 INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/ec-lmr8.tfm
 INPUT main.aux
 INPUT ./Title/title.aux
