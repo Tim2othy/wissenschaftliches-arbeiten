@@ -1,18 +1,25 @@
  \documentclass[12pt]{article}
+ \usepackage[
+    left=1.25in,
+    right=1.25in,
+    top=1.5in,
+    bottom=1.5in]{geometry}
 
-\usepackage[
-  paper=a4paper,
-  left=12.5mm,
-  right=25mm,
-  top=25mm,
-  bottom=40mm,
-  bindingoffset=10mm]{geometry}		% page and binding margins can be adjust here
-  
+
 \usepackage{apacite} 				% % literature-References: American Psycholog. Assoc.
 \usepackage{natbib}					
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    citecolor=blue,
+    pdfborderstyle={/S/U/W 0}
+}
 
 \setcitestyle{round,aysep={}} 		% indexation in (round) parentheses, between the author year
-%\usepackage[latin1]{inputenc} 		% mutated vowel (Umlaute) in the text
+\usepackage[utf8]{inputenc}
 \usepackage[english]{babel}				% orthography
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}				% font family
@@ -22,7 +29,6 @@
 \graphicspath{{./Graphics/}}          % path to the pictures
 
 \usepackage{url}					%  formatting URL (e.g. in the literature) 
-\usepackage[colorlinks,linkcolor=black,citecolor=black,urlcolor=black]{hyperref} 				% For hperlinks in PDF-documents   
   
 \usepackage{tabularx} 				% for a better configuration of tables
 \usepackage{longtable} 		
@@ -55,10 +61,9 @@
 
 
 \begin{document}
+
 \include{./Title/title} 			% title
-\onehalfspacing                  	
-% line spacing which is set to 1.5 from this point on
-%\tableofcontents 					% table of contents
+					% table of contents
 
 % -----------------------------------
 \pagenumbering{arabic}% Arabic page numbers (and reset to 1)
