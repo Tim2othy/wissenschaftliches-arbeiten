@@ -1,8 +1,8 @@
-PWD c:/Users/timtj/OneDrive/Documents/thesis_layout/layout
+PWD c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/layout
 INPUT c:/texlive/2024/texmf.cnf
 INPUT c:/texlive/2024/texmf-dist/web2c/texmf.cnf
 INPUT c:/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT c:/Users/timtj/OneDrive/Documents/thesis_layout/layout/layout.tex
+INPUT c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/layout/layout.tex
 OUTPUT layout.log
 INPUT c:/texlive/2024/texmf-dist/tex/latex/base/article.cls
 INPUT c:/texlive/2024/texmf-dist/tex/latex/base/article.cls
