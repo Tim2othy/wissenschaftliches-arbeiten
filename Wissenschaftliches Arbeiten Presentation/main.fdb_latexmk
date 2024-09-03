@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber main"] 0 "main.bcf" "main.bbl" "main" 0 0
+["biber main"] 0 "main.bcf" "main.bbl" "main" 1725359453.02526 0
   "bibliography.bib" 0 -1 0 ""
   "main.bcf" 0 -1 0 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1724779899.07892 "c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/Wissenschaftliches Arbeiten Presentation/main.tex" "main.pdf" "main" 1724779904.78143 0
+["pdflatex"] 1725359449.04446 "c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/Wissenschaftliches Arbeiten Presentation/main.tex" "main.pdf" "main" 1725359453.02606 0
   "Better overfitting.png" 1724779837 17412 93cab609863e860ad029be7c59f14dbb ""
   "Greedy Classification Tree.png" 1724779837 7557 553f89daeeaea0796245150d3e93c229 ""
   "Linear Data before.png" 1724779836 13321 3a70bc718399b73e3f6707b8536e8847 ""
@@ -15,7 +15,7 @@
   "NLD.png" 1724779836 24508 77d9397e3cfd71fe444fa4808ba8d96f ""
   "OLS vs Tree.png" 1724779836 22866 6a6f5578ea6154199ab75f15030b7003 ""
   "Pruning.png" 1724779837 22143 ebbf994558dc9af8f8fa873ea95435cd ""
-  "c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/Wissenschaftliches Arbeiten Presentation/main.tex" 1724779836 10937 508807f1d0add774526d7d2a9bd1ccba ""
+  "c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/Wissenschaftliches Arbeiten Presentation/main.tex" 1725359448 10937 508807f1d0add774526d7d2a9bd1ccba ""
   "c:/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1724690217 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "c:/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1724691464 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/tcss0900.tfm" 1724690954 1536 ba0169ee8bc017972775b933313cbbb0 ""
@@ -314,12 +314,12 @@
   "c:/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1724696878 5543950 2aa73a438b7054b2327b796fbe5f4275 ""
   "c:/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1724697218 8239325 8ba4920328139fe782e965dedf3f1efc ""
   "c:/texlive/2024/texmf.cnf" 1724696845 713 e69b156964470283e0530f5060668171 ""
-  "main.aux" 1724779903 3890 8849a796039f6c94d4cac46e5a25cc8e "pdflatex"
+  "main.aux" 1725359452 3890 8849a796039f6c94d4cac46e5a25cc8e "pdflatex"
   "main.bbl" 0 -1 0 "biber main"
-  "main.nav" 1724779903 1574 6fb8544897dfb2c754e48a6559d76ed4 "pdflatex"
-  "main.out" 1724779901 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
-  "main.run.xml" 1724779903 2373 3af8da3f09b1c0cc0d940517f0e1c3f4 "pdflatex"
-  "main.tex" 1724779836 10937 508807f1d0add774526d7d2a9bd1ccba ""
+  "main.nav" 1725359452 1574 6fb8544897dfb2c754e48a6559d76ed4 "pdflatex"
+  "main.out" 1725359450 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "main.run.xml" 1725359452 2373 3af8da3f09b1c0cc0d940517f0e1c3f4 "pdflatex"
+  "main.tex" 1725359448 10937 508807f1d0add774526d7d2a9bd1ccba ""
   (generated)
   "main.aux"
   "main.bcf"
