@@ -5,15 +5,12 @@
     top=1.5in,
     bottom=1.5in]{geometry}
 
-
-
 \usepackage[english]{babel}				% orthography
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}				% font family
 \usepackage{microtype}				% for micro typography (for a better typeface)
 \usepackage{blindtext}
 
-  
 \usepackage{longtable} 		
 \usepackage{multicol}				
 \usepackage{multirow}
@@ -21,11 +18,8 @@
 \usepackage{tabularx}
 \usepackage{xcolor}
 \usepackage{varioref}
-		
 \usepackage[active]{srcltx}
-
 \usepackage{listings}				% algorithm
-
 \usepackage{mdwlist}				% lists
 
 \usepackage{setspace} 				% setting of the lines (rows)
@@ -36,35 +30,29 @@
 \usepackage{tablefootnote}			% footnotes in tables
 \hyphenation{voll-st\"andigen}		% for defining word devisions globally
 
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{{./Graphics/}}          % path to the pictures
 
- %__________________________________document____________________________
-
- \usepackage[utf8]{inputenc}
- \usepackage{amsmath}
- \usepackage{graphicx}
- \graphicspath{{./Graphics/}}          % path to the pictures
-
- \usepackage[hidelinks]{hyperref}
- 
- \hypersetup{
-     colorlinks=true,
-     linkcolor=blue,
-     filecolor=magenta,      
-     urlcolor=cyan,
-     citecolor=blue,
-     pdfborderstyle={/S/U/W 0}
- }
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    citecolor=blue,
+    pdfborderstyle={/S/U/W 0}
+}
  
 \begin{document}
 
-\include{./Title/title} 			% title
-					% table of contents
+\include{./Title/title}
 
-% -----------------------------------
-\pagenumbering{arabic}% Arabic page numbers (and reset to 1)
+\pagenumbering{arabic}% Arabic and reset to 1)
 
 \begin{abstract}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat \cite{smith2020}. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip exlaborum \cite{jones2019}.  ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+Regression used a lot, when it bad, use regression trees instead. They good nonlinear, interaction effects. Some problems, good with pruning etc. Even better random forests, BART etc... I use Trees on dataset, but dataset of what. That's unclear still? : )Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat \cite{smith2020}. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip exlaborum \cite{jones2019}.  ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 \end{abstract}
 
 \newpage
