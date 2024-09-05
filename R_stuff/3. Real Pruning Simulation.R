@@ -4,7 +4,6 @@ library(rpart.plot)
 
 
 
-
 # Step 1: Generate a polynomial function with some noise
 n <- 200
 x <- runif(n, -10, 35)-rnorm(n,0,3)

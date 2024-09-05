@@ -2,8 +2,6 @@ library(tree)
 library(caret)
 
 
-
-
 # Adjust the number of data points
 n <- 80  
 
