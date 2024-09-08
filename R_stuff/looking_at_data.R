@@ -163,8 +163,8 @@ failures_yes_higher_yes <- subset(failures_yes, higher == "yes")
 failures_yes_higher_no <- subset(failures_yes, higher == "no")
 
 # For failures_no, split by 'absences' instead of 'higher'
-failures_no_absences_yes <- subset(failures_no, absences < 1)
-failures_no_absences_no <- subset(failures_no, absences >= 1)
+failures_no_absences_yes <- subset(failures_no, absences < 12)
+failures_no_absences_no <- subset(failures_no, absences >= 12)
 
 # Calculate the mean of G3 for each subset
 mean_failures_yes_higher_yes <- mean(failures_yes_higher_yes$G3)
@@ -190,6 +190,15 @@ total_mse_swapped
 
 # MSE should be 8.309893
 
+
+[1] 8.299081
+[1] 8.298891
+
+[1] 8.299081
+
+
+
+8.283893
 
 
 
