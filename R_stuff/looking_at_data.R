@@ -188,40 +188,43 @@ print(mse_tree)
 
 
 
-# Create a variable to force the split on failures
-sd$failures_split <- ifelse(sd$failures >= 0.5, "yes", "no")
-
-# Create a variable to split on 'higher' for those with failures
-sd$higher_split <- ifelse(sd$failures_split == "yes", sd$higher, NA)
-
-# Create a variable to split on 'absences' for those without failures
-sd$absences_split <- ifelse(sd$failures_split == "no", sd$absences >= 0.5, NA)
-
-# Combine the conditions into one dataset
-sd$combined_split <- ifelse(sd$failures_split == "yes" & sd$higher_split == "no", "yes_failure_no_higher",
-                            ifelse(sd$failures_split == "yes" & sd$higher_split == "yes", "yes_failure_yes_higher",
-                                   ifelse(sd$failures_split == "no" & sd$absences_split == FALSE, "no_failure_low_absences",
-                                          "no_failure_high_absences")))
-
-# Build the tree using the combined splits
-tree_model_swapped_splits <- rpart(G3 ~ combined_split, 
-                                   data = sd, 
-                                   control = rpart.control(maxdepth = 2)) # maxdepth is 2 because we force three levels
-
-# Print the tree structure
-print(tree_model_swapped_splits)
-
-# Plot the tree
-rpart.plot(tree_model_swapped_splits, extra = 101, fallen.leaves = TRUE, type = 2, 
-           main = "Decision Tree with Swapped Splits")
 
 
 
+# Split the data based on failures
+failures_yes <- subset(sd, failures >= 1)
+failures_no <- subset(sd, failures == 0)
 
+# Further split the data, swapping the splits
+# For failures_yes, split by 'higher' instead of 'absences'
+failures_yes_higher_yes <- subset(failures_yes, higher == "yes")
+failures_yes_higher_no <- subset(failures_yes, higher == "no")
 
+# For failures_no, split by 'absences' instead of 'higher'
+failures_no_absences_yes <- subset(failures_no, absences < 1)
+failures_no_absences_no <- subset(failures_no, absences >= 1)
 
+# Calculate the mean of G3 for each subset
+mean_failures_yes_higher_yes <- mean(failures_yes_higher_yes$G3)
+mean_failures_yes_higher_no <- mean(failures_yes_higher_no$G3)
 
+mean_failures_no_absences_yes <- mean(failures_no_absences_yes$G3)
+mean_failures_no_absences_no <- mean(failures_no_absences_no$G3)
 
+# Calculate the MSE for each subset
+mse_failures_yes_higher_yes <- mean((failures_yes_higher_yes$G3 - mean_failures_yes_higher_yes)^2)
+mse_failures_yes_higher_no <- mean((failures_yes_higher_no$G3 - mean_failures_yes_higher_no)^2)
+
+mse_failures_no_absences_yes <- mean((failures_no_absences_yes$G3 - mean_failures_no_absences_yes)^2)
+mse_failures_no_absences_no <- mean((failures_no_absences_no$G3 - mean_failures_no_absences_no)^2)
+
+# Calculate the total MSE
+total_mse_swapped <- (mse_failures_yes_higher_yes * nrow(failures_yes_higher_yes) +
+                        mse_failures_yes_higher_no * nrow(failures_yes_higher_no) +
+                        mse_failures_no_absences_yes * nrow(failures_no_absences_yes) +
+                        mse_failures_no_absences_no * nrow(failures_no_absences_no)) / nrow(sd)
+
+total_mse_swapped
 
 
 
