@@ -7,17 +7,14 @@ library(data.tree)
 library(networkD3)
 library(plotly)
 
-
-
-# Using this as the Data
+# Setting up data ----
 sd <- student_por
 
 # Removing these because that would just be cheating
 sd$G2 <- NULL
 sd$G1 <- NULL
 
-# Removing variables that were least important
-# during regression and trees
+# Removing variables that were least important during regression and trees
 sd$traveltime <- NULL
 sd$Medu <- NULL
 sd$guardian <- NULL
@@ -33,21 +30,16 @@ grid()
 
 
 
-
 # Basic Regression Tree ----
 
 tree_model <- rpart(G3 ~ ., data = sd)
 
-
-# Visualize the tree
 rpart.plot(tree_model, shadow.col = "gray")
 rpart.plot(tree_model, extra = 101, fallen.leaves = TRUE, type = 4, main = "Regression Tree")
 
 # Get variable importance
 var_importance <- tree_model$variable.importance
 print(var_importance)
-
-
 
 # Variable Importance Plot
 var_importance <- data.frame(
@@ -62,6 +54,7 @@ ggplot(var_importance, aes(x = reorder(variable, importance), y = importance)) +
 
 
 
+
 # Basic linear regression ----
 lm_model <- lm(G3 ~ ., data = sd)
 
@@ -69,12 +62,6 @@ lm_model <- lm(G3 ~ ., data = sd)
 summary_lm <- summary(lm_model)
 print(summary_lm)
 
-# Extract coefficients and p-values
-coef_summary <- data.frame(
-  Estimate = round(summary_lm$coefficients[, "Estimate"], 4),
-  P_value = round(summary_lm$coefficients[, "Pr(>|t|)"], 4)
-)
-print(coef_summary)
 
 
 # Compare MSE of both models ----
@@ -105,21 +92,12 @@ ggplot(sd, aes(x = G3)) +
 
 
 
-
-
-
-
-
-# Small tree for interactions ----
-
+# make Small tree for interactions ----
 
 tree_model_2splits <- rpart(G3 ~ ., data = sd, control = rpart.control(maxdepth = 2))
 
-
 # Plot the tree
 rpart.plot(tree_model_2splits, extra = 101, fallen.leaves = TRUE, type = 2, main = "Decision Tree with Two Splits")
-
-
 
 sd$tree_pred_2splits <- predict(tree_model_2splits)
 
@@ -127,21 +105,17 @@ mse_tree <- mean((sd$G3 - sd$tree_pred_2splits)^2)
 
 print(mse_tree)
 
+# MSE should be 7.783039
 
 
 
 
 
-# this better fucking work ----
+# recreating the same tree by hand (I promise this will make sense later) ----
 
 # Split the data based on failures
 failures_yes <- subset(sd, failures >= 1)
 failures_no <- subset(sd, failures == 0)
-
-
-summary(failures_no) # just a test, all working out
-
-
 
 # Further split the data
 failures_yes_absences_yes <- subset(failures_yes, absences < 1)
@@ -172,24 +146,12 @@ total_mse <- (mse_failures_yes_absences_yes * nrow(failures_yes_absences_yes) +
 
 total_mse
 
+# MSE should also be 7.783039
 
 
 
 
-
-
-sd$tree_pred <- predict(tree_model_2splits)
-
-mse_tree <- mean((sd$G3 - sd$tree_model_2splits)^2)
-
-print(mse_tree)
-
-
-
-
-
-
-
+# Creating the same tree but with swapped splits by hand ----
 
 # Split the data based on failures
 failures_yes <- subset(sd, failures >= 1)
@@ -226,33 +188,12 @@ total_mse_swapped <- (mse_failures_yes_higher_yes * nrow(failures_yes_higher_yes
 
 total_mse_swapped
 
+# MSE should be 8.309893
 
 
 
 
-
-
-
-
-
-
-
-# 3D Scatter Plot with Decision Boundaries ----
-
-
-
-
-
-
-if(!requireNamespace("plotly", quietly = TRUE)) {
-  install.packages("plotly")
-}else{
-  library(plotly)
-}
-
-
-
-
+# 3D Scatter Plot with Decision Boundaries, need to fix, worked before not sure why not now ----
 
 
 # Get the variables used for splitting
