@@ -1,10 +1,4 @@
 # Data-analysis
-install.packages('rstudioapi')
-
-rstudioapi::addTheme('https://raw.githubusercontent.com/johnnybarrels/rstudio-one-dark-pro-theme/master/OneDarkPro.rstheme', apply=TRUE, force=TRUE)
-
-
-
 library(rpart)
 library(rpart.plot)
 library(dplyr)
@@ -13,22 +7,27 @@ library(data.tree)
 library(networkD3)
 library(plotly)
 
-# Using this as the Data
-sd <- student_por
 
-# Removing these because that would just be cheating
-sd$G2 <- NULL
-sd$G1 <- NULL
-
-# Removing variables that were least important
-# during regression and trees
-sd$traveltime <- NULL
-sd$Medu <- NULL
-sd$guardian <- NULL
-sd$reason <- NULL
-sd$Mjob <- NULL
-sd$address <- NULL
-
+get_data <- function() {
+  # Using this as the Data
+  sd <- student_por
+  
+  # Removing these because that would just be cheating
+  sd$G2 <- NULL
+  sd$G1 <- NULL
+  
+  # Removing variables that were least important
+  # during regression and trees
+  sd$traveltime <- NULL
+  sd$Medu <- NULL
+  sd$guardian <- NULL
+  sd$reason <- NULL
+  sd$Mjob <- NULL
+  sd$address <- NULL
+  
+  
+  
+}
 
 
 
@@ -40,8 +39,7 @@ plot(sd$studytime, sd$G3, col = "blue", pch = 19)
 grid()
 
 
-
-#### this is doing the basic regression trees
+# Basic Regression Tree ----
 
 tree_model <- rpart(G3 ~ ., data = sd)
 
@@ -69,7 +67,7 @@ ggplot(var_importance, aes(x = reorder(variable, importance), y = importance)) +
 
 
 
-# Now doing the normal regression
+# Basic linear regression ----
 lm_model <- lm(G3 ~ ., data = sd)
 
 # Summary
@@ -84,18 +82,20 @@ coef_summary <- data.frame(
 print(coef_summary)
 
 
-# Compare predictions: Linear Regression vs Regression Tree
+# Compare MSE of both models ----
+
+## Get MSE for both----
 sd$lm_pred <- predict(lm_model)
 sd$tree_pred <- predict(tree_model)
 
-# Calculate MSE for both models
 mse_lm <- mean((sd$G3 - sd$lm_pred)^2)
 mse_tree <- mean((sd$G3 - sd$tree_pred)^2)
 
 print(mse_lm)
 print(mse_tree)
 
-# Visualize predictions
+
+## Visualize predictions ----
 ggplot(sd, aes(x = G3)) +
   geom_point(aes(y = lm_pred, color = "Linear Regression"), alpha = 0.5) +
   geom_point(aes(y = tree_pred, color = "Regression Tree"), alpha = 0.5) +
@@ -115,26 +115,22 @@ ggplot(sd, aes(x = G3)) +
 
 
 
+# Small tree for interactions ----
 
-# Assuming 'sd' is your dataset
-# Create a tree with just two splits
+
 tree_model_2splits <- rpart(G3 ~ ., data = sd, control = rpart.control(maxdepth = 2))
 
-# Print the tree structure
-print(tree_model_2splits)
 
 # Plot the tree
-rpart.plot(tree_model_2splits, extra = 101, fallen.leaves = TRUE, type = 4, main = "Decision Tree with Two Splits")
+rpart.plot(tree_model_2splits, extra = 101, fallen.leaves = TRUE, type = 2, main = "Decision Tree with Two Splits")
 
 
 
 
 
 
-### third try custom split
-# Load required libraries
-library(rpart)
-library(rpart.plot)
+# third try custom split ----
+
 
 # Create the tree model with manual splits
 tree_model <- rpart(G3 ~ failures + higher + absences, data = sd,
@@ -248,82 +244,48 @@ rpart.plot(custom_tree, extra = 101, fallen.leaves = TRUE, type = 4,
 
 
 
-# Define custom splitting function
-custom_split <- function(y, wt, x, parms, continuous) {
-  # First split on failures
-  failures_split <- y$failures >= 1
-  
-  if (length(unique(failures_split)) == 1) {
-    return(NULL)  # No split possible
-  }
-  
-  # For records with failures >= 1, split on higher
-  higher_split <- y$higher == "yes" & failures_split
-  
-  # For records with failures < 1, split on absences
-  absences_split <- y$absences >= 1 & !failures_split
-  
-  # Combine splits
-  split <- as.integer(failures_split) + 2 * as.integer(higher_split) + 2 * as.integer(absences_split)
-  
-  # Calculate improvement
-  improvement <- var(y$G3) - (sum((split == 0) * wt) * var(y$G3[split == 0]) +
-                                sum((split == 1) * wt) * var(y$G3[split == 1]) +
-                                sum((split == 2) * wt) * var(y$G3[split == 2]) +
-                                sum((split == 3) * wt) * var(y$G3[split == 3])) / sum(wt)
-  
-  list(goodness = improvement,
-       direction = split)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 3D Scatter Plot with Decision Boundaries ----
+
+
+
+
+
+
+if(!requireNamespace("plotly", quietly = TRUE)) {
+  install.packages("plotly")
+}else{
+  library(plotly)
 }
-
-# Create the custom tree model
-custom_tree <- rpart(G3 ~ failures + higher + absences, data = sd, 
-                     method = list(eval = custom_split),
-                     control = rpart.control(maxdepth = 2, minsplit = 1, minbucket = 1))
-
-# Plot the tree
-rpart.plot(custom_tree, extra = 101, fallen.leaves = TRUE, type = 4, 
-           main = "Custom Decision Tree with Specified Splits")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -335,9 +297,8 @@ split_vars <- tree_model_2splits$frame$var[tree_model_2splits$frame$var != "<lea
 split_vars <- unique(as.character(split_vars))
 
 # If there are fewer than 2 splits, notify the user
-if(length(split_vars) < 2) {
-  cat("The tree made fewer than 2 splits. Adjust your data or tree parameters.")
-} else {
+if(1==1) {
+
   # Create a 3D scatter plot with decision boundaries
   plot_ly(sd, x = ~get(split_vars[1]), y = ~get(split_vars[2]), z = ~G3, 
           type = "scatter3d", mode = "markers", 
@@ -385,4 +346,5 @@ if(length(split_vars) < 2) {
   
   # Display the plot
   p
+}
 
