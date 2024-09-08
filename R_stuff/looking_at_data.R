@@ -25,18 +25,18 @@ get_data <- function() {
   sd$Mjob <- NULL
   sd$address <- NULL
   
+  # also do basic test if data is working
+  View(sd)
   
+  plot(sd$studytime, sd$G3, col = "blue", pch = 19)
+  grid()
+  return(sd)
   
 }
 
+get_data()
 
 
-View(sd)
-
-
-
-plot(sd$studytime, sd$G3, col = "blue", pch = 19)
-grid()
 
 
 # Basic Regression Tree ----
@@ -125,42 +125,32 @@ tree_model_2splits <- rpart(G3 ~ ., data = sd, control = rpart.control(maxdepth 
 rpart.plot(tree_model_2splits, extra = 101, fallen.leaves = TRUE, type = 2, main = "Decision Tree with Two Splits")
 
 
+## making smaller data set ----
+sd_small <- sd
+#removing all variables except, falures, higher, absences
 
 
+sd_small <- sd_small %>% 
+  select(
+    failures, higher, absences, G3
+    
+  )
+
+View(sd_small)
 
 
-# third try custom split ----
+# test to see if this results in the same tree as before, yes it does
+tree_model_2splits <- rpart(G3 ~ ., data = sd_small, control = rpart.control(maxdepth = 2))
 
 
-# Create the tree model with manual splits
-tree_model <- rpart(G3 ~ failures + higher + absences, data = sd,
-                    control = rpart.control(maxdepth = 2, minsplit = 2, minbucket = 1, cp = -1),
-                    model = TRUE)
+rpart.plot(tree_model_2splits, extra = 101, fallen.leaves = TRUE, type = 2, main = "Decision Tree with Two Splits")
 
-# Manually modify the tree structure
-tree_model$splits <- tree_model$splits[1:3, ]
-tree_model$splits[1, "index"] <- which(names(sd) == "failures")
-tree_model$splits[2, "index"] <- which(names(sd) == "higher")
-tree_model$splits[3, "index"] <- which(names(sd) == "absences")
-tree_model$splits[1, "ncat"] <- 1  # Numeric split
-tree_model$splits[2, "ncat"] <- 2  # Categorical split (yes/no)
-tree_model$splits[3, "ncat"] <- 1  # Numeric split
-tree_model$splits[1, "adj"] <- 0.5  # Split at failures >= 1
-tree_model$splits[2, "adj"] <- 1.0  # Split at higher == "yes"
-tree_model$splits[3, "adj"] <- 0.5  # Split at absences >= 1
 
-# Recalculate the frame
-tree_model$frame$var[2:4] <- c("failures", "higher", "absences")
-tree_model$frame$ncompete <- tree_model$frame$nsurrogate <- 0
-tree_model$frame$yval <- sapply(split(sd$G3, tree_model$where), mean)
+plot(tree_model_2splits) # basic plot works fine
+text(tree_model_2splits)
 
-# Plot the modified tree
-rpart.plot(tree_model, extra = 101, fallen.leaves = TRUE, type = 4,
-           main = "Manual Decision Tree with Specified Splits")
 
-# Print summary of the tree
-print(tree_model)
-summary(tree_model)
+tree_model_2splits
 
 
 
@@ -170,46 +160,46 @@ summary(tree_model)
 
 
 
+# different approach doing it by hand ----
 
-# better custom splitting
 
 
-# Define custom splitting function
-custom_split <- function(x, y, wt, parms, continuous) {
-  # First split on failures
-  failures_split <- x[, "failures"] >= 1
-  
-  if (length(unique(failures_split)) == 1) {
-    return(NULL)  # No split possible
-  }
-  
-  # For records with failures >= 1, split on higher
-  higher_split <- x[, "higher"] == "yes" & failures_split
-  
-  # For records with failures < 1, split on absences
-  absences_split <- x[, "absences"] >= 1 & !failures_split
-  
-  # Combine splits
-  split <- as.integer(failures_split) + 2 * as.integer(higher_split) + 2 * as.integer(absences_split)
-  
-  # Calculate improvement
-  improvement <- var(y) - (sum((split == 0) * wt) * var(y[split == 0]) +
-                             sum((split == 1) * wt) * var(y[split == 1]) +
-                             sum((split == 2) * wt) * var(y[split == 2]) +
-                             sum((split == 3) * wt) * var(y[split == 3])) / sum(wt)
-  
-  list(goodness = improvement,
-       direction = split)
-}
 
-# Create the custom tree model
-custom_tree <- rpart(G3 ~ failures + higher + absences, data = sd, 
-                     method = list(split = custom_split),
-                     control = rpart.control(maxdepth = 2, minsplit = 1, minbucket = 1))
+
+
+
+
+# Create a new variable that captures the first split on 'failures'
+sd$failures_split <- ifelse(sd$failures >= 1, "yes", "no")
+
+# Create a new variable for 'higher' split for those with failures
+sd$higher_split <- ifelse(sd$failures_split == "yes" & sd$higher == "yes", "yes", 
+                          ifelse(sd$failures_split == "yes", "no", NA))
+
+# Create a new variable for 'absences' split for those without failures
+sd$absences_split <- ifelse(sd$failures_split == "no" & sd$absences < 1, "high", 
+                            ifelse(sd$failures_split == "no", "low", NA))
+
+# Build the tree model using the new variables
+tree_model_swapped_splits <- rpart(G3 ~ failures_split + higher_split + absences_split, 
+                                   data = sd, 
+                                   control = rpart.control(maxdepth = 3))
+
+# Print the tree structure
+print(tree_model_swapped_splits)
 
 # Plot the tree
-rpart.plot(custom_tree, extra = 101, fallen.leaves = TRUE, type = 4, 
-           main = "Custom Decision Tree with Specified Splits")
+rpart.plot(tree_model_swapped_splits, extra = 101, fallen.leaves = TRUE, type = 2, 
+           main = "Decision Tree with Swapped Splits")
+
+
+
+print(tree_model_2splits)
+print(tree_model_swapped_splits)
+
+
+
+rpart.plot(tree_model_2splits, extra = 101, fallen.leaves = TRUE, type = 2, main = "Decision Tree with Two Splits")
 
 
 
@@ -218,26 +208,21 @@ rpart.plot(custom_tree, extra = 101, fallen.leaves = TRUE, type = 4,
 
 
 
+# Create interaction terms to capture the combined conditions
+sd$failures_higher_interaction <- interaction(sd$failures_split, sd$higher)
+sd$failures_absences_interaction <- interaction(sd$failures_split, sd$absences < 1)
 
+# Build the tree model using the interaction terms
+tree_model_swapped_splits <- rpart(G3 ~ failures_split + failures_higher_interaction + failures_absences_interaction, 
+                                   data = sd, 
+                                   control = rpart.control(maxdepth = 3))
 
+# Print the tree structure
+print(tree_model_swapped_splits)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Plot the tree
+rpart.plot(tree_model_swapped_splits, extra = 101, fallen.leaves = TRUE, type = 4, 
+           main = "Decision Tree with Swapped Splits")
 
 
 
