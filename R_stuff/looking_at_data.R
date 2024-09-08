@@ -8,33 +8,28 @@ library(networkD3)
 library(plotly)
 
 
-get_data <- function() {
-  # Using this as the Data
-  sd <- student_por
-  
-  # Removing these because that would just be cheating
-  sd$G2 <- NULL
-  sd$G1 <- NULL
-  
-  # Removing variables that were least important
-  # during regression and trees
-  sd$traveltime <- NULL
-  sd$Medu <- NULL
-  sd$guardian <- NULL
-  sd$reason <- NULL
-  sd$Mjob <- NULL
-  sd$address <- NULL
-  
-  # also do basic test if data is working
-  View(sd)
-  
-  plot(sd$studytime, sd$G3, col = "blue", pch = 19)
-  grid()
-  return(sd)
-  
-}
 
-get_data()
+# Using this as the Data
+sd <- student_por
+
+# Removing these because that would just be cheating
+sd$G2 <- NULL
+sd$G1 <- NULL
+
+# Removing variables that were least important
+# during regression and trees
+sd$traveltime <- NULL
+sd$Medu <- NULL
+sd$guardian <- NULL
+sd$reason <- NULL
+sd$Mjob <- NULL
+sd$address <- NULL
+
+# also do basic test if data is working
+View(sd)
+
+plot(sd$studytime, sd$G3, col = "blue", pch = 19)
+grid()
 
 
 
@@ -125,42 +120,57 @@ tree_model_2splits <- rpart(G3 ~ ., data = sd, control = rpart.control(maxdepth 
 rpart.plot(tree_model_2splits, extra = 101, fallen.leaves = TRUE, type = 2, main = "Decision Tree with Two Splits")
 
 
-## making smaller data set ----
-sd_small <- sd
-#removing all variables except, falures, higher, absences
 
+sd$tree_pred_2splits <- predict(tree_model_2splits)
 
-sd_small <- sd_small %>% 
-  select(
-    failures, higher, absences, G3
-    
-  )
+mse_tree <- mean((sd$G3 - sd$tree_pred_2splits)^2)
 
-View(sd_small)
-
-
-# test to see if this results in the same tree as before, yes it does
-tree_model_2splits <- rpart(G3 ~ ., data = sd_small, control = rpart.control(maxdepth = 2))
-
-
-rpart.plot(tree_model_2splits, extra = 101, fallen.leaves = TRUE, type = 2, main = "Decision Tree with Two Splits")
-
-
-plot(tree_model_2splits) # basic plot works fine
-text(tree_model_2splits)
-
-
-tree_model_2splits
+print(mse_tree)
 
 
 
 
 
 
+# this better fucking work ----
+
+# Split the data based on failures
+failures_yes <- subset(sd, failures >= 1)
+failures_no <- subset(sd, failures == 0)
+
+
+summary(failures_no) # just a test, all working out
 
 
 
-# different approach doing it by hand ----
+# Further split the data
+failures_yes_absences_yes <- subset(failures_yes, absences < 1)
+failures_yes_absences_no <- subset(failures_yes, absences >= 1)
+
+failures_no_higher_yes <- subset(failures_no, higher == "no")
+failures_no_higher_no <- subset(failures_no, higher == "yes")
+
+# Calculate the mean of G3 for each subset
+mean_failures_yes_absences_yes <- mean(failures_yes_absences_yes$G3)
+mean_failures_yes_absences_no <- mean(failures_yes_absences_no$G3)
+
+mean_failures_no_higher_yes <- mean(failures_no_higher_yes$G3)
+mean_failures_no_higher_no <- mean(failures_no_higher_no$G3)
+
+# Calculate the MSE for each subset
+mse_failures_yes_absences_yes <- mean((failures_yes_absences_yes$G3 - mean_failures_yes_absences_yes)^2)
+mse_failures_yes_absences_no <- mean((failures_yes_absences_no$G3 - mean_failures_yes_absences_no)^2)
+
+mse_failures_no_higher_yes <- mean((failures_no_higher_yes$G3 - mean_failures_no_higher_yes)^2)
+mse_failures_no_higher_no <- mean((failures_no_higher_no$G3 - mean_failures_no_higher_no)^2)
+
+# Calculate the total MSE
+total_mse <- (mse_failures_yes_absences_yes * nrow(failures_yes_absences_yes) +
+                mse_failures_yes_absences_no * nrow(failures_yes_absences_no) +
+                mse_failures_no_higher_yes * nrow(failures_no_higher_yes) +
+                mse_failures_no_higher_no * nrow(failures_no_higher_no)) / nrow(sd)
+
+total_mse
 
 
 
@@ -168,22 +178,35 @@ tree_model_2splits
 
 
 
+sd$tree_pred <- predict(tree_model_2splits)
 
-# Create a new variable that captures the first split on 'failures'
-sd$failures_split <- ifelse(sd$failures >= 1, "yes", "no")
+mse_tree <- mean((sd$G3 - sd$tree_model_2splits)^2)
 
-# Create a new variable for 'higher' split for those with failures
-sd$higher_split <- ifelse(sd$failures_split == "yes" & sd$higher == "yes", "yes", 
-                          ifelse(sd$failures_split == "yes", "no", NA))
+print(mse_tree)
 
-# Create a new variable for 'absences' split for those without failures
-sd$absences_split <- ifelse(sd$failures_split == "no" & sd$absences < 1, "high", 
-                            ifelse(sd$failures_split == "no", "low", NA))
 
-# Build the tree model using the new variables
-tree_model_swapped_splits <- rpart(G3 ~ failures_split + higher_split + absences_split, 
+
+
+
+# Create a variable to force the split on failures
+sd$failures_split <- ifelse(sd$failures >= 0.5, "yes", "no")
+
+# Create a variable to split on 'higher' for those with failures
+sd$higher_split <- ifelse(sd$failures_split == "yes", sd$higher, NA)
+
+# Create a variable to split on 'absences' for those without failures
+sd$absences_split <- ifelse(sd$failures_split == "no", sd$absences >= 0.5, NA)
+
+# Combine the conditions into one dataset
+sd$combined_split <- ifelse(sd$failures_split == "yes" & sd$higher_split == "no", "yes_failure_no_higher",
+                            ifelse(sd$failures_split == "yes" & sd$higher_split == "yes", "yes_failure_yes_higher",
+                                   ifelse(sd$failures_split == "no" & sd$absences_split == FALSE, "no_failure_low_absences",
+                                          "no_failure_high_absences")))
+
+# Build the tree using the combined splits
+tree_model_swapped_splits <- rpart(G3 ~ combined_split, 
                                    data = sd, 
-                                   control = rpart.control(maxdepth = 3))
+                                   control = rpart.control(maxdepth = 2)) # maxdepth is 2 because we force three levels
 
 # Print the tree structure
 print(tree_model_swapped_splits)
@@ -191,54 +214,6 @@ print(tree_model_swapped_splits)
 # Plot the tree
 rpart.plot(tree_model_swapped_splits, extra = 101, fallen.leaves = TRUE, type = 2, 
            main = "Decision Tree with Swapped Splits")
-
-
-
-print(tree_model_2splits)
-print(tree_model_swapped_splits)
-
-
-
-rpart.plot(tree_model_2splits, extra = 101, fallen.leaves = TRUE, type = 2, main = "Decision Tree with Two Splits")
-
-
-
-
-
-
-
-
-# Create interaction terms to capture the combined conditions
-sd$failures_higher_interaction <- interaction(sd$failures_split, sd$higher)
-sd$failures_absences_interaction <- interaction(sd$failures_split, sd$absences < 1)
-
-# Build the tree model using the interaction terms
-tree_model_swapped_splits <- rpart(G3 ~ failures_split + failures_higher_interaction + failures_absences_interaction, 
-                                   data = sd, 
-                                   control = rpart.control(maxdepth = 3))
-
-# Print the tree structure
-print(tree_model_swapped_splits)
-
-# Plot the tree
-rpart.plot(tree_model_swapped_splits, extra = 101, fallen.leaves = TRUE, type = 4, 
-           main = "Decision Tree with Swapped Splits")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
