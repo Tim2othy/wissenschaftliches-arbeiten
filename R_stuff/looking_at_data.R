@@ -28,6 +28,8 @@ View(sd)
 plot(sd$studytime, sd$G3, col = "blue", pch = 19)
 grid()
 
+# small test 
+x = c(1,2,3)
 
 
 # Basic Regression Tree ----
