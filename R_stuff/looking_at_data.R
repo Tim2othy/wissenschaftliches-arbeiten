@@ -6,6 +6,7 @@ library(ggplot2)
 library(data.tree) 
 library(networkD3)
 library(plotly)
+library(caret)
 
 # Setting up data ----
 sd <- student_por
@@ -28,8 +29,6 @@ View(sd)
 plot(sd$studytime, sd$G3, col = "blue", pch = 19)
 grid()
 
-# small test 
-x = c(1,2,3)
 
 
 # Basic Regression Tree ----
@@ -77,6 +76,11 @@ mse_tree <- mean((sd$G3 - sd$tree_pred)^2)
 
 print(mse_lm)
 print(mse_tree)
+
+> print(mse_lm)
+[1] 6.794648
+> print(mse_tree)
+[1] 6.385807
 
 
 ## Visualize predictions ----
@@ -152,7 +156,6 @@ total_mse
 
 
 
-
 # Creating the same tree but with swapped splits by hand ----
 
 # Split the data based on failures
@@ -193,14 +196,24 @@ total_mse_swapped
 # MSE should be 8.309893
 
 
-[1] 8.299081
-[1] 8.298891
+8.299081
+8.298891
 
-[1] 8.299081
+8.299081
 
 
 
 8.283893
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -262,4 +275,198 @@ if(1==1) {
   # Display the plot
   p
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Pruning ----
+
+
+
+
+
+
+
+# Step 2: Train a regression tree with more complexity
+tree_model_complex <- rpart(G3 ~ ., data = sd, control = rpart.control(cp = 0.002, minsplit = 5))
+
+# Plot the initial complex tree
+rpart.plot(tree_model_complex, main = "Initial Complex Regression Tree")
+
+# Calculate initial MSE
+initial_pred_complex <- predict(tree_model_complex, sd)
+initial_mse <- mean((sd$G3 - initial_pred_complex)^2)
+
+print(initial_mse)
+
+
+
+
+
+
+# Find the optimal cp value that minimizes the cross-validated error
+opt_index <- which.min(tree_model_complex$cptable[,"xerror"])
+opt_cp <- tree_model_complex$cptable[opt_index, "CP"]
+
+
+print(opt_cp)
+
+# Prune the tree using the optimal cp value
+pruned_tree <- prune(tree_model_complex, cp = opt_cp)
+
+# Plot the pruned tree
+rpart.plot(pruned_tree, main = "Pruned Regression Tree")
+
+# Calculate pruned MSE
+pruned_pred <- predict(pruned_tree, sd)
+pruned_mse <- mean((sd$G3 - pruned_pred)^2)
+
+
+
+print(pruned_mse) # should be  8.010319 depending on parameters
+
+
+
+
+
+# Step 4: Plot how the pruning changes the MSE with respect to tree size
+# Extract CP table for plotting
+cp_table <- tree_model_complex$cptable
+
+# Calculate the number of terminal nodes for each cp value
+num_nodes <- cp_table[, "nsplit"] + 1
+
+
+
+
+
+
+
+
+# Plot the MSE (xerror) against the number of terminal nodes
+plot(num_nodes, cp_table[, "xerror"], pch=20, col = rgb(0.2, 0.7, 1, 1), type = "b", cex = 1, 
+     xlab = "Tree Size", ylab = "Error", 
+     ylim = c(0, max(cp_table[, "xerror"], cp_table[, "xstd"]) * 1.1),  # Extend y-axis to -1
+)
+
+# Add training error (MSE) to the plot
+points(num_nodes, cp_table[, "xstd"], pch=20, col = "red", type = "b", cex = 1)
+
+# Add a legend
+legend("topright", legend = c("Cross-Validation", "Training"), 
+       col = c(rgb(0.2, 0.7, 1, 1), "red"), pch = 20, lty = 1)
+
+# Add grid lines
+grid()
+
+
+
+
+# Add a vertical line and text to indicate the optimal number of terminal nodes
+abline(v = num_nodes[opt_index], col = "purple", lty = 2)
+text(num_nodes[opt_index], min(cp_table[, "xerror"]), 
+     labels = paste("Optimal Size =", num_nodes[opt_index]), pos = 4, col = "black")
+
+
+
+
+
+
+# Step 5: Summarize the MSE before and after pruning
+cat("Summary:\n")
+cat("Initial MSE: ", initial_mse, "\n")
+cat("Pruned MSE: ", pruned_mse, "\n")
+
+
+
+
+
+
+# new improvend pruning ----
+
+
+
+
+# Calculate pruned MSE
+pruned_pred <- predict(pruned_tree, sd)
+pruned_mse <- mean((sd$G3 - pruned_pred)^2)
+print(paste("Pruned MSE:", pruned_mse))
+
+# Step 4: Plot how the pruning changes the MSE with respect to tree size
+# Calculate MSE for each CP value
+mse_values <- sapply(cp_table[, "CP"], function(cp) {
+  pruned <- prune(tree_model_complex, cp = cp)
+  pred <- predict(pruned, sd)
+  mean((sd$G3 - pred)^2)
+})
+
+# Calculate the number of terminal nodes for each cp value
+num_nodes <- cp_table[, "nsplit"] + 1
+
+# Plot the MSE against the number of terminal nodes
+plot(num_nodes, mse_values, pch=20, col = rgb(0.2, 0.7, 1, 1), type = "b", cex = 1, 
+     xlab = "Tree Size", ylab = "Mean Squared Error", 
+     main = "MSE vs Tree Size",
+     ylim = c(min(mse_values) * 0.9, max(mse_values) * 1.1))
+
+# Add grid lines
+grid()
+
+# Add a vertical line and text to indicate the optimal number of terminal nodes
+abline(v = num_nodes[opt_index], col = "purple", lty = 2)
+text(num_nodes[opt_index], min(mse_values), 
+     labels = paste("Optimal Size =", num_nodes[opt_index]), pos = 4, col = "black")
+
+# Step 5: Summarize the MSE before and after pruning
+cat("Summary:\n")
+cat("Initial MSE: ", initial_mse, "\n")
+cat("Pruned MSE: ", pruned_mse, "\n")
+
+
+
+
+
+# comparing single tree on test and training data ----
+
+
+
+# Split the data into training (70%) and validation (30%) sets
+split_index <- createDataPartition(sd$G3, p = 0.7, list = FALSE)
+train_data <- sd[split_index, ]
+valid_data <- sd[-split_index, ]
+
+
+# execute this for manual testing
+
+tree_model <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = 0.002, minsplit = 5))
+rpart.plot(tree_model, main = "Tree for manual comparison")
+
+
+# Calculate MSE for training set
+train_pred <- predict(tree_model, train_data)
+train_mse <- mean((train_data$G3 - train_pred)^2)
+  
+# Calculate MSE for validation set
+valid_pred <- predict(tree_model, valid_data)
+valid_mse <- mean((valid_data$G3 - valid_pred)^2)
+  
+# Print results
+cat("Training MSE:", train_mse, "\n")
+cat("Validation MSE:", valid_mse, "\n\n")
+  
+
+
 
