@@ -244,20 +244,10 @@ total_mse_swapped
 
 
 
-
-
-
-
-
-
-
 # 5. Pruning ----
 
 
-
-
-
-# Split the data into training (70%) and test (30%) sets
+# Split the data
 split_index <- createDataPartition(sd$G3, p = 0.7, list = FALSE)
 train_data <- sd[split_index, ]
 test_data <- sd[-split_index, ]
@@ -267,24 +257,27 @@ calculate_mse <- function(actual, predicted) {
   mean((actual - predicted)^2)
 }
 
-# Step 1: Create a complex tree
+## 5.1 make big and small tree ----
+
+# Create a complex tree
 complex_tree <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = 0.001, minsplit = 5))
 
 rpart.plot(complex_tree, main = "Initial Complex Regression Tree")
-
-
-
-# Step 2: Create pruning graph
 plotcp(complex_tree)
 
-# Step 3: Find optimal CP value
+
+
+# Find optimal CP value
 opt_cp <- complex_tree$cptable[which.min(complex_tree$cptable[,"xerror"]), "CP"]
 
 print(opt_cp)
 
-# Step 4: Prune the tree
+# Prune the tree
 pruned_tree <- prune(complex_tree, cp = opt_cp)
+rpart.plot(pruned_tree, main = "Optimal Pruned Tree")
 
+
+## 5.2 compare the two trees ----
 
 # Calculate the MSEs
 MSE_complex <- function(){
@@ -309,14 +302,13 @@ MSE_pruned <- function(){
 MSE_complex()
 MSE_pruned()
 
-# Plot the pruned tree
-rpart.plot(pruned_tree, main = "Optimal Pruned Tree")
 
-# Create custom error vs tree size plot
+
+## 5.3 Make nice pruning plot ----
 cp_table <- complex_tree$cptable
 num_splits <- cp_table[, "nsplit"]
 
-# Calculate actual MSE for each CP value
+# Calculate MSE for each CP value
 mse_values <- sapply(cp_table[, "CP"], function(cp) {
   pruned <- prune(complex_tree, cp = cp)
   train_pred <- predict(pruned, train_data)
@@ -326,7 +318,6 @@ mse_values <- sapply(cp_table[, "CP"], function(cp) {
   c(train_mse, test_mse)
 })
 
-## Plot MSE vs number of splits ----
 
 
 # Making data for ggplot
@@ -335,17 +326,12 @@ mse_data <- data.frame(
   mse = c(mse_values[1,], mse_values[2,]),
   type = rep(c("Training MSE", "Test MSE"), each = length(num_splits))
 )
-
-
-
+# And for the label
 temp_mse_data <- mse_data %>% filter(type == "Test MSE")
-
-
 opt_splits <- temp_mse_data$num_splits[which.min(temp_mse_data$mse)]
-
+min_mse <- min(temp_mse_data$mse)
 
 opt_splits
-min_mse <- min(temp_mse_data$mse)
 
 ggplot(mse_data, aes(x = num_splits, y = mse, color = type)) +
   geom_line() +
@@ -365,27 +351,10 @@ ggplot(mse_data, aes(x = num_splits, y = mse, color = type)) +
 
 
 
-# Add a vertical line and text to indicate the optimal number of terminal nodes
-abline(v = num_nodes[opt_index], col = "purple", lty = 2)
-text(num_nodes[opt_index], min(cp_table[, "xerror"]), 
-     labels = paste("Optimal Size =", num_nodes[opt_index]), pos = 4, col = "black")
 
 
 
-
-
-# Add a vertical line and text to indicate the optimal number of terminal nodes
-abline(v = num_nodes[opt_index], col = "purple", lty = 2)
-text(num_nodes[opt_index], min(mse_values), 
-     labels = paste("Optimal Size =", num_nodes[opt_index]), pos = 4, col = "black")
-
-
-
-
-
-
-
-# 4. NOT FIN 3D Scatter Plot with Decision Boundaries, need to fix, worked before not sure why not now ----
+# 6. NOT FIN 3D Scatter Plot with Decision Boundaries, need to fix, worked before not sure why not now ----
 
 
 # Get the variables used for splitting
