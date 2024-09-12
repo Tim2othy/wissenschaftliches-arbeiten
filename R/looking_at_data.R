@@ -38,8 +38,6 @@ View(sd)
 plot(sd$studytime, sd$G3, col = "blue", pch = 19)
 grid()
 
-??bartMachine
-
 
 # 2. Simple comparison ----
 
@@ -454,16 +452,91 @@ if(1==1) {
 
 # Using the BART package
 
-burn = 200; nd = 200
+burn = 1000; nd = 1000
 
 y = sd$G3
 x = sd[,1:30]
-x = data.frame(x)
 p = ncol(x)
 
-bf = wbart(x,y,nskip=burn,ndpost=nd,printevery=50)
+bf = wbart(x,y,nskip=burn,ndpost=nd,printevery=500)
 
 
+# linear model
+
+lmf = lm(G3~., sd)
+
+plot(bf$sigma,ylim=c(1.5,5),xlab="MCMC iteration",ylab="sigma draw",cex=.5)
+abline(h=summary(lmf)$sigma,col="red",lty=2) #least squares estimates
+abline(v = burn,col="green")
+title(main="sigma draws, green line at burn in, red line at least squares estimate",cex.main=.8)
+
+
+
+thin = 20
+ii = burn + thin*(1:(nd/thin))
+acf(bf$sigma[ii],main="ACF of thinned post burn-in sigma draws")
+
+# making small BART model to compare
+bf20 = wbart(x,y,nskip=burn,ndpost=nd, ntree = 20,printevery=500)
+
+
+fitmat = cbind(y,bf$yhat.train.mean,bf20$yhat.train.mean)
+colnames(fitmat) = c("y","yhatBART","yhatBART20")
+pairs(fitmat)
+
+print(cor(fitmat))
+
+
+dim(bf20$varcount)
+
+
+
+
+#compute row percentages
+percount20 = bf20$varcount/apply(bf20$varcount,1,sum)
+# mean of row percentages
+mvp20 =apply(percount20,2,mean)
+#quantiles of row percentags
+qm = apply(percount20,2,quantile,probs=c(.05,.95))
+
+print(mvp20)
+
+
+
+# Assuming qm is a matrix or data frame
+p <- ncol(qm)
+rgy <- range(qm, na.rm = TRUE)
+
+# Create the plot
+plot(c(1, p), rgy, type = "n", xlab = "variable", 
+     ylab = "post mean, percent var use", axes = FALSE)
+
+# Add x-axis
+axis(1, at = 1:p, labels = colnames(qm), cex.lab = 0.7, cex.axis = 0.7)
+
+# Add y-axis
+axis(2, cex.lab = 1.2, cex.axis = 1.2)
+
+# Add lines for mvp20 if it exists and has the correct length
+if (exists("mvp20") && length(mvp20) == p) {
+  lines(1:p, mvp20, col = "black", lty = 4, pch = 4, type = "b", lwd = 1.5)
+}
+
+# Add vertical lines
+for (i in 1:p) {
+  lines(c(i, i), qm[, i], col = "blue", lty = 3, lwd = 1.0)
+}
+
+
+
+
+
+
+percount = bf$varcount/apply(bf$varcount,1,sum)
+mvp = apply(percount,2,mean)
+plot(mvp20,xlab="variable number",ylab="post mean, percent var use",col="blue",type="b")
+lines(mvp,type="b",col='red')
+legend("topleft",legend=c("BART","BART20"),col=c("red","blue"),lty=c(1,1))
 
 
 
