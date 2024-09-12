@@ -353,7 +353,7 @@ sd_mini <- sd_mini[, c("Walc_plus_Dalc", "absences", "G3")]
 
 
 
-tree_model <- rpart(G3 ~ Walc_plus_Dalc + absences, data = sd_mini, control = rpart.control(cp = 0.0026, minsplit = 30)
+tree_model <- rpart(G3 ~ Walc_plus_Dalc + absences, data = sd_mini, control = rpart.control(cp = 0.002, minsplit = 40 ))
 rpart.plot(tree_model)
 
 Walc_plus_Dalc_seq <- seq(min(sd_mini$Walc_plus_Dalc), max(sd_mini$Walc_plus_Dalc), length.out = 13)
