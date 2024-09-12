@@ -1,0 +1,119 @@
+\documentclass{beamer}
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+\title{Bayesian Additive Regression Trees (BART)}
+\author{Yaoyuan Vincent Tan and Jason Roy}
+\date{January 23, 2019}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Introduction}
+Bayesian Additive Regression Trees (BART) is a flexible prediction model/machine learning approach.
+\begin{itemize}
+    \item Popularity in various applications: biomarker discovery, causal effect estimation, genomic studies, etc.
+    \item Extensions include survival outcomes, multinomial outcomes, semi-continuous outcomes, and more.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{BART Model Overview}
+BART combines multiple regression trees to model complex, non-linear relationships.
+\begin{equation}
+Y_i = \sum_{j=1}^{m} g(X_i; T_j, M_j) + \epsilon_i
+\end{equation}
+\begin{itemize}
+    \item \(Y_i\): Outcome variable
+    \item \(X_i\): Predictor variables
+    \item \(T_j, M_j\): Structure and parameters of tree \(j\)
+    \item \(\epsilon_i\): Error term
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Single Regression Tree}
+A single regression tree partitions the predictor space and fits simple models within each partition.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth]{tree_example}
+    \caption{Example of a single regression tree.}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Sum of Regression Trees}
+BART models use the sum of regression trees to capture complex interactions.
+\begin{equation}
+Y_i = \sum_{j=1}^{m} g(X_i; T_j, M_j) + \epsilon_i
+\end{equation}
+\begin{itemize}
+    \item Each tree captures different aspects of the data.
+    \item Combined result is a flexible model that can approximate non-linear functions.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{BART Algorithm}
+The BART algorithm iteratively updates the trees using Markov Chain Monte Carlo (MCMC).
+\begin{enumerate}
+    \item Initialize trees to root nodes.
+    \item Iteratively update tree structures and parameters.
+    \item Ensure convergence to posterior distribution.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\frametitle{Posterior Performance}
+BART provides posterior distributions for predictions, allowing for uncertainty quantification.
+\begin{itemize}
+    \item Example: Posterior performance evaluated using synthetic data.
+    \item Real-world application: Predicting Standardized Hospitalization Ratio.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Extensions of BART}
+\begin{itemize}
+    \item Semiparametric BART: Combines parametric and nonparametric components.
+    \item Random intercept BART: Models correlated outcomes.
+    \item Spatial BART: Addresses statistical matching problems.
+    \item Dirichlet Process Mixture BART: Enhances robustness by modeling error terms with a Dirichlet process.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Example: Semiparametric BART}
+\begin{equation}
+Y_i = X_i \beta + \sum_{j=1}^{m} g(X_i; T_j, M_j) + \epsilon_i
+\end{equation}
+\begin{itemize}
+    \item Combines linear predictors with nonparametric regression trees.
+    \item Useful for models with both fixed and random effects.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Example: Dirichlet Process Mixture BART}
+\begin{equation}
+\epsilon_i \sim N(a_i, \sigma_i^2), \quad (a_i, \sigma_i^2) \sim D, \quad D \sim DP(D_0, \alpha)
+\end{equation}
+\begin{itemize}
+    \item Models the error term with a Dirichlet process.
+    \item Allows for flexible error distributions.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Discussion}
+BART is a powerful and flexible tool for regression and classification.
+\begin{itemize}
+    \item Handles complex, non-linear relationships without explicit specification.
+    \item Provides a unified framework for various extensions and applications.
+    \item Further research can expand BART's applicability and efficiency.
+\end{itemize}
+\end{frame}
+
+\end{document}

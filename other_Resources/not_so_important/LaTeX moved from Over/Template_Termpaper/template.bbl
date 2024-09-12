@@ -1,0 +1,80 @@
+\begin{thebibliography}{}
+
+\bibitem [\protect \citeauthoryear {%
+Brink%
+}{%
+Brink%
+}{%
+{\protect \APACyear {2005}}%
+}]{%
+brink2005anfertigung}
+\APACinsertmetastar {%
+brink2005anfertigung}%
+\begin{APACrefauthors}%
+Brink, A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{2005}.
+\newblock
+\APACrefbtitle {{Anfertigung wissenschaftlicher Arbeiten}} {{Anfertigung wissenschaftlicher Arbeiten}}.
+\newblock
+\APACaddressPublisher{}{Oldenbourg}.
+\newblock
+\begin{APACrefURL} \url{http://books.google.de/books?id=5gP8YHSVYMMC} \end{APACrefURL}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Gopen%
+\ \BBA {} Swan%
+}{%
+Gopen%
+\ \BBA {} Swan%
+}{%
+{\protect \APACyear {1990}}%
+}]{%
+gopen1990science}
+\APACinsertmetastar {%
+gopen1990science}%
+\begin{APACrefauthors}%
+Gopen, G.%
+\BCBT {}\ \BBA {} Swan, J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1990}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{The Science of Scientific Writing If the reader is to grasp what the writer means, the writer must understand what the reader needs}} {{The Science of Scientific Writing If the reader is to grasp what the writer means, the writer must understand what the reader needs}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{American Scientist}{78}{6}{550--558}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Johnson%
+, Beck%
+, Booch%
+\BCBL {}\ \BBA {} Cook%
+}{%
+Johnson%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {1993}}%
+}]{%
+johnson1993get}
+\APACinsertmetastar {%
+johnson1993get}%
+\begin{APACrefauthors}%
+Johnson, R.%
+, Beck, K.%
+, Booch, G.%
+\BCBL {}\ \BBA {} Cook, W.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1993}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{How to get a paper accepted at OOPSLA}} {{How to get a paper accepted at OOPSLA}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{ACM SIGPLAN NOTICES}{28}{}{429--429}.
+\PrintBackRefs{\CurrentBib}
+
+\end{thebibliography}
