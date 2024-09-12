@@ -19,7 +19,7 @@ Carseats <- data.frame(Carseats, High)
 plot(tree.carseats)
 text(tree.carseats)
 
-tree.carseats <- tree(High ~ . - Sales, Carseats)
+tree.carseats <- rpart(High ~ . - Sales, Carseats)
 ###
 summary(tree.carseats) # 27 terminal nodes RMD=0.4575
                       # MER = 0.09
@@ -204,7 +204,7 @@ xtrain <- x[train, ]
 ytrain <- y[train]
 xtest <- x[-train, ]
 ytest <- y[-train]
-set.seed(1)
+
 bartfit <- gbart(xtrain, ytrain, x.test = xtest)
 ###
 yhat.bart <- bartfit$yhat.test.mean

@@ -7,9 +7,18 @@ library(data.tree)
 library(networkD3)
 library(plotly)
 library(caret)
+library(BART)
+
+
+
 
 # 1. Setting up data ----
-sd <- student_por
+sd <- data.frame(student_por)
+
+
+sd <- sd %>%
+  mutate_if(is.character, as.factor)
+
 
 # Removing these because that would just be cheating
 sd$G2 <- NULL
@@ -29,7 +38,7 @@ View(sd)
 plot(sd$studytime, sd$G3, col = "blue", pch = 19)
 grid()
 
-
+??bartMachine
 
 
 # 2. Simple comparison ----
@@ -437,6 +446,22 @@ if(1==1) {
 
 
 
+
+
+# 7. BART ----
+
+## 7.1 Fit BART model ----
+
+# Using the BART package
+
+burn = 200; nd = 200
+
+y = sd$G3
+x = sd[,1:30]
+x = data.frame(x)
+p = ncol(x)
+
+bf = wbart(x,y,nskip=burn,ndpost=nd,printevery=50)
 
 
 
