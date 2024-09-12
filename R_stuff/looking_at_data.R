@@ -80,10 +80,6 @@ mse_tree <- mean((sd$G3 - sd$tree_pred)^2)
 print(mse_lm)
 print(mse_tree)
 
-> print(mse_lm)
-[1] 6.794648
-> print(mse_tree)
-[1] 6.385807
 
 
 ### 2.3.2 Visualize predictions ----
@@ -348,13 +344,39 @@ ggplot(mse_data, aes(x = num_splits, y = mse, color = type)) +
 
 
 
+# 6. Making nice plot for basic tree description ----
+
+
+sd_mini <- sd[, c("Walc", "Dalc", "absences", "G3")]
+sd_mini$Walc_plus_Dalc <- sd_mini$Walc + sd_mini$Dalc
+sd_mini <- sd_mini[, c("Walc_plus_Dalc", "absences", "G3")]
+
+
+
+tree_model <- rpart(G3 ~ Walc_plus_Dalc + absences, data = sd_mini, control = rpart.control(cp = 0.0026, minsplit = 30)
+rpart.plot(tree_model)
+
+Walc_plus_Dalc_seq <- seq(min(sd_mini$Walc_plus_Dalc), max(sd_mini$Walc_plus_Dalc), length.out = 13)
+absences_seq <- seq(min(sd_mini$absences), max(sd_mini$absences), length.out = 13)
+grid <- expand.grid(Walc_plus_Dalc = Walc_plus_Dalc_seq, absences = absences_seq)
+
+grid$G3_pred <- predict(tree_model, newdata = grid)
+
+ggplot(grid, aes(x = Walc_plus_Dalc, y = absences, fill = G3_pred)) +
+  geom_tile() +  
+  geom_text(aes(label = round(G3_pred, 1)), size = 3) +  
+  scale_fill_gradient(low = "darkred", high = "lightblue", guide = "none") + 
+  labs(x = "Alcohol consumption", y = "Absences", title = "Predicting Exam score based on alcohol consumption and Absences") +
+  theme_minimal() +
+  geom_point(data = sd_mini, aes(x = Walc_plus_Dalc, y = absences), color = "blue", size = 2, inherit.aes = FALSE)# Add blue points for actual data
+  
 
 
 
 
 
 
-# 6. NOT FIN 3D Scatter Plot with Decision Boundaries, need to fix, worked before not sure why not now ----
+# 66. NOT FIN 3D Scatter Plot with Decision Boundaries, need to fix, worked before not sure why not now ----
 
 
 # Get the variables used for splitting
