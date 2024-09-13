@@ -16,24 +16,25 @@ library(BART)
 sd <- data.frame(student_por)
 
 
+
 sd <- sd %>%
   mutate_if(is.character, as.factor)
+
+
+sd$sumalc <- sd$Walc + sd$Dalc
+
+sd$Dalc <- NULL
+sd$Walc <- NULL
 
 
 # Removing these because that would just be cheating
 sd$G2 <- NULL
 sd$G1 <- NULL
 
-# Removing variables that were least important during regression and trees
-sd$traveltime <- NULL
-sd$Medu <- NULL
-sd$guardian <- NULL
-sd$reason <- NULL
-sd$Mjob <- NULL
-sd$address <- NULL
+#clean = sd
 
+sd = clean
 # also do basic test if data is working
-View(sd)
 
 plot(sd$studytime, sd$G3, col = "blue", pch = 19)
 grid()
@@ -100,40 +101,6 @@ ggplot(sd, aes(x = G3)) +
        color = "Model") +
   scale_color_manual(values = c("Linear Regression" = "blue", "Regression Tree" = "red"))
 
-
-
-
-
-
-
-
-# 3. comparing single tree on test and training data ----
-
-
-
-# Split the data into training (70%) and validation (30%) sets
-split_index <- createDataPartition(sd$G3, p = 0.7, list = FALSE)
-train_data <- sd[split_index, ]
-valid_data <- sd[-split_index, ]
-
-
-# execute this for manual testing
-
-tree_model <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = 0.025, minsplit = 5))
-rpart.plot(tree_model, main = "Tree for manual comparison")
-
-
-# Calculate MSE for training set
-train_pred <- predict(tree_model, train_data)
-train_mse <- mean((train_data$G3 - train_pred)^2)
-
-# Calculate MSE for validation set
-valid_pred <- predict(tree_model, valid_data)
-valid_mse <- mean((valid_data$G3 - valid_pred)^2)
-
-# Print results
-cat("Training MSE:", train_mse, "\n")
-cat("Validation MSE:", valid_mse, "\n\n")
 
 
 
@@ -247,135 +214,31 @@ total_mse_swapped
 
 
 
-# 5. Pruning ----
-
-
-# Split the data
-split_index <- createDataPartition(sd$G3, p = 0.7, list = FALSE)
-train_data <- sd[split_index, ]
-test_data <- sd[-split_index, ]
-
-# Function to calculate MSE
-calculate_mse <- function(actual, predicted) {
-  mean((actual - predicted)^2)
-}
-
-## 5.1 make big and small tree ----
-
-# Create a complex tree
-complex_tree <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = 0.001, minsplit = 5))
-
-rpart.plot(complex_tree, main = "Initial Complex Regression Tree")
-plotcp(complex_tree)
-
-
-
-# Find optimal CP value
-opt_cp <- complex_tree$cptable[which.min(complex_tree$cptable[,"xerror"]), "CP"]
-
-print(opt_cp)
-
-# Prune the tree
-pruned_tree <- prune(complex_tree, cp = opt_cp)
-rpart.plot(pruned_tree, main = "Optimal Pruned Tree")
-
-
-## 5.2 compare the two trees ----
-
-# Calculate the MSEs
-MSE_complex <- function(){
-  train_pred_complex <- predict(complex_tree, train_data)
-  test_pred_complex <- predict(complex_tree, test_data)
-  train_mse_complex <- calculate_mse(train_data$G3, train_pred_complex)
-  test_mse_complex <- calculate_mse(test_data$G3, test_pred_complex)
-  
-  print(paste("Complex Tree - Training MSE:", train_mse_complex))
-  print(paste("Complex Tree -     Test MSE:", test_mse_complex))
-}
-MSE_pruned <- function(){
-  train_pred_pruned <- predict(pruned_tree, train_data)
-  test_pred_pruned <- predict(pruned_tree, test_data)
-  train_mse_pruned <- calculate_mse(train_data$G3, train_pred_pruned)
-  test_mse_pruned <- calculate_mse(test_data$G3, test_pred_pruned)
-
-  print(paste("Pruned Tree - Training MSE:", train_mse_pruned))
-  print(paste("Pruned Tree - Test MSE:", test_mse_pruned))
-}
-
-MSE_complex()
-MSE_pruned()
-
-
-
-## 5.3 Make nice pruning plot ----
-cp_table <- complex_tree$cptable
-num_splits <- cp_table[, "nsplit"]
-
-# Calculate MSE for each CP value
-mse_values <- sapply(cp_table[, "CP"], function(cp) {
-  pruned <- prune(complex_tree, cp = cp)
-  train_pred <- predict(pruned, train_data)
-  test_pred <- predict(pruned, test_data)
-  train_mse <- calculate_mse(train_data$G3, train_pred)
-  test_mse <- calculate_mse(test_data$G3, test_pred)
-  c(train_mse, test_mse)
-})
-
-
-
-# Making data for ggplot
-mse_data <- data.frame(
-  num_splits = rep(num_splits, 2),
-  mse = c(mse_values[1,], mse_values[2,]),
-  type = rep(c("Training MSE", "Test MSE"), each = length(num_splits))
-)
-# And for the label
-temp_mse_data <- mse_data %>% filter(type == "Test MSE")
-opt_splits <- temp_mse_data$num_splits[which.min(temp_mse_data$mse)]
-min_mse <- min(temp_mse_data$mse)
-
-opt_splits
-
-ggplot(mse_data, aes(x = num_splits, y = mse, color = type)) +
-  geom_line() +
-  geom_point() +
-  scale_color_manual(values = c("blue", "red")) +
-  labs(x = "Number of Splits", y = "Mean Squared Error",
-       title = "MSE vs Tree Complexity",
-       color = "MSE Type") +
-  theme_minimal() +
-  geom_vline(xintercept = opt_splits, linetype = "dashed", color = "purple") +
-  annotate("text", x = opt_splits +6, y = min_mse +1, label = paste("Optimal number of splits =", opt_splits),
-           vjust = -1, color = "purple")
-
-
-
-
 # 6. Making nice plot for basic tree description ----
 
 
 sd_mini <- sd[, c("Walc", "Dalc", "absences", "G3")]
-sd_mini$Walc_plus_Dalc <- sd_mini$Walc + sd_mini$Dalc
-sd_mini <- sd_mini[, c("Walc_plus_Dalc", "absences", "G3")]
+sd_mini$sumalc <- sd_mini$Walc + sd_mini$Dalc
+sd_mini <- sd_mini[, c("sumalc", "absences", "G3")]
 
 
 
-tree_model <- rpart(G3 ~ Walc_plus_Dalc + absences, data = sd_mini, control = rpart.control(cp = 0.002, minsplit = 40 ))
+tree_model <- rpart(G3 ~ sumalc + absences, data = sd_mini, control = rpart.control(cp = 0.002, minsplit = 40 ))
 rpart.plot(tree_model)
 
-Walc_plus_Dalc_seq <- seq(min(sd_mini$Walc_plus_Dalc), max(sd_mini$Walc_plus_Dalc), length.out = 13)
+sumalc_seq <- seq(min(sd_mini$sumalc), max(sd_mini$sumalc), length.out = 13)
 absences_seq <- seq(min(sd_mini$absences), max(sd_mini$absences), length.out = 13)
-grid <- expand.grid(Walc_plus_Dalc = Walc_plus_Dalc_seq, absences = absences_seq)
+grid <- expand.grid(sumalc = sumalc_seq, absences = absences_seq)
 
 grid$G3_pred <- predict(tree_model, newdata = grid)
 
-ggplot(grid, aes(x = Walc_plus_Dalc, y = absences, fill = G3_pred)) +
+ggplot(grid, aes(x = sumalc, y = absences, fill = G3_pred)) +
   geom_tile() +  
   geom_text(aes(label = round(G3_pred, 1)), size = 3) +  
   scale_fill_gradient(low = "darkred", high = "lightblue", guide = "none") + 
   labs(x = "Alcohol consumption", y = "Absences", title = "Predicting Exam score based on alcohol consumption and Absences") +
   theme_minimal() +
-  geom_point(data = sd_mini, aes(x = Walc_plus_Dalc, y = absences), color = "blue", size = 2, inherit.aes = FALSE)# Add blue points for actual data
+  geom_point(data = sd_mini, aes(x = sumalc, y = absences), color = "blue", size = 2, inherit.aes = FALSE)# Add blue points for actual data
   
 
 
@@ -460,7 +323,6 @@ p = ncol(x)
 
 bf = wbart(x,y,nskip=burn,ndpost=nd,printevery=500)
 
-
 # linear model
 
 lmf = lm(G3~., sd)
@@ -537,6 +399,407 @@ mvp = apply(percount,2,mean)
 plot(mvp20,xlab="variable number",ylab="post mean, percent var use",col="blue",type="b")
 lines(mvp,type="b",col='red')
 legend("topleft",legend=c("BART","BART20"),col=c("red","blue"),lty=c(1,1))
+
+
+
+
+
+
+
+
+
+
+
+# Comparing Trees and Linear regression ----
+
+
+
+# Split the data into training (70%) and validation (30%) sets
+split_index <- createDataPartition(sd$G3, p = 0.7, list = FALSE)
+train_data <- sd[split_index, ]
+valid_data <- sd[-split_index, ]
+
+
+# execute this for manual testing
+
+tree_model <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = 0.03, minsplit = 40))
+
+rpart.plot(tree_model, fallen.leaves = TRUE)
+
+
+# Calculate MSE for training set
+train_pred <- predict(tree_model, train_data)
+train_mse <- mean((train_data$G3 - train_pred)^2)
+
+# Calculate MSE for validation set
+valid_pred <- predict(tree_model, valid_data)
+valid_mse <- mean((valid_data$G3 - valid_pred)^2)
+
+# Print results
+
+
+
+
+lm_model <- lm(G3 ~ ., data = train_data)
+
+# Summary
+summary_lm <- summary(lm_model)
+
+
+# Calculate MSE for training set
+train_predL <- predict(lm_model, train_data)
+train_mseL <- mean((train_data$G3 - train_predL)^2)
+
+
+# Calculate MSE for validation set
+valid_predL <- predict(lm_model, valid_data)
+valid_mseL <- mean((valid_data$G3 - valid_predL)^2)
+
+# Print results
+comp <- function(){
+cat("Training MSE   Tree:", train_mse, "\n")
+cat("Validation MSE Tree:", valid_mse, "\n\n")
+cat("Training MSE   Regr:", train_mseL, "\n")
+cat("Validation MSE Regr:", valid_mseL, "\n\n")
+}
+
+comp()
+
+
+
+
+
+
+
+
+
+
+# COMPARING BART AND linear regression ----
+
+
+
+# Split the data into training (70%) and validation (30%) sets
+split_index <- createDataPartition(sd$G3, p = 0.7, list = FALSE)
+train_data <- sd[split_index, ]
+valid_data <- sd[-split_index, ]
+
+## 7.1 Fit BART model ----
+
+# Using the BART package
+
+burn = 1000; nd = 1000
+
+fix = c(1:28, 30)
+
+y = train_data$G3
+x = train_data[,fix]
+p = ncol(x)
+
+bf = wbart(x,y,nskip=burn,ndpost=nd,printevery=500)
+
+# CONtinue here ----
+
+compare the MSE of BART to the linear model
+
+
+
+
+
+
+
+
+
+# Calculate MSE for training set
+train_pred <- predict(bf, train_data)
+train_mse <- mean((train_data$G3 - train_pred)^2)
+
+# Calculate MSE for validation set
+valid_pred <- predict(tree_model, valid_data)
+valid_mse <- mean((valid_data$G3 - valid_pred)^2)
+
+# Print results
+
+
+
+
+lm_model <- lm(G3 ~ ., data = train_data)
+
+# Summary
+summary_lm <- summary(lm_model)
+
+
+# Calculate MSE for training set
+train_predL <- predict(lm_model, train_data)
+train_mseL <- mean((train_data$G3 - train_predL)^2)
+
+
+# Calculate MSE for validation set
+valid_predL <- predict(lm_model, valid_data)
+valid_mseL <- mean((valid_data$G3 - valid_predL)^2)
+
+# Print results
+comp <- function(){
+  cat("Training MSE   Tree:", train_mse, "\n")
+  cat("Validation MSE Tree:", valid_mse, "\n\n")
+  cat("Training MSE   Regr:", train_mseL, "\n")
+  cat("Validation MSE Regr:", valid_mseL, "\n\n")
+}
+
+comp()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# linear model
+
+lmf = lm(G3~., train_data)
+
+plot(bf$sigma,ylim=c(1.5,5),xlab="MCMC iteration",ylab="sigma draw",cex=.5)
+abline(h=summary(lmf)$sigma,col="red",lty=2) #least squares estimates
+abline(v = burn,col="green")
+title(main="sigma draws, green line at burn in, red line at least squares estimate",cex.main=.8)
+
+
+
+thin = 20
+ii = burn + thin*(1:(nd/thin))
+acf(bf$sigma[ii],main="ACF of thinned post burn-in sigma draws")
+
+# making small BART model to compare
+bf20 = wbart(x,y,nskip=burn,ndpost=nd, ntree = 20,printevery=500)
+
+
+fitmat = cbind(y,bf$yhat.train.mean,bf20$yhat.train.mean)
+colnames(fitmat) = c("y","yhatBART","yhatBART20")
+pairs(fitmat)
+
+print(cor(fitmat))
+
+
+dim(bf20$varcount)
+
+
+
+
+#compute row percentages
+percount20 = bf20$varcount/apply(bf20$varcount,1,sum)
+# mean of row percentages
+mvp20 =apply(percount20,2,mean)
+#quantiles of row percentags
+qm = apply(percount20,2,quantile,probs=c(.05,.95))
+
+print(mvp20)
+
+
+
+# Assuming qm is a matrix or data frame
+p <- ncol(qm)
+rgy <- range(qm, na.rm = TRUE)
+
+# Create the plot
+plot(c(1, p), rgy, type = "n", xlab = "variable", 
+     ylab = "post mean, percent var use", axes = FALSE)
+
+# Add x-axis
+axis(1, at = 1:p, labels = colnames(qm), cex.lab = 0.7, cex.axis = 0.7)
+
+# Add y-axis
+axis(2, cex.lab = 1.2, cex.axis = 1.2)
+
+# Add lines for mvp20 if it exists and has the correct length
+if (exists("mvp20") && length(mvp20) == p) {
+  lines(1:p, mvp20, col = "black", lty = 4, pch = 4, type = "b", lwd = 1.5)
+}
+
+# Add vertical lines
+for (i in 1:p) {
+  lines(c(i, i), qm[, i], col = "blue", lty = 3, lwd = 1.0)
+}
+
+
+
+
+
+
+percount = bf$varcount/apply(bf$varcount,1,sum)
+mvp = apply(percount,2,mean)
+plot(mvp20,xlab="variable number",ylab="post mean, percent var use",col="blue",type="b")
+lines(mvp,type="b",col='red')
+legend("topleft",legend=c("BART","BART20"),col=c("red","blue"),lty=c(1,1))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Fin 3. comparing single tree manually on test and training data ----
+
+
+
+# Split the data into training (70%) and validation (30%) sets
+split_index <- createDataPartition(sd$G3, p = 0.7, list = FALSE)
+train_data <- sd[split_index, ]
+valid_data <- sd[-split_index, ]
+
+
+# execute this for manual testing
+
+tree_model <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = 0.025, minsplit = 5))
+
+rpart.plot(tree_model, fallen.leaves = TRUE)
+
+
+
+# Calculate MSE for training set
+train_pred <- predict(tree_model, train_data)
+train_mse <- mean((train_data$G3 - train_pred)^2)
+
+# Calculate MSE for validation set
+valid_pred <- predict(tree_model, valid_data)
+valid_mse <- mean((valid_data$G3 - valid_pred)^2)
+
+# Print results
+cat("Training MSE:", train_mse, "\n")
+cat("Validation MSE:", valid_mse, "\n\n")
+
+
+
+
+
+
+
+
+
+
+
+
+# Fin 5. Pruning ----
+
+
+# Split the data
+split_index <- createDataPartition(sd$G3, p = 0.7, list = FALSE)
+train_data <- sd[split_index, ]
+test_data <- sd[-split_index, ]
+
+# Function to calculate MSE
+calculate_mse <- function(actual, predicted) {
+  mean((actual - predicted)^2)
+}
+
+
+## 5.1 make big and small tree ----
+
+# Create a complex tree
+complex_tree <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = 0.0025, minsplit = 5))
+
+#rpart.plot(complex_tree, main = "Initial Complex Regression Tree")
+#plotcp(complex_tree)
+
+
+# Find optimal CP value
+opt_cp <- complex_tree$cptable[which.min(complex_tree$cptable[,"xerror"]), "CP"]
+
+print(opt_cp)
+
+# Prune the tree
+pruned_tree <- prune(complex_tree, cp = opt_cp)
+rpart.plot(pruned_tree, main = "Optimal Pruned Tree")
+
+
+## 5.2 compare the two trees ----
+
+# Calculate the MSEs
+MSE_complex <- function(){
+  train_pred_complex <- predict(complex_tree, train_data)
+  test_pred_complex <- predict(complex_tree, test_data)
+  train_mse_complex <- calculate_mse(train_data$G3, train_pred_complex)
+  test_mse_complex <- calculate_mse(test_data$G3, test_pred_complex)
+  
+  print(paste("Complex Tree - Training MSE:", train_mse_complex))
+  print(paste("Complex Tree -     Test MSE:", test_mse_complex))
+}
+MSE_pruned <- function(){
+  train_pred_pruned <- predict(pruned_tree, train_data)
+  test_pred_pruned <- predict(pruned_tree, test_data)
+  train_mse_pruned <- calculate_mse(train_data$G3, train_pred_pruned)
+  test_mse_pruned <- calculate_mse(test_data$G3, test_pred_pruned)
+  
+  print(paste("Pruned Tree - Training MSE:", train_mse_pruned))
+  print(paste("Pruned Tree - Test MSE:", test_mse_pruned))
+}
+
+MSE_complex()
+MSE_pruned()
+
+
+
+## 5.3 Make nice pruning plot ----
+cp_table <- complex_tree$cptable
+num_splits <- cp_table[, "nsplit"]
+
+# Calculate MSE for each CP value
+mse_values <- sapply(cp_table[, "CP"], function(cp) {
+  pruned <- prune(complex_tree, cp = cp)
+  train_pred <- predict(pruned, train_data)
+  test_pred <- predict(pruned, test_data)
+  train_mse <- calculate_mse(train_data$G3, train_pred)
+  test_mse <- calculate_mse(test_data$G3, test_pred)
+  c(train_mse, test_mse)
+})
+
+
+
+# Making data for ggplot
+mse_data <- data.frame(
+  num_splits = rep(num_splits, 2),
+  mse = c(mse_values[1,], mse_values[2,]),
+  type = rep(c("Training MSE", "Test MSE"), each = length(num_splits))
+)
+# And for the label
+temp_mse_data <- mse_data %>% filter(type == "Test MSE")
+opt_splits <- temp_mse_data$num_splits[which.min(temp_mse_data$mse)]
+min_mse <- min(temp_mse_data$mse)
+
+opt_splits
+
+ggplot(mse_data, aes(x = num_splits, y = mse, color = type)) +
+  geom_line() +
+  geom_point() +
+  scale_color_manual(values = c("blue", "red")) +
+  labs(x = "Number of Splits", y = "Mean Squared Error",
+       title = "MSE vs Tree Complexity",
+       color = "MSE Type") +
+  theme_minimal() +
+  geom_vline(xintercept = opt_splits, linetype = "dashed", color = "purple") +
+  annotate("text", x = opt_splits +6, y = min_mse +1, label = paste("Optimal number of splits =", opt_splits),
+           vjust = -1, color = "purple")
+
 
 
 
