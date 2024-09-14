@@ -497,14 +497,64 @@ p = ncol(x)
 
 bf = wbart(x,y,nskip=burn,ndpost=nd,printevery=500)
 
-# CONtinue here ----
-
-compare the MSE of BART to the linear model
 
 
 
 
+# Prepare the data
+X <- as.matrix(sd[, -which(names(sd) == "G3")])  # predictors
+y <- sd$G3  # target variable
 
+# Multivariate Linear Regression with Regularization (Elastic Net)
+# We'll use cross-validation to find the best alpha and lambda values
+cv_model <- cv.glmnet(X[split_index,], y[split_index], alpha = 0.5, nfolds = 5)
+best_lambda <- cv_model$lambda.min
+
+# Fit the final model
+lm_model <- glmnet(X[split_index,], y[split_index], alpha = 0.5, lambda = best_lambda)
+
+# BART model
+burn <- 1000
+nd <- 1000
+bart_model <- wbart(X[split_index,], y[split_index], nskip = burn, ndpost = nd, printevery = 500)
+
+
+summary(lm_model)
+
+# Make predictions on the test set
+lm_pred <- predict(lm_model, newx = X[-split_index,], s = best_lambda)
+bart_pred <- predict(bart_model, newdata = X[-split_index,])
+
+# Calculate MSE for both models on the test set
+lm_mse <- mean((y[-split_index] - lm_pred)^2)
+bart_mse <- mean((y[-split_index] - bart_pred)^2)
+
+# Calculate R-squared for both models on the test set
+lm_rsq <- 1 - sum((y[-split_index] - lm_pred)^2) / sum((y[-split_index] - mean(y[-split_index]))^2)
+bart_rsq <- 1 - sum((y[-split_index] - bart_pred)^2) / sum((y[-split_index] - mean(y[-split_index]))^2)
+
+# Print results
+cat("Linear Regression (Elastic Net) Results:\n")
+cat("MSE:", lm_mse, "\n")
+cat("R-squared:", lm_rsq, "\n\n")
+
+cat("BART Results:\n")
+cat("MSE:", bart_mse, "\n")
+cat("R-squared:", bart_rsq, "\n")
+
+# Compare variable importance
+lm_importance <- abs(coef(lm_model))[-1]  # Exclude intercept
+bart_importance <- bartModelMatrix(bart_model)$varcount.mean
+
+# Print top 10 most important variables for each model
+cat("\nTop 10 Important Variables (Linear Regression):\n")
+print(sort(lm_importance, decreasing = TRUE)[1:10])
+
+cat("\nTop 10 Important Variables (BART):\n")
+print(sort(bart_importance, decreasing = TRUE)[1:10])
+
+# Visualize BART results
+plot(bart_model)
 
 
 
@@ -550,9 +600,99 @@ comp()
 
 
 
+# REAL Comparing all 3 models ----
+
+
+# Split the data into training (70%) and validation (30%) sets
+split_index <- createDataPartition(sd$G3, p = 0.7, list = FALSE)
+train_data <- sd[split_index, ]
+valid_data <- sd[-split_index, ]
+
+
+# Create TREE
+tree_model <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = 0.03, minsplit = 40))
+rpart.plot(tree_model, fallen.leaves = TRUE)
+
+
+# Calculate MSE for training set
+train_pred_tree <- predict(tree_model, train_data)
+train_mse_tree <- mean((train_data$G3 - train_pred_tree)^2)
+
+# Calculate MSE for validation set
+valid_pred_tree <- predict(tree_model, valid_data)
+valid_mse_tree <- mean((valid_data$G3 - valid_pred_tree)^2)
+
+install.packages("lintr")
+
+
+# Create REGR
+lm_model <- lm(G3 ~ ., data = train_data)
+summary(lm_model)
+
+
+lint("<your_filename>.R>")
+
+# Calculate MSE for training set
+train_predL <- predict(lm_model, train_data)
+train_mseL <- mean((train_data$G3 - train_predL)^2)
+
+
+# Calculate MSE for validation set
+valid_predL <- predict(lm_model, valid_data)
+valid_mseL <- mean((valid_data$G3 - valid_predL)^2)
+
+# Print results
+comp <- function(){
+  cat("Training MSE   Tree:", train_mse, "\n")
+  cat("Validation MSE Tree:", valid_mse, "\n\n")
+  cat("Training MSE   Regr:", train_mseL, "\n")
+  cat("Validation MSE Regr:", valid_mseL, "\n\n")
+}
+
+comp()
 
 
 
+fix = c(1:28, 30)
+
+
+
+p = ncol(x)
+
+
+
+
+# BART model
+# Prepare data for BART
+x_train <- train_data[, !names(train_data) %in% "G3"]
+y_train <- train_data$G3
+x_valid <- valid_data[, !names(valid_data) %in% "G3"]
+y_valid <- valid_data$G3
+
+# Fit BART model
+bf   =        wbart(x,y,                                   nskip=burn,ndpost=nd,printevery=500)
+
+bart_model <- wbart(x.train = x_train, y.train = y_train, x.test = x_valid, nskip = 1000, ndpost = 1000, printevery = 500)
+
+# Calculate MSE for BART
+train_pred_bart <- bart_model$yhat.train.mean
+train_mse_bart <- mean((y_train - train_pred_bart)^2)
+valid_pred_bart <- bart_model$yhat.test.mean
+valid_mse_bart <- mean((y_valid - valid_pred_bart)^2)
+
+
+
+# Print results
+comp <- function(){
+  cat("Training MSE   Tree:", train_mse, "\n")
+  cat("Validation MSE Tree:", valid_mse, "\n\n")
+  cat("Training MSE   Regr:", train_mseL, "\n")
+  cat("Validation MSE Regr:", valid_mseL, "\n\n")
+  cat("Training MSE   BART:", train_mse_bart, "\n")
+  cat("Validation MSE BART:", valid_mse_bart, "\n")
+}
+
+comp()
 
 
 
