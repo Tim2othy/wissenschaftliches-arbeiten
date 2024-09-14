@@ -1,3 +1,14 @@
+---
+title: "looking_at_data"
+author: "timothy"
+format: html
+editor: visual
+---
+
+Preliminaries
+
+```{r}
+
 # Data-analysis
 library(rpart)
 library(rpart.plot)
@@ -9,19 +20,30 @@ library(BART)
 library(lintr)
 library(styler)
 library(tidyverse)
-install.packages("...")
+#install.packages("...")
+```
+
+
+Linting
+
+```{r}
+
+
 
 getwd()
 setwd("C:/Users/timtj/GitHub/wissenschaftliches-arbeiten/R")
 
-# Linting
 lint("looking_at_data.R")
 input <- readLines("looking_at_data.R")
 writeLines(style_text(input), con = "looking_at_data.R")
 
+```
+
+# Setting up data
+
+```{r}
 
 
-# 1. Setting up data ----
 sd <- data.frame(student_por)
 
 sd <- sd %>%
@@ -46,10 +68,17 @@ sd <- clean
 plot(sd$studytime, sd$G3, col = "blue", pch = 19)
 grid()
 
+```
 
-# 2. Simple comparison ----
 
-## 2.1 Basic Regression Tree ----
+# 2. Simple comparison
+
+
+
+## 2.1 Basic Regression Tree
+
+```{r}
+
 
 tree_model <- rpart(G3 ~ ., data = sd)
 
@@ -71,19 +100,29 @@ ggplot(var_importance, aes(x = reorder(variable, importance), y = importance)) +
   theme_minimal() +
   labs(title = "Variable Importance", x = "Variables", y = "Importance")
 
+```
+
+
 
 
 
 ## 2.2 Basic linear regression ----
+
+```{r}
+
 lm_model <- lm(G3 ~ ., data = sd)
 
 # Summary
 summary_lm <- summary(lm_model)
 print(summary_lm)
 
+```
 
 
 ## 2.3 Compare MSE of both models ----
+
+```{r}
+
 
 ### 2.3.1 Get MSE for both----
 sd$lm_pred <- predict(lm_model)
@@ -112,7 +151,7 @@ ggplot(sd, aes(x = G3)) +
 
 
 
-
+```
 
 
 
@@ -120,6 +159,8 @@ ggplot(sd, aes(x = G3)) +
 # 4. make Small tree for interactions ----
 
 ## 4.1 using the usual method ----
+```{r}
+
 
 tree_model_2splits <- rpart(G3 ~ ., data = sd, control = rpart.control(maxdepth = 2))
 
@@ -132,13 +173,16 @@ mse_tree <- mean((sd$G3 - sd$tree_pred_2splits)^2)
 
 print(mse_tree)
 
-# MSE should be 7.783039
+```
 
-
+MSE should be 7.783039
 
 
 
 ## 4.2 recreating the same tree by hand (I promise this will make sense later) ----
+
+```{r}
+
 
 # Split the data based on failures
 failures_yes <- subset(sd, failures >= 1)
@@ -173,11 +217,16 @@ total_mse <- (mse_failures_yes_absences_yes * nrow(failures_yes_absences_yes) +
 
 total_mse
 
-# MSE should also be 7.783039
+```
+
+MSE should also be 7.783039
 
 
 
 ## 4.3 Creating the same tree but with swapped splits by hand ----
+
+```{r}
+
 
 # Split the data based on failures
 failures_yes <- subset(sd, failures >= 1)
@@ -214,7 +263,9 @@ total_mse_swapped <- (mse_failures_yes_higher_yes * nrow(failures_yes_higher_yes
 
 total_mse_swapped
 
-# MSE should be 8.309893
+```
+
+MSE should be 8.309893
 
 
 
@@ -224,6 +275,9 @@ total_mse_swapped
 
 
 # 6. Making nice plot for basic tree description ----
+
+
+```{r}
 
 
 sd_mini <- sd[, c("Walc", "Dalc", "absences", "G3")]
@@ -250,12 +304,14 @@ ggplot(grid, aes(x = sumalc, y = absences, fill = G3_pred)) +
   geom_point(data = sd_mini, aes(x = sumalc, y = absences), color = "blue", size = 2, inherit.aes = FALSE) # Add blue points for actual data
 
 
-
+```
 
 
 
 
 # 66. NOT FIN 3D Scatter Plot with Decision Boundaries, need to fix, worked before not sure why not now ----
+
+```{r}
 
 
 # Get the variables used for splitting
@@ -321,6 +377,8 @@ if (1 == 1) {
   p
 }
 
+```
+
 
 
 
@@ -328,6 +386,9 @@ if (1 == 1) {
 # 7. BART ----
 
 ## 7.1 Fit BART model ----
+
+```{r}
+
 
 # Using the BART package
 
@@ -420,7 +481,7 @@ lines(mvp, type = "b", col = "red")
 legend("topleft", legend = c("BART", "BART20"), col = c("red", "blue"), lty = c(1, 1))
 
 
-
+```
 
 
 
@@ -431,6 +492,7 @@ legend("topleft", legend = c("BART", "BART20"), col = c("red", "blue"), lty = c(
 
 # Comparing Trees and Linear regression ----
 
+```{r}
 
 
 # Split the data into training (70%) and validation (30%) sets
@@ -456,6 +518,10 @@ valid_mse <- mean((valid_data$G3 - valid_pred)^2)
 
 # Print results
 
+```
+
+now linear 
+```{r}
 
 
 
@@ -485,7 +551,7 @@ comp <- function() {
 comp()
 
 
-
+```
 
 
 
@@ -495,6 +561,7 @@ comp()
 
 # COMPARING BART AND linear regression ----
 
+```{r}
 
 
 # Split the data into training (70%) and validation (30%) sets
@@ -617,10 +684,14 @@ comp <- function() {
 
 comp()
 
+```
+
 
 
 
 # REAL Comparing all 3 models ----
+
+```{r}
 
 
 # Split the data into training (70%) and validation (30%) sets
@@ -716,12 +787,14 @@ comp()
 
 
 
+```
 
 
 
 
+# linear model to look at BART not sure what this does
+```{r}
 
-# linear model
 
 lmf <- lm(G3 ~ ., train_data)
 
@@ -805,6 +878,9 @@ legend("topleft", legend = c("BART", "BART20"), col = c("red", "blue"), lty = c(
 
 
 
+```
+
+
 
 
 
@@ -820,6 +896,7 @@ legend("topleft", legend = c("BART", "BART20"), col = c("red", "blue"), lty = c(
 
 # Fin 3. comparing single tree manually on test and training data ----
 
+```{r}
 
 
 # Split the data into training (70%) and validation (30%) sets
@@ -850,7 +927,7 @@ cat("Validation MSE:", valid_mse, "\n\n")
 
 
 
-
+```
 
 
 
@@ -860,6 +937,8 @@ cat("Validation MSE:", valid_mse, "\n\n")
 
 
 # Fin 5. Pruning ----
+
+```{r}
 
 
 # Split the data
@@ -891,8 +970,11 @@ print(opt_cp)
 pruned_tree <- prune(complex_tree, cp = opt_cp)
 rpart.plot(pruned_tree, main = "Optimal Pruned Tree")
 
-
+```
 ## 5.2 compare the two trees ----
+
+```{r}
+
 
 # Calculate the MSEs
 MSE_complex <- function() {
@@ -917,9 +999,15 @@ MSE_pruned <- function() {
 MSE_complex()
 MSE_pruned()
 
+```
 
 
 ## 5.3 Make nice pruning plot ----
+
+
+```{r}
+
+
 cp_table <- complex_tree$cptable
 num_splits <- cp_table[, "nsplit"]
 
@@ -963,3 +1051,6 @@ ggplot(mse_data, aes(x = num_splits, y = mse, color = type)) +
     x = opt_splits + 6, y = min_mse + 1, label = paste("Optimal number of splits =", opt_splits),
     vjust = -1, color = "purple"
   )
+```
+
+Fin
