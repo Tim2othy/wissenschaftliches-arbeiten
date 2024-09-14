@@ -1,8 +1,6 @@
 # Data-analysis
 library(rpart)
 library(rpart.plot)
-library(dplyr)
-library(ggplot2)
 library(data.tree)
 library(networkD3)
 library(plotly)
@@ -10,26 +8,21 @@ library(caret)
 library(BART)
 library(lintr)
 library(styler)
+library(tidyverse)
 install.packages("...")
 
-#Linting
+getwd()
+setwd("C:/Users/timtj/GitHub/wissenschaftliches-arbeiten/R")
 
-
+# Linting
+lint("looking_at_data.R")
 input <- readLines("looking_at_data.R")
 writeLines(style_text(input), con = "looking_at_data.R")
 
 
 
-getwd()
-setwd("C:/Users/timtj/GitHub/wissenschaftliches-arbeiten/R")
-lint("looking_at_data.R")
-
-
-
 # 1. Setting up data ----
 sd <- data.frame(student_por)
-
-
 
 sd <- sd %>%
   mutate_if(is.character, as.factor)
