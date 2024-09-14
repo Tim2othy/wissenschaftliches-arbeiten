@@ -8,7 +8,21 @@ library(networkD3)
 library(plotly)
 library(caret)
 library(BART)
+library(lintr)
+library(styler)
+install.packages("...")
 
+#Linting
+
+
+input <- readLines("looking_at_data.R")
+writeLines(style_text(input), con = "looking_at_data.R")
+
+
+
+getwd()
+setwd("C:/Users/timtj/GitHub/wissenschaftliches-arbeiten/R")
+lint("looking_at_data.R")
 
 
 
@@ -635,7 +649,6 @@ train_mse_tree <- mean((train_data$G3 - train_pred_tree)^2)
 valid_pred_tree <- predict(tree_model, valid_data)
 valid_mse_tree <- mean((valid_data$G3 - valid_pred_tree)^2)
 
-install.packages("lintr")
 library(lintr)
 
 
@@ -643,18 +656,6 @@ library(lintr)
 # Create REGR
 lm_model <- lm(G3 ~ ., data = train_data)
 summary(lm_model)
-
-
-setwd("C:/Users/timtj/GitHub/wissenschaftliches-arbeiten/R")
-
-lint("<looking_at_data>.R>")
-
-lint("<looking_at_data>.R")
-
-getwd()
-
-lint("looking_at_data.R")
-
 
 # Calculate MSE for training set
 train_predL <- predict(lm_model, train_data)
