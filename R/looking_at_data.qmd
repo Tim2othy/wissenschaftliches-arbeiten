@@ -10,6 +10,7 @@ Preliminaries
 Packages
 
 ```{r}
+library(tidyverse)
 library(rpart)
 library(rpart.plot)
 library(data.tree)
@@ -19,23 +20,28 @@ library(caret)
 library(BART)
 library(lintr)
 library(styler)
-library(tidyverse)
-#install.packages("...")
 ```
 
 Linting
 
 ```{r}
+asdfg
+
+
+
+
+
 
 
 
 getwd()
 setwd("C:/Users/timtj/GitHub/wissenschaftliches-arbeiten/R")
 
-lint("looking_at_data.R")
-input <- readLines("looking_at_data.R")
-writeLines(style_text(input), con = "looking_at_data.R")
+lint("looking_at_data.qmd")
 
+# not sure why not working anymore but makes sense
+# input <- readLines("looking_at_data.qmd")
+# writeLines(style_text(input), con = "looking_at_data.qmd")
 ```
 
 # 1. Setting up data
@@ -59,23 +65,46 @@ sd$Walc <- NULL
 sd$G2 <- NULL
 sd$G1 <- NULL
 
-# clean = sd
 
-sd <- clean
 # also do basic test if data is working
 
 plot(sd$studytime, sd$G3, col = "blue", pch = 19)
 grid()
-
 ```
 
 Split data into training and test set
 
+alter
+sdkljfgh
 
+
+df
+
+dg
+dgdgdgdgdgdgdg
+
+
+dgdgdg
+
+
+
+dg
+gd
+dgdgdg
+
+dgdg
+
+
+df
+df
+d
+f
+d
+df
+
+zzzaonerdij
 
 ```{r}
-
-
 # Split the data into training (70%) and validation (30%) sets
 split_index <- createDataPartition(sd$G3, p = 0.7, list = FALSE)
 train_data <- sd[split_index, ]
