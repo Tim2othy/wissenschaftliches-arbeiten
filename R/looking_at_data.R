@@ -3,7 +3,7 @@ library(rpart)
 library(rpart.plot)
 library(dplyr)
 library(ggplot2)
-library(data.tree) 
+library(data.tree)
 library(networkD3)
 library(plotly)
 library(caret)
@@ -31,9 +31,9 @@ sd$Walc <- NULL
 sd$G2 <- NULL
 sd$G1 <- NULL
 
-#clean = sd
+# clean = sd
 
-sd = clean
+sd <- clean
 # also do basic test if data is working
 
 plot(sd$studytime, sd$G3, col = "blue", pch = 19)
@@ -96,9 +96,11 @@ ggplot(sd, aes(x = G3)) +
   geom_point(aes(y = tree_pred, color = "Regression Tree"), alpha = 0.5) +
   geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
   theme_minimal() +
-  labs(title = "Predicted vs Actual G3 Scores",
-       x = "Actual G3", y = "Predicted G3",
-       color = "Model") +
+  labs(
+    title = "Predicted vs Actual G3 Scores",
+    x = "Actual G3", y = "Predicted G3",
+    color = "Model"
+  ) +
   scale_color_manual(values = c("Linear Regression" = "blue", "Regression Tree" = "red"))
 
 
@@ -158,9 +160,9 @@ mse_failures_no_higher_no <- mean((failures_no_higher_no$G3 - mean_failures_no_h
 
 # Calculate the total MSE
 total_mse <- (mse_failures_yes_absences_yes * nrow(failures_yes_absences_yes) +
-                mse_failures_yes_absences_no * nrow(failures_yes_absences_no) +
-                mse_failures_no_higher_yes * nrow(failures_no_higher_yes) +
-                mse_failures_no_higher_no * nrow(failures_no_higher_no)) / nrow(sd)
+  mse_failures_yes_absences_no * nrow(failures_yes_absences_no) +
+  mse_failures_no_higher_yes * nrow(failures_no_higher_yes) +
+  mse_failures_no_higher_no * nrow(failures_no_higher_no)) / nrow(sd)
 
 total_mse
 
@@ -199,9 +201,9 @@ mse_failures_no_absences_no <- mean((failures_no_absences_no$G3 - mean_failures_
 
 # Calculate the total MSE
 total_mse_swapped <- (mse_failures_yes_higher_yes * nrow(failures_yes_higher_yes) +
-                        mse_failures_yes_higher_no * nrow(failures_yes_higher_no) +
-                        mse_failures_no_absences_yes * nrow(failures_no_absences_yes) +
-                        mse_failures_no_absences_no * nrow(failures_no_absences_no)) / nrow(sd)
+  mse_failures_yes_higher_no * nrow(failures_yes_higher_no) +
+  mse_failures_no_absences_yes * nrow(failures_no_absences_yes) +
+  mse_failures_no_absences_no * nrow(failures_no_absences_no)) / nrow(sd)
 
 total_mse_swapped
 
@@ -223,7 +225,7 @@ sd_mini <- sd_mini[, c("sumalc", "absences", "G3")]
 
 
 
-tree_model <- rpart(G3 ~ sumalc + absences, data = sd_mini, control = rpart.control(cp = 0.002, minsplit = 40 ))
+tree_model <- rpart(G3 ~ sumalc + absences, data = sd_mini, control = rpart.control(cp = 0.002, minsplit = 40))
 rpart.plot(tree_model)
 
 sumalc_seq <- seq(min(sd_mini$sumalc), max(sd_mini$sumalc), length.out = 13)
@@ -233,13 +235,13 @@ grid <- expand.grid(sumalc = sumalc_seq, absences = absences_seq)
 grid$G3_pred <- predict(tree_model, newdata = grid)
 
 ggplot(grid, aes(x = sumalc, y = absences, fill = G3_pred)) +
-  geom_tile() +  
-  geom_text(aes(label = round(G3_pred, 1)), size = 3) +  
-  scale_fill_gradient(low = "darkred", high = "lightblue", guide = "none") + 
+  geom_tile() +
+  geom_text(aes(label = round(G3_pred, 1)), size = 3) +
+  scale_fill_gradient(low = "darkred", high = "lightblue", guide = "none") +
   labs(x = "Alcohol consumption", y = "Absences", title = "Predicting Exam score based on alcohol consumption and Absences") +
   theme_minimal() +
-  geom_point(data = sd_mini, aes(x = sumalc, y = absences), color = "blue", size = 2, inherit.aes = FALSE)# Add blue points for actual data
-  
+  geom_point(data = sd_mini, aes(x = sumalc, y = absences), color = "blue", size = 2, inherit.aes = FALSE) # Add blue points for actual data
+
 
 
 
@@ -254,53 +256,60 @@ split_vars <- tree_model_2splits$frame$var[tree_model_2splits$frame$var != "<lea
 split_vars <- unique(as.character(split_vars))
 
 # If there are fewer than 2 splits, notify the user
-if(1==1) {
-  
+if (1 == 1) {
   # Create a 3D scatter plot with decision boundaries
-  plot_ly(sd, x = ~get(split_vars[1]), y = ~get(split_vars[2]), z = ~G3, 
-          type = "scatter3d", mode = "markers", 
-          marker = list(size = 3, color = ~G3, colorscale = "Viridis", opacity = 0.8)) %>%
+  plot_ly(sd,
+    x = ~ get(split_vars[1]), y = ~ get(split_vars[2]), z = ~G3,
+    type = "scatter3d", mode = "markers",
+    marker = list(size = 3, color = ~G3, colorscale = "Viridis", opacity = 0.8)
+  ) %>%
     add_markers() %>%
-    layout(scene = list(xaxis = list(title = split_vars[1]),
-                        yaxis = list(title = split_vars[2]),
-                        zaxis = list(title = "G3")))
-  
+    layout(scene = list(
+      xaxis = list(title = split_vars[1]),
+      yaxis = list(title = split_vars[2]),
+      zaxis = list(title = "G3")
+    ))
+
   # Function to add a plane to the plot
   add_plane <- function(p, split_var, split_value, color) {
     var_range <- range(sd[[split_var]])
     other_var <- setdiff(split_vars, split_var)[1]
     other_range <- range(sd[[other_var]])
-    
-    if(split_var == split_vars[1]) {
+
+    if (split_var == split_vars[1]) {
       x <- rep(split_value, 2)
       y <- other_range
     } else {
       x <- var_range
       y <- rep(split_value, 2)
     }
-    
+
     z <- matrix(rep(range(sd$G3), each = 2), nrow = 2)
-    
+
     add_surface(p, x = x, y = y, z = z, opacity = 0.3, colorscale = list(c(0, 1), c(color, color)))
   }
-  
+
   # Get split points
   splits <- tree_model_2splits$splits
-  split_points <- splits[splits[,"count"] > 0, "index"]
-  
+  split_points <- splits[splits[, "count"] > 0, "index"]
+
   # Create the plot with decision boundaries
-  p <- plot_ly(sd, x = ~get(split_vars[1]), y = ~get(split_vars[2]), z = ~G3, 
-               type = "scatter3d", mode = "markers", 
-               marker = list(size = 3, color = ~G3, colorscale = "Viridis", opacity = 0.8)) %>%
-    layout(scene = list(xaxis = list(title = split_vars[1]),
-                        yaxis = list(title = split_vars[2]),
-                        zaxis = list(title = "G3")))
-  
+  p <- plot_ly(sd,
+    x = ~ get(split_vars[1]), y = ~ get(split_vars[2]), z = ~G3,
+    type = "scatter3d", mode = "markers",
+    marker = list(size = 3, color = ~G3, colorscale = "Viridis", opacity = 0.8)
+  ) %>%
+    layout(scene = list(
+      xaxis = list(title = split_vars[1]),
+      yaxis = list(title = split_vars[2]),
+      zaxis = list(title = "G3")
+    ))
+
   # Add planes for each split
-  for(i in 1:length(split_points)) {
+  for (i in 1:length(split_points)) {
     p <- add_plane(p, split_vars[i], split_points[i], color = c("red", "blue")[i])
   }
-  
+
   # Display the plot
   p
 }
@@ -315,35 +324,36 @@ if(1==1) {
 
 # Using the BART package
 
-burn = 1000; nd = 1000
+burn <- 1000
+nd <- 1000
 
-y = sd$G3
-x = sd[,1:30]
-p = ncol(x)
+y <- sd$G3
+x <- sd[, 1:30]
+p <- ncol(x)
 
-bf = wbart(x,y,nskip=burn,ndpost=nd,printevery=500)
+bf <- wbart(x, y, nskip = burn, ndpost = nd, printevery = 500)
 
 # linear model
 
-lmf = lm(G3~., sd)
+lmf <- lm(G3 ~ ., sd)
 
-plot(bf$sigma,ylim=c(1.5,5),xlab="MCMC iteration",ylab="sigma draw",cex=.5)
-abline(h=summary(lmf)$sigma,col="red",lty=2) #least squares estimates
-abline(v = burn,col="green")
-title(main="sigma draws, green line at burn in, red line at least squares estimate",cex.main=.8)
+plot(bf$sigma, ylim = c(1.5, 5), xlab = "MCMC iteration", ylab = "sigma draw", cex = .5)
+abline(h = summary(lmf)$sigma, col = "red", lty = 2) # least squares estimates
+abline(v = burn, col = "green")
+title(main = "sigma draws, green line at burn in, red line at least squares estimate", cex.main = .8)
 
 
 
-thin = 20
-ii = burn + thin*(1:(nd/thin))
-acf(bf$sigma[ii],main="ACF of thinned post burn-in sigma draws")
+thin <- 20
+ii <- burn + thin * (1:(nd / thin))
+acf(bf$sigma[ii], main = "ACF of thinned post burn-in sigma draws")
 
 # making small BART model to compare
-bf20 = wbart(x,y,nskip=burn,ndpost=nd, ntree = 20,printevery=500)
+bf20 <- wbart(x, y, nskip = burn, ndpost = nd, ntree = 20, printevery = 500)
 
 
-fitmat = cbind(y,bf$yhat.train.mean,bf20$yhat.train.mean)
-colnames(fitmat) = c("y","yhatBART","yhatBART20")
+fitmat <- cbind(y, bf$yhat.train.mean, bf20$yhat.train.mean)
+colnames(fitmat) <- c("y", "yhatBART", "yhatBART20")
 pairs(fitmat)
 
 print(cor(fitmat))
@@ -354,12 +364,12 @@ dim(bf20$varcount)
 
 
 
-#compute row percentages
-percount20 = bf20$varcount/apply(bf20$varcount,1,sum)
+# compute row percentages
+percount20 <- bf20$varcount / apply(bf20$varcount, 1, sum)
 # mean of row percentages
-mvp20 =apply(percount20,2,mean)
-#quantiles of row percentags
-qm = apply(percount20,2,quantile,probs=c(.05,.95))
+mvp20 <- apply(percount20, 2, mean)
+# quantiles of row percentags
+qm <- apply(percount20, 2, quantile, probs = c(.05, .95))
 
 print(mvp20)
 
@@ -370,8 +380,10 @@ p <- ncol(qm)
 rgy <- range(qm, na.rm = TRUE)
 
 # Create the plot
-plot(c(1, p), rgy, type = "n", xlab = "variable", 
-     ylab = "post mean, percent var use", axes = FALSE)
+plot(c(1, p), rgy,
+  type = "n", xlab = "variable",
+  ylab = "post mean, percent var use", axes = FALSE
+)
 
 # Add x-axis
 axis(1, at = 1:p, labels = colnames(qm), cex.lab = 0.7, cex.axis = 0.7)
@@ -394,11 +406,11 @@ for (i in 1:p) {
 
 
 
-percount = bf$varcount/apply(bf$varcount,1,sum)
-mvp = apply(percount,2,mean)
-plot(mvp20,xlab="variable number",ylab="post mean, percent var use",col="blue",type="b")
-lines(mvp,type="b",col='red')
-legend("topleft",legend=c("BART","BART20"),col=c("red","blue"),lty=c(1,1))
+percount <- bf$varcount / apply(bf$varcount, 1, sum)
+mvp <- apply(percount, 2, mean)
+plot(mvp20, xlab = "variable number", ylab = "post mean, percent var use", col = "blue", type = "b")
+lines(mvp, type = "b", col = "red")
+legend("topleft", legend = c("BART", "BART20"), col = c("red", "blue"), lty = c(1, 1))
 
 
 
@@ -456,11 +468,11 @@ valid_predL <- predict(lm_model, valid_data)
 valid_mseL <- mean((valid_data$G3 - valid_predL)^2)
 
 # Print results
-comp <- function(){
-cat("Training MSE   Tree:", train_mse, "\n")
-cat("Validation MSE Tree:", valid_mse, "\n\n")
-cat("Training MSE   Regr:", train_mseL, "\n")
-cat("Validation MSE Regr:", valid_mseL, "\n\n")
+comp <- function() {
+  cat("Training MSE   Tree:", train_mse, "\n")
+  cat("Validation MSE Tree:", valid_mse, "\n\n")
+  cat("Training MSE   Regr:", train_mseL, "\n")
+  cat("Validation MSE Regr:", valid_mseL, "\n\n")
 }
 
 comp()
@@ -487,43 +499,44 @@ valid_data <- sd[-split_index, ]
 
 # Using the BART package
 
-burn = 1000; nd = 1000
+burn <- 1000
+nd <- 1000
 
-fix = c(1:28, 30)
+fix <- c(1:28, 30)
 
-y = train_data$G3
-x = train_data[,fix]
-p = ncol(x)
+y <- train_data$G3
+x <- train_data[, fix]
+p <- ncol(x)
 
-bf = wbart(x,y,nskip=burn,ndpost=nd,printevery=500)
+bf <- wbart(x, y, nskip = burn, ndpost = nd, printevery = 500)
 
 
 
 
 
 # Prepare the data
-X <- as.matrix(sd[, -which(names(sd) == "G3")])  # predictors
-y <- sd$G3  # target variable
+X <- as.matrix(sd[, -which(names(sd) == "G3")]) # predictors
+y <- sd$G3 # target variable
 
 # Multivariate Linear Regression with Regularization (Elastic Net)
 # We'll use cross-validation to find the best alpha and lambda values
-cv_model <- cv.glmnet(X[split_index,], y[split_index], alpha = 0.5, nfolds = 5)
+cv_model <- cv.glmnet(X[split_index, ], y[split_index], alpha = 0.5, nfolds = 5)
 best_lambda <- cv_model$lambda.min
 
 # Fit the final model
-lm_model <- glmnet(X[split_index,], y[split_index], alpha = 0.5, lambda = best_lambda)
+lm_model <- glmnet(X[split_index, ], y[split_index], alpha = 0.5, lambda = best_lambda)
 
 # BART model
 burn <- 1000
 nd <- 1000
-bart_model <- wbart(X[split_index,], y[split_index], nskip = burn, ndpost = nd, printevery = 500)
+bart_model <- wbart(X[split_index, ], y[split_index], nskip = burn, ndpost = nd, printevery = 500)
 
 
 summary(lm_model)
 
 # Make predictions on the test set
-lm_pred <- predict(lm_model, newx = X[-split_index,], s = best_lambda)
-bart_pred <- predict(bart_model, newdata = X[-split_index,])
+lm_pred <- predict(lm_model, newx = X[-split_index, ], s = best_lambda)
+bart_pred <- predict(bart_model, newdata = X[-split_index, ])
 
 # Calculate MSE for both models on the test set
 lm_mse <- mean((y[-split_index] - lm_pred)^2)
@@ -543,7 +556,7 @@ cat("MSE:", bart_mse, "\n")
 cat("R-squared:", bart_rsq, "\n")
 
 # Compare variable importance
-lm_importance <- abs(coef(lm_model))[-1]  # Exclude intercept
+lm_importance <- abs(coef(lm_model))[-1] # Exclude intercept
 bart_importance <- bartModelMatrix(bart_model)$varcount.mean
 
 # Print top 10 most important variables for each model
@@ -588,7 +601,7 @@ valid_predL <- predict(lm_model, valid_data)
 valid_mseL <- mean((valid_data$G3 - valid_predL)^2)
 
 # Print results
-comp <- function(){
+comp <- function() {
   cat("Training MSE   Tree:", train_mse, "\n")
   cat("Validation MSE Tree:", valid_mse, "\n\n")
   cat("Training MSE   Regr:", train_mseL, "\n")
@@ -623,7 +636,7 @@ valid_pred_tree <- predict(tree_model, valid_data)
 valid_mse_tree <- mean((valid_data$G3 - valid_pred_tree)^2)
 
 install.packages("lintr")
-library(lintr) 
+library(lintr)
 
 
 
@@ -653,7 +666,7 @@ valid_predL <- predict(lm_model, valid_data)
 valid_mseL <- mean((valid_data$G3 - valid_predL)^2)
 
 # Print results
-comp <- function(){
+comp <- function() {
   cat("Training MSE   Tree:", train_mse, "\n")
   cat("Validation MSE Tree:", valid_mse, "\n\n")
   cat("Training MSE   Regr:", train_mseL, "\n")
@@ -664,11 +677,11 @@ comp()
 
 
 
-fix = c(1:28, 30)
+fix <- c(1:28, 30)
 
 
 
-p = ncol(x)
+p <- ncol(x)
 
 
 
@@ -681,7 +694,7 @@ x_valid <- valid_data[, !names(valid_data) %in% "G3"]
 y_valid <- valid_data$G3
 
 # Fit BART model
-bf   =        wbart(x,y,                                   nskip=burn,ndpost=nd,printevery=500)
+bf <- wbart(x, y, nskip = burn, ndpost = nd, printevery = 500)
 
 bart_model <- wbart(x.train = x_train, y.train = y_train, x.test = x_valid, nskip = 1000, ndpost = 1000, printevery = 500)
 
@@ -694,7 +707,7 @@ valid_mse_bart <- mean((y_valid - valid_pred_bart)^2)
 
 
 # Print results
-comp <- function(){
+comp <- function() {
   cat("Training MSE   Tree:", train_mse, "\n")
   cat("Validation MSE Tree:", valid_mse, "\n\n")
   cat("Training MSE   Regr:", train_mseL, "\n")
@@ -716,25 +729,25 @@ comp()
 
 # linear model
 
-lmf = lm(G3~., train_data)
+lmf <- lm(G3 ~ ., train_data)
 
-plot(bf$sigma,ylim=c(1.5,5),xlab="MCMC iteration",ylab="sigma draw",cex=.5)
-abline(h=summary(lmf)$sigma,col="red",lty=2) #least squares estimates
-abline(v = burn,col="green")
-title(main="sigma draws, green line at burn in, red line at least squares estimate",cex.main=.8)
+plot(bf$sigma, ylim = c(1.5, 5), xlab = "MCMC iteration", ylab = "sigma draw", cex = .5)
+abline(h = summary(lmf)$sigma, col = "red", lty = 2) # least squares estimates
+abline(v = burn, col = "green")
+title(main = "sigma draws, green line at burn in, red line at least squares estimate", cex.main = .8)
 
 
 
-thin = 20
-ii = burn + thin*(1:(nd/thin))
-acf(bf$sigma[ii],main="ACF of thinned post burn-in sigma draws")
+thin <- 20
+ii <- burn + thin * (1:(nd / thin))
+acf(bf$sigma[ii], main = "ACF of thinned post burn-in sigma draws")
 
 # making small BART model to compare
-bf20 = wbart(x,y,nskip=burn,ndpost=nd, ntree = 20,printevery=500)
+bf20 <- wbart(x, y, nskip = burn, ndpost = nd, ntree = 20, printevery = 500)
 
 
-fitmat = cbind(y,bf$yhat.train.mean,bf20$yhat.train.mean)
-colnames(fitmat) = c("y","yhatBART","yhatBART20")
+fitmat <- cbind(y, bf$yhat.train.mean, bf20$yhat.train.mean)
+colnames(fitmat) <- c("y", "yhatBART", "yhatBART20")
 pairs(fitmat)
 
 print(cor(fitmat))
@@ -745,12 +758,12 @@ dim(bf20$varcount)
 
 
 
-#compute row percentages
-percount20 = bf20$varcount/apply(bf20$varcount,1,sum)
+# compute row percentages
+percount20 <- bf20$varcount / apply(bf20$varcount, 1, sum)
 # mean of row percentages
-mvp20 =apply(percount20,2,mean)
-#quantiles of row percentags
-qm = apply(percount20,2,quantile,probs=c(.05,.95))
+mvp20 <- apply(percount20, 2, mean)
+# quantiles of row percentags
+qm <- apply(percount20, 2, quantile, probs = c(.05, .95))
 
 print(mvp20)
 
@@ -761,8 +774,10 @@ p <- ncol(qm)
 rgy <- range(qm, na.rm = TRUE)
 
 # Create the plot
-plot(c(1, p), rgy, type = "n", xlab = "variable", 
-     ylab = "post mean, percent var use", axes = FALSE)
+plot(c(1, p), rgy,
+  type = "n", xlab = "variable",
+  ylab = "post mean, percent var use", axes = FALSE
+)
 
 # Add x-axis
 axis(1, at = 1:p, labels = colnames(qm), cex.lab = 0.7, cex.axis = 0.7)
@@ -785,11 +800,11 @@ for (i in 1:p) {
 
 
 
-percount = bf$varcount/apply(bf$varcount,1,sum)
-mvp = apply(percount,2,mean)
-plot(mvp20,xlab="variable number",ylab="post mean, percent var use",col="blue",type="b")
-lines(mvp,type="b",col='red')
-legend("topleft",legend=c("BART","BART20"),col=c("red","blue"),lty=c(1,1))
+percount <- bf$varcount / apply(bf$varcount, 1, sum)
+mvp <- apply(percount, 2, mean)
+plot(mvp20, xlab = "variable number", ylab = "post mean, percent var use", col = "blue", type = "b")
+lines(mvp, type = "b", col = "red")
+legend("topleft", legend = c("BART", "BART20"), col = c("red", "blue"), lty = c(1, 1))
 
 
 
@@ -869,12 +884,12 @@ calculate_mse <- function(actual, predicted) {
 # Create a complex tree
 complex_tree <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = 0.0025, minsplit = 5))
 
-#rpart.plot(complex_tree, main = "Initial Complex Regression Tree")
-#plotcp(complex_tree)
+# rpart.plot(complex_tree, main = "Initial Complex Regression Tree")
+# plotcp(complex_tree)
 
 
 # Find optimal CP value
-opt_cp <- complex_tree$cptable[which.min(complex_tree$cptable[,"xerror"]), "CP"]
+opt_cp <- complex_tree$cptable[which.min(complex_tree$cptable[, "xerror"]), "CP"]
 
 print(opt_cp)
 
@@ -886,21 +901,21 @@ rpart.plot(pruned_tree, main = "Optimal Pruned Tree")
 ## 5.2 compare the two trees ----
 
 # Calculate the MSEs
-MSE_complex <- function(){
+MSE_complex <- function() {
   train_pred_complex <- predict(complex_tree, train_data)
   test_pred_complex <- predict(complex_tree, test_data)
   train_mse_complex <- calculate_mse(train_data$G3, train_pred_complex)
   test_mse_complex <- calculate_mse(test_data$G3, test_pred_complex)
-  
+
   print(paste("Complex Tree - Training MSE:", train_mse_complex))
   print(paste("Complex Tree -     Test MSE:", test_mse_complex))
 }
-MSE_pruned <- function(){
+MSE_pruned <- function() {
   train_pred_pruned <- predict(pruned_tree, train_data)
   test_pred_pruned <- predict(pruned_tree, test_data)
   train_mse_pruned <- calculate_mse(train_data$G3, train_pred_pruned)
   test_mse_pruned <- calculate_mse(test_data$G3, test_pred_pruned)
-  
+
   print(paste("Pruned Tree - Training MSE:", train_mse_pruned))
   print(paste("Pruned Tree - Test MSE:", test_mse_pruned))
 }
@@ -929,7 +944,7 @@ mse_values <- sapply(cp_table[, "CP"], function(cp) {
 # Making data for ggplot
 mse_data <- data.frame(
   num_splits = rep(num_splits, 2),
-  mse = c(mse_values[1,], mse_values[2,]),
+  mse = c(mse_values[1, ], mse_values[2, ]),
   type = rep(c("Training MSE", "Test MSE"), each = length(num_splits))
 )
 # And for the label
@@ -943,14 +958,14 @@ ggplot(mse_data, aes(x = num_splits, y = mse, color = type)) +
   geom_line() +
   geom_point() +
   scale_color_manual(values = c("blue", "red")) +
-  labs(x = "Number of Splits", y = "Mean Squared Error",
-       title = "MSE vs Tree Complexity",
-       color = "MSE Type") +
+  labs(
+    x = "Number of Splits", y = "Mean Squared Error",
+    title = "MSE vs Tree Complexity",
+    color = "MSE Type"
+  ) +
   theme_minimal() +
   geom_vline(xintercept = opt_splits, linetype = "dashed", color = "purple") +
-  annotate("text", x = opt_splits +6, y = min_mse +1, label = paste("Optimal number of splits =", opt_splits),
-           vjust = -1, color = "purple")
-
-
-
-
+  annotate("text",
+    x = opt_splits + 6, y = min_mse + 1, label = paste("Optimal number of splits =", opt_splits),
+    vjust = -1, color = "purple"
+  )
