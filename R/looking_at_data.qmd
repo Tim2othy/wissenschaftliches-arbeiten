@@ -22,13 +22,6 @@ library(lintr)
 library(styler)
 ```
 
-WD
-
-```{r}
-getwd()
-setwd("C:/Users/timtj/GitHub/wissenschaftliches-arbeiten/R")
-```
-
 Function to calculate MSE (That I should really use more)
 
 ```{r}
@@ -134,15 +127,6 @@ cat("Validation MSE:", valid_msePP)
 
 ```
 
-```{r}
-11.33771 / 10.03354
-```
-
-```{r}
-0.7381095 * 10.03354
-
-```
-
 So:
 
 -   I train this small tree with a couple of splits only on the training data
@@ -211,7 +195,6 @@ print(summary_lm)
 
 ```{r}
 
-
 sd$lm_pred <- predict(lm_model)
 sd$tree_pred <- predict(tree_model)
 
@@ -238,9 +221,6 @@ ggplot(sd, aes(x = G3)) +
     color = "Model"
   ) +
   scale_color_manual(values = c("Linear Regression" = "blue", "Regression Tree" = "red"))
-
-
-
 ```
 
 # 4. Plot for understanding trees
@@ -332,50 +312,6 @@ MSE_pruned()
 
 ```{r}
 cp_table <- complex_tree$cptable
-
-
-0.8469317 * 10.03636
-0.1993765 * 10.03636
-
-
-
-#[1] "Complex Tree - Training MSE: 2.00101337636504"
-#[1] "Complex Tree -     Test MSE: 11.7359314930842"
-#[1] "Pruned Tree  - Training MSE: 8.10972820563119"
-#[1] "Pruned Tree  -     Test MSE: 8.05554703417732"
-
-
-?sapply
-
-cp_table[, "CP"]
-
-```
-
-```{r}
-
-first_mse <- sapply(0.140409142, function(cp) {
-  pruned <- prune(complex_tree, cp = cp)
-  train_pred <- predict(pruned, train_data)
-  test_pred <- predict(pruned, valid_data)
-  train_mse <- calculate_mse(train_data$G3, train_pred)
-  test_mse <- calculate_mse(valid_data$G3, test_pred)
-  c(train_mse, test_mse)
-})
-
-first_mse
-
-```
-
-```{r}
-first_mse <- sapply(cp_table[, "CP"], function(cp) {
-  pruned <- prune(complex_tree, cp = cp)
-  train_pred <- predict(pruned, train_data)
-  test_pred <- predict(pruned, valid_data)
-  train_mse <- calculate_mse(train_data$G3, train_pred)
-  test_mse <- calculate_mse(valid_data$G3, test_pred)
-  c(train_mse, test_mse)
-})
-
 ```
 
 ## 5.3 Make pruning plot
@@ -445,8 +381,6 @@ ggplot(mse_data, aes(x = num_splits, y = mse, color = type)) +
     x = opt_splits + 18, y = min_mse -1 , label = paste("Optimal number of splits =", opt_splits),
     vjust = -1, color = "purple"
   )
-
-
 ```
 
 other plot for fun
@@ -580,17 +514,6 @@ comp()
 ## 6.2 Closer look at BART
 
 ```{r}
-# Fit BART model
-bart_model <- wbart(
-  x.train = x_train,
-  y.train = y_train,
-  x.test = x_valid,
-  nskip = 1000,
-  ntree = 200,
-  ndpost = 1000,
-  printevery = 500)
-
-
 
 bart_minim <- wbart(
   x.train = x_train,
@@ -628,25 +551,14 @@ mvp <- apply(percount, 2, mean)
 # quantiles of row percentags
 qm <- apply(percount, 2, quantile, probs = c(0.3, 0.7))
 
-print(mvp)
-
-
 
 # Assuming qm is a matrix or data frame
 p <- ncol(qm)
 rgy <- range(qm, na.rm = TRUE)
 
-
-
-
-
-
-
-
 ```
 
 ```{r}
-
 # Create the plot
 plot(c(1, p), rgy,
   type = "n", xlab = "variable",
@@ -676,7 +588,6 @@ for (i in 1:p) {
 using the usual method
 
 ```{r}
-
 
 tree_model_2splits <- rpart(G3 ~ ., data = sd, control = rpart.control(maxdepth = 2))
 
