@@ -494,6 +494,8 @@ ggplot(data_conc, aes(x = data_conc[,1], y = data_conc[,2], color = data_conc[,3
 
 # 6. Comparing BART, Regression Tree and linear regression
 
+## 6.1 Comparing the 3
+
 Create tree
 
 ```{r}
@@ -580,104 +582,95 @@ comp <- function() {
 comp()
 ```
 
+## 6.2 Closer look at BART
+
+```{r}
+
+plot(bart_model$sigma)
+
+?wbart
+```
+
+```{r}
+
+
+plot(bf$sigma, ylim = c(1.5, 5), xlab = "MCMC iteration", ylab = "sigma draw", cex = .5)
+abline(h = summary(lmf)$sigma, col = "red", lty = 2) # least squares estimates
+abline(v = burn, col = "green")
+title(main = "sigma draws, green line at burn in, red line at least squares estimate", cex.main = .8)
+
+
+
+thin <- 20
+ii <- burn + thin * (1:(nd / thin))
+acf(bf$sigma[ii], main = "ACF of thinned post burn-in sigma draws")
+
+# making small BART model to compare
+bf20 <- wbart(x, y, nskip = burn, ndpost = nd, ntree = 20, printevery = 500)
+
+
+fitmat <- cbind(y, bf$yhat.train.mean, bf20$yhat.train.mean)
+colnames(fitmat) <- c("y", "yhatBART", "yhatBART20")
+pairs(fitmat)
+
+print(cor(fitmat))
+
+
+dim(bf20$varcount)
+
+
+
+
+# compute row percentages
+percount20 <- bf20$varcount / apply(bf20$varcount, 1, sum)
+# mean of row percentages
+mvp20 <- apply(percount20, 2, mean)
+# quantiles of row percentags
+qm <- apply(percount20, 2, quantile, probs = c(.05, .95))
+
+print(mvp20)
+
+
+
+# Assuming qm is a matrix or data frame
+p <- ncol(qm)
+rgy <- range(qm, na.rm = TRUE)
+
+# Create the plot
+plot(c(1, p), rgy,
+  type = "n", xlab = "variable",
+  ylab = "post mean, percent var use", axes = FALSE
+)
+
+# Add x-axis
+axis(1, at = 1:p, labels = colnames(qm), cex.lab = 0.7, cex.axis = 0.7)
+
+# Add y-axis
+axis(2, cex.lab = 1.2, cex.axis = 1.2)
+
+# Add lines for mvp20 if it exists and has the correct length
+if (exists("mvp20") && length(mvp20) == p) {
+  lines(1:p, mvp20, col = "black", lty = 4, pch = 4, type = "b", lwd = 1.5)
+}
+
+# Add vertical lines
+for (i in 1:p) {
+  lines(c(i, i), qm[, i], col = "blue", lty = 3, lwd = 1.0)
+}
+
+
+
+
+
+
+percount <- bf$varcount / apply(bf$varcount, 1, sum)
+mvp <- apply(percount, 2, mean)
+plot(mvp20, xlab = "variable number", ylab = "post mean, percent var use", col = "blue", type = "b")
+lines(mvp, type = "b", col = "red")
+legend("topleft", legend = c("BART", "BART20"), col = c("red", "blue"), lty = c(1, 1))
+```
+
 # All the stuff I'm not using
-
-## N1. 3D Scatter Plot with Decision Boundaries, need to fix, worked before not sure why not now
-
-```{r}
-sumalc = sd$sumalc 
-failures = sd$failures
-G3 = sd$G3
-sd = data.frame(sumalc, failures, G3)
-
-
-pruned_tree <- rpart(G3 ~ ., data = sd, control = rpart.control(cp = 0.03, minsplit = 5))
-rpart.plot(pruned_tree)
-```
-
-```{r}
-
-
-# Get the variables used for splitting
-split_vars <- pruned_tree$frame$var[pruned_tree$frame$var != "<leaf>"]
-split_vars <- unique(as.character(split_vars))
-```
-
-```{r}
-
-plot_ly(sd,
-        x = ~ get(split_vars[1]), y = ~ get(split_vars[2]), z = ~G3,
-        type = "scatter3d", mode = "markers",
-        marker = list(size = 3, color = ~G3, colorscale = "Viridis", opacity = 0.8)
-        ) %>%
-    add_markers() %>%
-    layout(scene = list(
-      xaxis = list(title = split_vars[1]),
-      yaxis = list(title = split_vars[2]),
-      zaxis = list(title = "G3")
-    ))
-
-
-####
-
-
-
-# Function to add a plane to the plot
-add_plane <- function(p, split_var, split_value, color) {
-  var_range <- range(sd[[split_var]])
-  other_var <- setdiff(split_vars, split_var)[1]
-  other_range <- range(sd[[other_var]])
-  if (split_var == split_vars[1]) {
-    x <- rep(split_value, 2)
-    y <- other_range
-    } else {
-      x <- var_range
-      y <- rep(split_value, 2)
-      }
-  z <- matrix(rep(range(sd$G3), each = 2), nrow = 2)
-  add_surface(p, x = x, y = y, z = z, opacity = 0.3, colorscale = list(c(0, 1), color))
-}
-
-# Get split points
-splits <- pruned_tree$splits
-split_points <- splits[splits[, "count"] > 0, "index"]
-
-# Create the plot with decision boundaries
-p <- plot_ly(sd,
-             x = ~ get(split_vars[1]), y = ~ get(split_vars[2]), z = ~G3,
-             type = "scatter3d", mode = "markers",
-             marker = list(size = 3, color = ~G3, colorscale = "Viridis", opacity = 0.8)
-             ) %>%
-  layout(scene = list(
-    xaxis = list(title = split_vars[1]),
-    yaxis = list(title = split_vars[2]),
-    zaxis = list(title = "G3")
-    ))
-
-p
-
-split_vars[3] = "sumalc"
-
-split_vars
-split_points
-
-# Add planes for each split
-for (i in 1:2) {
-  p <- add_plane(p, split_vars[i], split_points[i], color = c("red", "blue")[i])
-}
-
-# Display the plot
-
-p <- add_plane(p, split_vars[1], split_points[1], color = "red")
-
-p <- add_plane(p, split_vars[2], split_points[2], color = "green")
-
-p <- add_plane(p, split_vars[3], split_points[3], color = "blue")
-
-p
-
-p
-```
 
 ## N2. makeing Small tree for interactions
 
@@ -783,191 +776,4 @@ total_mse_swapped <- (mse_failures_yes_higher_yes * nrow(failures_yes_higher_yes
 
 total_mse_swapped
 
-```
-
-## N3 linear model to look at BART not sure what this does
-
-```{r}
-
-
-lmf <- lm(G3 ~ ., train_data)
-
-plot(bf$sigma, ylim = c(1.5, 5), xlab = "MCMC iteration", ylab = "sigma draw", cex = .5)
-abline(h = summary(lmf)$sigma, col = "red", lty = 2) # least squares estimates
-abline(v = burn, col = "green")
-title(main = "sigma draws, green line at burn in, red line at least squares estimate", cex.main = .8)
-
-
-
-thin <- 20
-ii <- burn + thin * (1:(nd / thin))
-acf(bf$sigma[ii], main = "ACF of thinned post burn-in sigma draws")
-
-# making small BART model to compare
-bf20 <- wbart(x, y, nskip = burn, ndpost = nd, ntree = 20, printevery = 500)
-
-
-fitmat <- cbind(y, bf$yhat.train.mean, bf20$yhat.train.mean)
-colnames(fitmat) <- c("y", "yhatBART", "yhatBART20")
-pairs(fitmat)
-
-print(cor(fitmat))
-
-
-dim(bf20$varcount)
-
-
-
-
-# compute row percentages
-percount20 <- bf20$varcount / apply(bf20$varcount, 1, sum)
-# mean of row percentages
-mvp20 <- apply(percount20, 2, mean)
-# quantiles of row percentags
-qm <- apply(percount20, 2, quantile, probs = c(.05, .95))
-
-print(mvp20)
-
-
-
-# Assuming qm is a matrix or data frame
-p <- ncol(qm)
-rgy <- range(qm, na.rm = TRUE)
-
-# Create the plot
-plot(c(1, p), rgy,
-  type = "n", xlab = "variable",
-  ylab = "post mean, percent var use", axes = FALSE
-)
-
-# Add x-axis
-axis(1, at = 1:p, labels = colnames(qm), cex.lab = 0.7, cex.axis = 0.7)
-
-# Add y-axis
-axis(2, cex.lab = 1.2, cex.axis = 1.2)
-
-# Add lines for mvp20 if it exists and has the correct length
-if (exists("mvp20") && length(mvp20) == p) {
-  lines(1:p, mvp20, col = "black", lty = 4, pch = 4, type = "b", lwd = 1.5)
-}
-
-# Add vertical lines
-for (i in 1:p) {
-  lines(c(i, i), qm[, i], col = "blue", lty = 3, lwd = 1.0)
-}
-
-
-
-
-
-
-percount <- bf$varcount / apply(bf$varcount, 1, sum)
-mvp <- apply(percount, 2, mean)
-plot(mvp20, xlab = "variable number", ylab = "post mean, percent var use", col = "blue", type = "b")
-lines(mvp, type = "b", col = "red")
-legend("topleft", legend = c("BART", "BART20"), col = c("red", "blue"), lty = c(1, 1))
-
-
-
-
-
-
-```
-
-## N4. BART
-
-Fit BART model
-
-```{r}
-
-
-# Using the BART package
-
-burn <- 1000
-nd <- 1000
-
-y <- sd$G3
-x <- sd[, 1:30]
-p <- ncol(x)
-
-bf <- wbart(x, y, nskip = burn, ndpost = nd, printevery = 500)
-
-# linear model
-
-lmf <- lm(G3 ~ ., sd)
-
-plot(bf$sigma, ylim = c(1.5, 5), xlab = "MCMC iteration", ylab = "sigma draw", cex = .5)
-abline(h = summary(lmf)$sigma, col = "red", lty = 2) # least squares estimates
-abline(v = burn, col = "green")
-title(main = "sigma draws, green line at burn in, red line at least squares estimate", cex.main = .8)
-
-
-
-thin <- 20
-ii <- burn + thin * (1:(nd / thin))
-acf(bf$sigma[ii], main = "ACF of thinned post burn-in sigma draws")
-
-# making small BART model to compare
-bf20 <- wbart(x, y, nskip = burn, ndpost = nd, ntree = 20, printevery = 500)
-
-
-fitmat <- cbind(y, bf$yhat.train.mean, bf20$yhat.train.mean)
-colnames(fitmat) <- c("y", "yhatBART", "yhatBART20")
-pairs(fitmat)
-
-print(cor(fitmat))
-
-
-dim(bf20$varcount)
-
-
-
-
-# compute row percentages
-percount20 <- bf20$varcount / apply(bf20$varcount, 1, sum)
-# mean of row percentages
-mvp20 <- apply(percount20, 2, mean)
-# quantiles of row percentags
-qm <- apply(percount20, 2, quantile, probs = c(.05, .95))
-
-print(mvp20)
-
-
-
-# Assuming qm is a matrix or data frame
-p <- ncol(qm)
-rgy <- range(qm, na.rm = TRUE)
-
-# Create the plot
-plot(c(1, p), rgy,
-  type = "n", xlab = "variable",
-  ylab = "post mean, percent var use", axes = FALSE
-)
-
-# Add x-axis
-axis(1, at = 1:p, labels = colnames(qm), cex.lab = 0.7, cex.axis = 0.7)
-
-# Add y-axis
-axis(2, cex.lab = 1.2, cex.axis = 1.2)
-
-# Add lines for mvp20 if it exists and has the correct length
-if (exists("mvp20") && length(mvp20) == p) {
-  lines(1:p, mvp20, col = "black", lty = 4, pch = 4, type = "b", lwd = 1.5)
-}
-
-# Add vertical lines
-for (i in 1:p) {
-  lines(c(i, i), qm[, i], col = "blue", lty = 3, lwd = 1.0)
-}
-
-
-
-
-
-
-percount <- bf$varcount / apply(bf$varcount, 1, sum)
-mvp <- apply(percount, 2, mean)
-plot(mvp20, xlab = "variable number", ylab = "post mean, percent var use", col = "blue", type = "b")
-lines(mvp, type = "b", col = "red")
-legend("topleft", legend = c("BART", "BART20"), col = c("red", "blue"), lty = c(1, 1))
 ```
