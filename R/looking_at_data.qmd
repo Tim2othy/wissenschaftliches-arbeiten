@@ -530,9 +530,9 @@ bart_model <- wbart(
   x.train = x_train,
   y.train = y_train,
   x.test = x_valid,
-  nskip = 2000,
+  nskip = 1000,
   ntree = 200,
-  ndpost = 2000,
+  ndpost = 1000,
   printevery = 500)
 ```
 
@@ -592,17 +592,21 @@ plot(bart_model$sigma)
 ```
 
 ```{r}
+# Fit BART model
+bart_model <- wbart(
+  x.train = x_train,
+  y.train = y_train,
+  x.test = x_valid,
+  nskip = 1000,
+  ntree = 200,
+  ndpost = 1000,
+  printevery = 500)
+
+ii
 
 
-plot(bf$sigma, ylim = c(1.5, 5), xlab = "MCMC iteration", ylab = "sigma draw", cex = .5)
-abline(h = summary(lmf)$sigma, col = "red", lty = 2) # least squares estimates
-abline(v = burn, col = "green")
-title(main = "sigma draws, green line at burn in, red line at least squares estimate", cex.main = .8)
-
-
-
-thin <- 20
-ii <- burn + thin * (1:(nd / thin))
+ii <- 1000 + 20 * (1:(200 / 20))
+ii
 acf(bf$sigma[ii], main = "ACF of thinned post burn-in sigma draws")
 
 # making small BART model to compare
@@ -668,6 +672,10 @@ mvp <- apply(percount, 2, mean)
 plot(mvp20, xlab = "variable number", ylab = "post mean, percent var use", col = "blue", type = "b")
 lines(mvp, type = "b", col = "red")
 legend("topleft", legend = c("BART", "BART20"), col = c("red", "blue"), lty = c(1, 1))
+```
+
+```{r}
+print(ii)
 ```
 
 # All the stuff I'm not using
