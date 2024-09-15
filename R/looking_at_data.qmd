@@ -100,7 +100,7 @@ cat("Validation MSE:", valid_mse)
 
 ```
 
-## 2.1 Desperately trying to understand why the error on test and on validation set are always the same
+## 2.1 Understanding why the error on test and on validation set are always the same
 
 ```{r}
 m = tree_model$cptable
@@ -247,12 +247,7 @@ ggplot(sd, aes(x = G3)) +
 
 ```{r}
 
-
-sd_mini <- sd[, c("Walc", "Dalc", "absences", "G3")]
-sd_mini$sumalc <- sd_mini$Walc + sd_mini$Dalc
-sd_mini <- sd_mini[, c("sumalc", "absences", "G3")]
-
-
+sd_mini <- sd[, c("sumalc", "absences", "G3")]
 
 tree_model <- rpart(G3 ~ sumalc + absences, data = sd_mini, control = rpart.control(cp = 0.002, minsplit = 40))
 rpart.plot(tree_model)
@@ -415,7 +410,6 @@ mse_data <- data.frame(
 )
 
 
-opt_splits_alt <- temp_mse_data$num_splits[which.min(temp_mse_data$mse)]
 
 
 temp_mse_data <- mse_data %>% filter(type == "Test MSE")
@@ -459,13 +453,8 @@ other plot for fun
 
 ```{r}
 
-
-mse_values
-test_table = cp_table * 10.03636
-
-adj = 10.03636
+adj = mse_data[1,2]
 len = length(cp_table[,"nsplit"])
-len
 
 data_conc = data.frame(
     rep(cp_table[, "nsplit"],4),
@@ -483,13 +472,14 @@ data_conc = data.frame(
 ggplot(data_conc, aes(x = data_conc[,1], y = data_conc[,2], color = data_conc[,3])) +
   geom_line() +
   geom_point() +
-  scale_color_manual(values = c("green", "red","blue","yellow")) +
+  scale_color_manual(values = c("orange", "red","blue","green")) +
   labs(
     x = "Number of Splits", y = "Mean Squared Error",
     title = "MSE vs Tree Complexity",
     color = "MSE Type"
-  )
+  ) +
   theme_minimal()
+
 ```
 
 # 6. Comparing BART, Regression Tree and linear regression
@@ -539,6 +529,19 @@ bart_model <- wbart(
 calculate the errors
 
 ```{r}
+# Print results
+comp <- function() {
+  cat("Training MSE   Tree:", train_mse_tree, "\n")
+  cat("Validation MSE Tree:", valid_mse_tree, "\n\n")
+  cat("Training MSE   Regr:", train_mse_regr, "\n")
+  cat("Validation MSE Regr:", valid_mse_regr, "\n\n")
+  cat("Training MSE   BART:", train_mse_bart, "\n")
+  cat("Validation MSE BART:", valid_mse_bart, "\n")
+}
+
+```
+
+```{r}
 
 # tree error
 # Calculate MSE for training set
@@ -569,27 +572,12 @@ train_mse_bart <- mean((y_train - train_pred_bart)^2)
 valid_pred_bart <- bart_model$yhat.test.mean
 valid_mse_bart <- mean((y_valid - valid_pred_bart)^2)
 
-# Print results
-comp <- function() {
-  cat("Training MSE   Tree:", train_mse_tree, "\n")
-  cat("Validation MSE Tree:", valid_mse_tree, "\n\n")
-  cat("Training MSE   Regr:", train_mse_regr, "\n")
-  cat("Validation MSE Regr:", valid_mse_regr, "\n\n")
-  cat("Training MSE   BART:", train_mse_bart, "\n")
-  cat("Validation MSE BART:", valid_mse_bart, "\n")
-}
+
 
 comp()
 ```
 
 ## 6.2 Closer look at BART
-
-```{r}
-
-plot(bart_model$sigma)
-
-?wbart
-```
 
 ```{r}
 # Fit BART model
@@ -602,43 +590,62 @@ bart_model <- wbart(
   ndpost = 1000,
   printevery = 500)
 
-ii
 
 
-ii <- 1000 + 20 * (1:(200 / 20))
-ii
-acf(bf$sigma[ii], main = "ACF of thinned post burn-in sigma draws")
+bart_minim <- wbart(
+  x.train = x_train,
+  y.train = y_train,
+  x.test = x_valid,
+  nskip = 100,
+  ntree = 100,
+  ndpost = 50,
+  printevery = 500)
 
-# making small BART model to compare
-bf20 <- wbart(x, y, nskip = burn, ndpost = nd, ntree = 20, printevery = 500)
 
 
-fitmat <- cbind(y, bf$yhat.train.mean, bf20$yhat.train.mean)
-colnames(fitmat) <- c("y", "yhatBART", "yhatBART20")
+
+fitmat <- cbind(train_data$G3, bart_model$yhat.train.mean, bart_minim$yhat.train.mean)
+
+
+
 pairs(fitmat)
 
-print(cor(fitmat))
+cor(fitmat)
 
 
-dim(bf20$varcount)
 
 
+
+```
+
+```{r}
 
 
 # compute row percentages
-percount20 <- bf20$varcount / apply(bf20$varcount, 1, sum)
+percount <- bart_model$varcount / apply(bart_model$varcount, 1, sum)
 # mean of row percentages
-mvp20 <- apply(percount20, 2, mean)
+mvp <- apply(percount, 2, mean)
 # quantiles of row percentags
-qm <- apply(percount20, 2, quantile, probs = c(.05, .95))
+qm <- apply(percount, 2, quantile, probs = c(0.3, 0.7))
 
-print(mvp20)
+print(mvp)
 
 
 
 # Assuming qm is a matrix or data frame
 p <- ncol(qm)
 rgy <- range(qm, na.rm = TRUE)
+
+
+
+
+
+
+
+
+```
+
+```{r}
 
 # Create the plot
 plot(c(1, p), rgy,
@@ -652,35 +659,19 @@ axis(1, at = 1:p, labels = colnames(qm), cex.lab = 0.7, cex.axis = 0.7)
 # Add y-axis
 axis(2, cex.lab = 1.2, cex.axis = 1.2)
 
-# Add lines for mvp20 if it exists and has the correct length
-if (exists("mvp20") && length(mvp20) == p) {
-  lines(1:p, mvp20, col = "black", lty = 4, pch = 4, type = "b", lwd = 1.5)
-}
+
+lines(1:p, mvp, col = "black", lty = 4, pch = 4, type = "b", lwd = 1.5)
+
 
 # Add vertical lines
 for (i in 1:p) {
   lines(c(i, i), qm[, i], col = "blue", lty = 3, lwd = 1.0)
 }
-
-
-
-
-
-
-percount <- bf$varcount / apply(bf$varcount, 1, sum)
-mvp <- apply(percount, 2, mean)
-plot(mvp20, xlab = "variable number", ylab = "post mean, percent var use", col = "blue", type = "b")
-lines(mvp, type = "b", col = "red")
-legend("topleft", legend = c("BART", "BART20"), col = c("red", "blue"), lty = c(1, 1))
-```
-
-```{r}
-print(ii)
 ```
 
 # All the stuff I'm not using
 
-## N2. makeing Small tree for interactions
+## N1. making Small tree for interactions
 
 using the usual method
 
