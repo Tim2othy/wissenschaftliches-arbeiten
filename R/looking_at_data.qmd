@@ -22,43 +22,41 @@ library(lintr)
 library(styler)
 ```
 
-Linting
+WD
 
 ```{r}
 getwd()
 setwd("C:/Users/timtj/GitHub/wissenschaftliches-arbeiten/R")
+```
 
-lint("looking_at_data.qmd")
+Function to calculate MSE (That I should really use more)
 
-# not sure why not working anymore but makes sense
-# input <- readLines("looking_at_data.qmd")
-# writeLines(style_text(input), con = "looking_at_data.qmd")
+```{r}
+
+# Function to calculate MSE
+calculate_mse <- function(actual, predicted) {
+  mean((actual - predicted)^2)
+}
 ```
 
 # 1. Setting up data
 
 ```{r}
-
-
+load("C:/Users/timtj/GitHub/wissenschaftliches-arbeiten/R/student_por.RData")
 sd <- data.frame(student_por)
 
 sd <- sd %>%
   mutate_if(is.character, as.factor)
 
-
 sd$sumalc <- sd$Walc + sd$Dalc
-
 sd$Dalc <- NULL
 sd$Walc <- NULL
-
 
 # Removing these because that would just be cheating
 sd$G2 <- NULL
 sd$G1 <- NULL
 
-
 # also do basic test if data is working
-
 plot(sd$studytime, sd$G3, col = "blue", pch = 19)
 grid()
 ```
@@ -73,7 +71,7 @@ valid_data <- sd[-split_index, ]
 
 ```
 
-# 2. Comparing single tree manually on test and training data
+# 2. Single tree on data sets
 
 ```{r}
 
@@ -97,13 +95,75 @@ valid_mse <- mean((valid_data$G3 - valid_pred)^2)
 
 # Print results
 cat("Training MSE:", train_mse, "\n")
-cat("Validation MSE:", valid_mse, "\n\n")
+cat("Validation MSE:", valid_mse)
+
+
+```
+
+## 2.1 Desperately trying to understand why the error on test and on validation set are always the same
+
+```{r}
+m = tree_model$cptable
+m
+
+
+```
+
+```{r}
+pruned_tree <- prune(tree_model, cp = 0.8)
+
+rpart.plot(pruned_tree)
+```
+
+```{r}
+
+# for test tree
+# Calculate MSE for training set
+train_predPP <- predict(pruned_tree, train_data)
+train_msePP <- mean((train_data$G3 - train_predPP)^2)
+
+# Calculate MSE for validation set
+valid_predPP <- predict(pruned_tree, valid_data)
+valid_msePP <- mean((valid_data$G3 - valid_predPP)^2)
+
+# Print results
+cat("Training MSE:", train_msePP, "\n")
+cat("Validation MSE:", valid_msePP)
 
 
 
 ```
 
-# 3. Simple comparison
+```{r}
+11.33771 / 10.03354
+```
+
+```{r}
+0.7381095 * 10.03354
+
+```
+
+So:
+
+-   I train this small tree with a couple of splits only on the training data
+
+-   Calculate it's MSE for both the training data and the test data
+
+    -   I get two numbers
+
+-   Then I look at the xerror and rel error, that were made using cross validation just using the training data, and then normalized so that rel error is 1 at the very start
+
+-   I create a pruned version of the tree and look at it's training error at the very start
+
+-   I multiply the rel error by that value
+
+-   And all the rel errors \* that value are the exact same as the ...
+
+-   ... as the errors I calculated with the MSE function
+
+But obviously this is the case, they are both just using the training set, why wouldn't it be like that. not sure why I was so confused.
+
+# 3. Simple comparison (no test set)
 
 ## 3.1 Basic Regression Tree
 
@@ -113,22 +173,25 @@ cat("Validation MSE:", valid_mse, "\n\n")
 tree_model <- rpart(G3 ~ ., data = sd)
 
 rpart.plot(tree_model, shadow.col = "gray")
-rpart.plot(tree_model, extra = 101, fallen.leaves = TRUE, type = 4, main = "Regression Tree")
 
 # Get variable importance
 var_importance <- tree_model$variable.importance
-print(var_importance)
 
 # Variable Importance Plot
 var_importance <- data.frame(
   variable = names(tree_model$variable.importance),
   importance = tree_model$variable.importance
 )
-ggplot(var_importance, aes(x = reorder(variable, importance), y = importance)) +
+ggplot(
+  var_importance,
+  aes(x = reorder(variable,importance),
+      y = importance)) +
   geom_bar(stat = "identity", fill = "skyblue") +
   coord_flip() +
   theme_minimal() +
-  labs(title = "Variable Importance", x = "Variables", y = "Importance")
+  labs(title = "Variable Importance",
+       x = "Variables",
+       y = "Importance")
 
 ```
 
@@ -180,7 +243,7 @@ ggplot(sd, aes(x = G3)) +
 
 ```
 
-# 4. Making nice plot for basic tree description
+# 4. Plot for understanding trees
 
 ```{r}
 
@@ -213,92 +276,136 @@ ggplot(grid, aes(x = sumalc, y = absences, fill = G3_pred)) +
 
 # 5. Pruning
 
-Function to calculate MSE (That I should really use more)
-
-```{r}
-
-
-# Function to calculate MSE
-calculate_mse <- function(actual, predicted) {
-  mean((actual - predicted)^2)
-}
-
-```
-
 ## 5.1 Make and prune large tree
 
 ```{r}
-
-
 # Create a complex tree
-complex_tree <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = 0.0025, minsplit = 5))
+complex_tree <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = 0.002, minsplit = 5))
 
 rpart.plot(complex_tree, main = "Initial Complex Regression Tree")
 plotcp(complex_tree)
+```
 
-
+```{r}
 # Find optimal CP value
-opt_cp <- complex_tree$cptable[which.min(complex_tree$cptable[, "xerror"]), "CP"]
+opt_cp   <- complex_tree$cptable[which.min(complex_tree$cptable[, "xerror"]), "CP"]
+opt_sp_1 <- complex_tree$cptable[which.min(complex_tree$cptable[, "xerror"]), "nsplit"]
 
-print(opt_cp)
+
+
+print(opt_sp_1) # for xerror using cross validation
+print(opt_cp) # for xerror
+print(min(complex_tree$cptable[, "xerror"]))
+print(min(complex_tree$cptable[, "rel error"]))
 
 # Prune the tree
 pruned_tree <- prune(complex_tree, cp = opt_cp)
+
 rpart.plot(pruned_tree, main = "Optimal Pruned Tree")
 
 ```
 
 ## 5.2 Compare original and pruned tree
 
-```{r}
+using the split of earlier data, for double not over fitting.
 
+```{r}
 
 # Calculate the MSEs
 MSE_complex <- function() {
   train_pred_complex <- predict(complex_tree, train_data)
-  test_pred_complex <- predict(complex_tree, test_data)
+  test_pred_complex <- predict(complex_tree, valid_data)
   train_mse_complex <- calculate_mse(train_data$G3, train_pred_complex)
-  test_mse_complex <- calculate_mse(test_data$G3, test_pred_complex)
+  test_mse_complex <- calculate_mse(valid_data$G3, test_pred_complex)
 
   print(paste("Complex Tree - Training MSE:", train_mse_complex))
   print(paste("Complex Tree -     Test MSE:", test_mse_complex))
 }
 MSE_pruned <- function() {
   train_pred_pruned <- predict(pruned_tree, train_data)
-  test_pred_pruned <- predict(pruned_tree, test_data)
+  test_pred_pruned <- predict(pruned_tree, valid_data)
   train_mse_pruned <- calculate_mse(train_data$G3, train_pred_pruned)
-  test_mse_pruned <- calculate_mse(test_data$G3, test_pred_pruned)
+  test_mse_pruned <- calculate_mse(valid_data$G3, test_pred_pruned)
 
-  print(paste("Pruned Tree - Training MSE:", train_mse_pruned))
-  print(paste("Pruned Tree - Test MSE:", test_mse_pruned))
+  print(paste("Pruned Tree  - Training MSE:", train_mse_pruned))
+  print(paste("Pruned Tree  -     Test MSE:", test_mse_pruned))
 }
 
 MSE_complex()
 MSE_pruned()
+```
+
+```{r}
+cp_table <- complex_tree$cptable
+
+
+0.8469317 * 10.03636
+0.1993765 * 10.03636
+
+
+
+#[1] "Complex Tree - Training MSE: 2.00101337636504"
+#[1] "Complex Tree -     Test MSE: 11.7359314930842"
+#[1] "Pruned Tree  - Training MSE: 8.10972820563119"
+#[1] "Pruned Tree  -     Test MSE: 8.05554703417732"
+
+
+?sapply
+
+cp_table[, "CP"]
 
 ```
 
-## 5.3 Make nice pruning plot
+```{r}
 
-using the split of earlier data, for double not over fitting.
+first_mse <- sapply(0.140409142, function(cp) {
+  pruned <- prune(complex_tree, cp = cp)
+  train_pred <- predict(pruned, train_data)
+  test_pred <- predict(pruned, valid_data)
+  train_mse <- calculate_mse(train_data$G3, train_pred)
+  test_mse <- calculate_mse(valid_data$G3, test_pred)
+  c(train_mse, test_mse)
+})
+
+first_mse
+
+```
+
+```{r}
+first_mse <- sapply(cp_table[, "CP"], function(cp) {
+  pruned <- prune(complex_tree, cp = cp)
+  train_pred <- predict(pruned, train_data)
+  test_pred <- predict(pruned, valid_data)
+  train_mse <- calculate_mse(train_data$G3, train_pred)
+  test_mse <- calculate_mse(valid_data$G3, test_pred)
+  c(train_mse, test_mse)
+})
+
+```
+
+## 5.3 Make pruning plot
 
 ```{r}
 
 
-cp_table <- complex_tree$cptable
 num_splits <- cp_table[, "nsplit"]
+
+plot(
+  cp_table[, "nsplit"],
+  cp_table[, "xerror"]
+
+)
+
 
 # Calculate MSE for each CP value
 mse_values <- sapply(cp_table[, "CP"], function(cp) {
   pruned <- prune(complex_tree, cp = cp)
   train_pred <- predict(pruned, train_data)
-  test_pred <- predict(pruned, test_data)
+  test_pred <- predict(pruned, valid_data)
   train_mse <- calculate_mse(train_data$G3, train_pred)
-  test_mse <- calculate_mse(test_data$G3, test_pred)
+  test_mse <- calculate_mse(valid_data$G3, test_pred)
   c(train_mse, test_mse)
 })
-
-
 
 # Making data for ggplot
 mse_data <- data.frame(
@@ -307,21 +414,28 @@ mse_data <- data.frame(
   type = rep(c("Training MSE", "Test MSE"), each = length(num_splits))
 )
 
-# And for the label
+
+opt_splits_alt <- temp_mse_data$num_splits[which.min(temp_mse_data$mse)]
+
+
 temp_mse_data <- mse_data %>% filter(type == "Test MSE")
 opt_splits <- temp_mse_data$num_splits[which.min(temp_mse_data$mse)]
 min_mse <- min(temp_mse_data$mse)
 
-opt_splits
+print(opt_splits)
+print(min_mse) # Should both be the same as in previous cells
 
 ```
+
+If the opt_sp_1 for xerror is 2 and the op_splits using mse and the test set is also 2 that means the optimal cp is also the same for both.
+
+Except for some reason sometimes the two MSEs are differen't because the one finds tree with minimal error using cross validation, and calculates the MSE with the test set for that one
+
+The other one finds which size of tree has the minimal MSE for the test set, in doing so doing a second kind of overfitting
 
 Make the plot
 
 ```{r}
-
-
-
 ggplot(mse_data, aes(x = num_splits, y = mse, color = type)) +
   geom_line() +
   geom_point() +
@@ -334,75 +448,97 @@ ggplot(mse_data, aes(x = num_splits, y = mse, color = type)) +
   theme_minimal() +
   geom_vline(xintercept = opt_splits, linetype = "dashed", color = "purple") +
   annotate("text",
-    x = opt_splits + 6, y = min_mse + 1, label = paste("Optimal number of splits =", opt_splits),
+    x = opt_splits + 18, y = min_mse -1 , label = paste("Optimal number of splits =", opt_splits),
     vjust = -1, color = "purple"
   )
+
+
 ```
 
-# 6. Better Comparing Trees and Linear regression
-
-make tree
+other plot for fun
 
 ```{r}
 
-tree_model <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = 0.03, minsplit = 40))
+
+mse_values
+test_table = cp_table * 10.03636
+
+adj = 10.03636
+len = length(cp_table[,"nsplit"])
+len
+
+data_conc = data.frame(
+    rep(cp_table[, "nsplit"],4),
+    c(cp_table[, "xerror"]*adj,
+      cp_table[, "rel error"]*adj,
+      c(mse_values[1,],mse_values[2,])
+      ),
+    c(rep("xe_er",len),
+      rep("re_er",len),
+      rep("tr_er",len),
+      rep("te_er",len)
+  )
+)
+
+ggplot(data_conc, aes(x = data_conc[,1], y = data_conc[,2], color = data_conc[,3])) +
+  geom_line() +
+  geom_point() +
+  scale_color_manual(values = c("green", "red","blue","yellow")) +
+  labs(
+    x = "Number of Splits", y = "Mean Squared Error",
+    title = "MSE vs Tree Complexity",
+    color = "MSE Type"
+  )
+  theme_minimal()
+```
+
+# 6. Comparing BART, Regression Tree and linear regression
+
+Create tree
+
+```{r}
+
+tree_model <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = opt_cp-0.0001 , minsplit = 5))
 rpart.plot(tree_model, fallen.leaves = TRUE)
 
 ```
 
-make regr
+Create regression
 
 ```{r}
-
+# Create REGR
 lm_model <- lm(G3 ~ ., data = train_data)
-summary_lm <- summary(lm_model)
-
+summary(lm_model)
 ```
 
-calculate and print errors
+Create BART
 
 ```{r}
 
-# For tree
-# Calculate MSE for training set
-train_pred <- predict(tree_model, train_data)
-train_mse <- mean((train_data$G3 - train_pred)^2)
-
-# Calculate MSE for validation set
-valid_pred <- predict(tree_model, valid_data)
-valid_mse <- mean((valid_data$G3 - valid_pred)^2)
+# Prepare data for BART
+x_train <- train_data[, !names(train_data) %in% "G3"]
+y_train <- train_data$G3
+x_valid <- valid_data[, !names(valid_data) %in% "G3"]
+y_valid <- valid_data$G3
 
 
-# For regr
-# Calculate MSE for training set
-train_predL <- predict(lm_model, train_data)
-train_mseL <- mean((train_data$G3 - train_predL)^2)
 
-# Calculate MSE for validation set
-valid_predL <- predict(lm_model, valid_data)
-valid_mseL <- mean((valid_data$G3 - valid_predL)^2)
-
-# Print results
-comp <- function() {
-  cat("Training MSE   Tree:", train_mse, "\n")
-  cat("Validation MSE Tree:", valid_mse, "\n\n")
-  cat("Training MSE   Regr:", train_mseL, "\n")
-  cat("Validation MSE Regr:", valid_mseL, "\n\n")
-}
-
-comp()
-
+# Fit BART model
+bart_model <- wbart(
+  x.train = x_train,
+  y.train = y_train,
+  x.test = x_valid,
+  nskip = 2000,
+  ntree = 200,
+  ndpost = 2000,
+  printevery = 500)
 ```
 
-# 7. Comparing BART, Regression Tree and linear regression
+calculate the errors
 
 ```{r}
 
-
-# Create TREE
-tree_model <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = 0.03, minsplit = 40))
-rpart.plot(tree_model, fallen.leaves = TRUE)
-
+# tree error
 # Calculate MSE for training set
 train_pred_tree <- predict(tree_model, train_data)
 train_mse_tree <- mean((train_data$G3 - train_pred_tree)^2)
@@ -411,75 +547,37 @@ train_mse_tree <- mean((train_data$G3 - train_pred_tree)^2)
 valid_pred_tree <- predict(tree_model, valid_data)
 valid_mse_tree <- mean((valid_data$G3 - valid_pred_tree)^2)
 
-print(train_mse_tree)
-print(valid_mse_tree)
 
-
-```
-
-Doing the fucking regression
-
-```{r}
-
-# Create REGR
-lm_model <- lm(G3 ~ ., data = train_data)
-summary(lm_model)
-
-
+# regr error
 # Calculate MSE for training set
 train_pred_regr <- predict(lm_model, train_data)
 train_mse_regr <- mean((train_data$G3 - train_pred_regr)^2)
-
 
 # Calculate MSE for validation set
 valid_pred_regr <- predict(lm_model, valid_data)
 valid_mse_regr <- mean((valid_data$G3 - valid_pred_regr)^2)
 
-print(train_mse_regr)
-print(valid_mse_regr)
 
-```
-
-Now BART : )
-
-```{r}
-
-# BART model
-# Prepare data for BART
-x_train <- train_data[, !names(train_data) %in% "G3"]
-y_train <- train_data$G3
-x_valid <- valid_data[, !names(valid_data) %in% "G3"]
-y_valid <- valid_data$G3
-
-# Fit BART model
-bf <- wbart(x_train, y_train, nskip = 1000, ndpost = 1000, printevery = 500)
-
-bart_model <- wbart(x.train = x_train, y.train = y_train, x.test = x_valid, nskip = 1000, ndpost = 1000, printevery = 500)
-
-# Calculate MSE for BART
+# BART error
+# Calculate MSE for training set
 train_pred_bart <- bart_model$yhat.train.mean
 train_mse_bart <- mean((y_train - train_pred_bart)^2)
+
+# Calculate MSE for validation set
 valid_pred_bart <- bart_model$yhat.test.mean
 valid_mse_bart <- mean((y_valid - valid_pred_bart)^2)
 
-
-
 # Print results
 comp <- function() {
-  cat("Training MSE   Tree:", train_mse, "\n")
-  cat("Validation MSE Tree:", valid_mse, "\n\n")
-  cat("Training MSE   Regr:", train_mseL, "\n")
-  cat("Validation MSE Regr:", valid_mseL, "\n\n")
+  cat("Training MSE   Tree:", train_mse_tree, "\n")
+  cat("Validation MSE Tree:", valid_mse_tree, "\n\n")
+  cat("Training MSE   Regr:", train_mse_regr, "\n")
+  cat("Validation MSE Regr:", valid_mse_regr, "\n\n")
   cat("Training MSE   BART:", train_mse_bart, "\n")
   cat("Validation MSE BART:", valid_mse_bart, "\n")
 }
 
 comp()
-
-
-valid_mse_bart
-train_mse_bart
-
 ```
 
 # All the stuff I'm not using
@@ -488,9 +586,11 @@ train_mse_bart
 
 ```{r}
 
+x = sd
+
 
 # Get the variables used for splitting
-split_vars <- tree_model_2splits$frame$var[tree_model_2splits$frame$var != "<leaf>"]
+split_vars <- pruned_tree$frame$var[pruned_tree$frame$var != "<leaf>"]
 split_vars <- unique(as.character(split_vars))
 
 # If there are fewer than 2 splits, notify the user
@@ -528,7 +628,7 @@ if (1 == 1) {
   }
 
   # Get split points
-  splits <- tree_model_2splits$splits
+  splits <- pruned_tree$splits
   split_points <- splits[splits[, "count"] > 0, "index"]
 
   # Create the plot with decision boundaries
