@@ -585,22 +585,31 @@ comp()
 ## N1. 3D Scatter Plot with Decision Boundaries, need to fix, worked before not sure why not now
 
 ```{r}
+sumalc = sd$sumalc 
+failures = sd$failures
+G3 = sd$G3
+sd = data.frame(sumalc, failures, G3)
 
-x = sd
+
+pruned_tree <- rpart(G3 ~ ., data = sd, control = rpart.control(cp = 0.03, minsplit = 5))
+rpart.plot(pruned_tree)
+```
+
+```{r}
 
 
 # Get the variables used for splitting
 split_vars <- pruned_tree$frame$var[pruned_tree$frame$var != "<leaf>"]
 split_vars <- unique(as.character(split_vars))
+```
 
-# If there are fewer than 2 splits, notify the user
-if (1 == 1) {
-  # Create a 3D scatter plot with decision boundaries
-  plot_ly(sd,
-    x = ~ get(split_vars[1]), y = ~ get(split_vars[2]), z = ~G3,
-    type = "scatter3d", mode = "markers",
-    marker = list(size = 3, color = ~G3, colorscale = "Viridis", opacity = 0.8)
-  ) %>%
+```{r}
+
+plot_ly(sd,
+        x = ~ get(split_vars[1]), y = ~ get(split_vars[2]), z = ~G3,
+        type = "scatter3d", mode = "markers",
+        marker = list(size = 3, color = ~G3, colorscale = "Viridis", opacity = 0.8)
+        ) %>%
     add_markers() %>%
     layout(scene = list(
       xaxis = list(title = split_vars[1]),
@@ -608,50 +617,66 @@ if (1 == 1) {
       zaxis = list(title = "G3")
     ))
 
-  # Function to add a plane to the plot
-  add_plane <- function(p, split_var, split_value, color) {
-    var_range <- range(sd[[split_var]])
-    other_var <- setdiff(split_vars, split_var)[1]
-    other_range <- range(sd[[other_var]])
 
-    if (split_var == split_vars[1]) {
-      x <- rep(split_value, 2)
-      y <- other_range
+####
+
+
+
+# Function to add a plane to the plot
+add_plane <- function(p, split_var, split_value, color) {
+  var_range <- range(sd[[split_var]])
+  other_var <- setdiff(split_vars, split_var)[1]
+  other_range <- range(sd[[other_var]])
+  if (split_var == split_vars[1]) {
+    x <- rep(split_value, 2)
+    y <- other_range
     } else {
       x <- var_range
       y <- rep(split_value, 2)
-    }
-
-    z <- matrix(rep(range(sd$G3), each = 2), nrow = 2)
-
-    add_surface(p, x = x, y = y, z = z, opacity = 0.3, colorscale = list(c(0, 1), c(color, color)))
-  }
-
-  # Get split points
-  splits <- pruned_tree$splits
-  split_points <- splits[splits[, "count"] > 0, "index"]
-
-  # Create the plot with decision boundaries
-  p <- plot_ly(sd,
-    x = ~ get(split_vars[1]), y = ~ get(split_vars[2]), z = ~G3,
-    type = "scatter3d", mode = "markers",
-    marker = list(size = 3, color = ~G3, colorscale = "Viridis", opacity = 0.8)
-  ) %>%
-    layout(scene = list(
-      xaxis = list(title = split_vars[1]),
-      yaxis = list(title = split_vars[2]),
-      zaxis = list(title = "G3")
-    ))
-
-  # Add planes for each split
-  for (i in 1:length(split_points)) {
-    p <- add_plane(p, split_vars[i], split_points[i], color = c("red", "blue")[i])
-  }
-
-  # Display the plot
-  p
+      }
+  z <- matrix(rep(range(sd$G3), each = 2), nrow = 2)
+  add_surface(p, x = x, y = y, z = z, opacity = 0.3, colorscale = list(c(0, 1), color))
 }
 
+# Get split points
+splits <- pruned_tree$splits
+split_points <- splits[splits[, "count"] > 0, "index"]
+
+# Create the plot with decision boundaries
+p <- plot_ly(sd,
+             x = ~ get(split_vars[1]), y = ~ get(split_vars[2]), z = ~G3,
+             type = "scatter3d", mode = "markers",
+             marker = list(size = 3, color = ~G3, colorscale = "Viridis", opacity = 0.8)
+             ) %>%
+  layout(scene = list(
+    xaxis = list(title = split_vars[1]),
+    yaxis = list(title = split_vars[2]),
+    zaxis = list(title = "G3")
+    ))
+
+p
+
+split_vars[3] = "sumalc"
+
+split_vars
+split_points
+
+# Add planes for each split
+for (i in 1:2) {
+  p <- add_plane(p, split_vars[i], split_points[i], color = c("red", "blue")[i])
+}
+
+# Display the plot
+
+p <- add_plane(p, split_vars[1], split_points[1], color = "red")
+
+p <- add_plane(p, split_vars[2], split_points[2], color = "green")
+
+p <- add_plane(p, split_vars[3], split_points[3], color = "blue")
+
+p
+
+p
 ```
 
 ## N2. makeing Small tree for interactions
@@ -945,123 +970,4 @@ mvp <- apply(percount, 2, mean)
 plot(mvp20, xlab = "variable number", ylab = "post mean, percent var use", col = "blue", type = "b")
 lines(mvp, type = "b", col = "red")
 legend("topleft", legend = c("BART", "BART20"), col = c("red", "blue"), lty = c(1, 1))
-
-
-```
-
-## N5 Other approach using BART
-
-```{r}
-
-# Using the BART package
-
-burn <- 1000
-nd <- 1000
-
-fix <- c(1:28, 30)
-
-y <- train_data$G3
-x <- train_data[, fix]
-p <- ncol(x)
-
-bf <- wbart(x, y, nskip = burn, ndpost = nd, printevery = 500)
-
-
-
-# Prepare the data
-X <- as.matrix(sd[, -which(names(sd) == "G3")]) # predictors
-y <- sd$G3 # target variable
-
-# Multivariate Linear Regression with Regularization (Elastic Net)
-# We'll use cross-validation to find the best alpha and lambda values
-cv_model <- cv.glmnet(X[split_index, ], y[split_index], alpha = 0.5, nfolds = 5)
-best_lambda <- cv_model$lambda.min
-
-# Fit the final model
-lm_model <- glmnet(X[split_index, ], y[split_index], alpha = 0.5, lambda = best_lambda)
-
-# BART model
-burn <- 1000
-nd <- 1000
-bart_model <- wbart(X[split_index, ], y[split_index], nskip = burn, ndpost = nd, printevery = 500)
-
-
-summary(lm_model)
-
-# Make predictions on the test set
-lm_pred <- predict(lm_model, newx = X[-split_index, ], s = best_lambda)
-bart_pred <- predict(bart_model, newdata = X[-split_index, ])
-
-# Calculate MSE for both models on the test set
-lm_mse <- mean((y[-split_index] - lm_pred)^2)
-bart_mse <- mean((y[-split_index] - bart_pred)^2)
-
-# Calculate R-squared for both models on the test set
-lm_rsq <- 1 - sum((y[-split_index] - lm_pred)^2) / sum((y[-split_index] - mean(y[-split_index]))^2)
-bart_rsq <- 1 - sum((y[-split_index] - bart_pred)^2) / sum((y[-split_index] - mean(y[-split_index]))^2)
-
-# Print results
-cat("Linear Regression (Elastic Net) Results:\n")
-cat("MSE:", lm_mse, "\n")
-cat("R-squared:", lm_rsq, "\n\n")
-
-cat("BART Results:\n")
-cat("MSE:", bart_mse, "\n")
-cat("R-squared:", bart_rsq, "\n")
-
-# Compare variable importance
-lm_importance <- abs(coef(lm_model))[-1] # Exclude intercept
-bart_importance <- bartModelMatrix(bart_model)$varcount.mean
-
-# Print top 10 most important variables for each model
-cat("\nTop 10 Important Variables (Linear Regression):\n")
-print(sort(lm_importance, decreasing = TRUE)[1:10])
-
-cat("\nTop 10 Important Variables (BART):\n")
-print(sort(bart_importance, decreasing = TRUE)[1:10])
-
-# Visualize BART results
-plot(bart_model)
-
-
-
-
-# Calculate MSE for training set
-train_pred <- predict(bf, train_data)
-train_mse <- mean((train_data$G3 - train_pred)^2)
-
-# Calculate MSE for validation set
-valid_pred <- predict(tree_model, valid_data)
-valid_mse <- mean((valid_data$G3 - valid_pred)^2)
-
-# Print results
-
-
-
-
-lm_model <- lm(G3 ~ ., data = train_data)
-
-# Summary
-summary_lm <- summary(lm_model)
-
-
-# Calculate MSE for training set
-train_predL <- predict(lm_model, train_data)
-train_mseL <- mean((train_data$G3 - train_predL)^2)
-
-
-# Calculate MSE for validation set
-valid_predL <- predict(lm_model, valid_data)
-valid_mseL <- mean((valid_data$G3 - valid_predL)^2)
-
-# Print results
-comp <- function() {
-  cat("Training MSE   Tree:", train_mse, "\n")
-  cat("Validation MSE Tree:", valid_mse, "\n\n")
-  cat("Training MSE   Regr:", train_mseL, "\n")
-  cat("Validation MSE Regr:", valid_mseL, "\n\n")
-}
-
-comp()
-
 ```
