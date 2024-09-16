@@ -1,10 +1,12 @@
 \babel@toc {english}{}\relax 
 \contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
-\contentsline {section}{\numberline {2}Regression Trees}{3}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Pruning}{4}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Ensemble Methods}{4}{subsection.2.2}%
-\contentsline {section}{\numberline {3}Simulations}{5}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Non-linear Data}{5}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Finding the Optimal Tree Size}{8}{subsection.3.2}%
-\contentsline {section}{\numberline {4}Applying Regression Trees To Housing Market Data}{8}{section.4}%
-\contentsline {section}{\numberline {5}Conclusion}{8}{section.5}%
+\contentsline {section}{\numberline {2}Regression Trees}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Pruning}{5}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Ensemble Methods}{6}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Simulations}{7}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Linear Data}{8}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Non-linear Data}{8}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Predicting Student grades using Tree-based methods}{11}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Pruning}{11}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}4.3 Comparing Linear Regression, Regression Trees, and BART}{12}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Conclusion}{12}{section.5}%
