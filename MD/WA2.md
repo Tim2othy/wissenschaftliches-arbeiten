@@ -1,16 +1,11 @@
-
-
-
-
 ## INHALT der Hausarbeit
-
-
 ### Abstract
-
 
 Much of modern economic research is based, in one way or another upon liner regression. One of the most simple statistical methods, do do good economic research it is vital to have a clear understanding where linear regressions strengths and weaknesses lie, where it beats other methods or is beaten my other methods. In this paper I will explore RRTT as an alternative to linear regression. I will explain the theory of regression trees, and compare them to linear regression in a set of simple simulations. Focusing on interaction effects and pruning. I will also highlight some extensions to regression trees that boost their performance. Afterwards I will use both methods on a dataset of student performance. Highlighting the strengths and weaknesses of RRTT, and Tree based methods..
 
 ### 1. Introduction
+
+ETC
 
 While linear regression, probably the most used method by empirical economist can be useful in many situations, it can be useful to look at where it fails, and different methods excel. Regression trees have been used in many situations serving as a powerful machine learning technique for predictive modelling. with many extension being developed greatly improving their usefulness. Regression trees offer an alternative approach that can be useful in many situations. We will discuss their advantages over traditional linear regression methods, cover the basics of regression trees, compare them with linear regression, address the issue of overfitting, and introduce advanced ensemble methods like Bayesian Additive Regression Trees (BART).
 
