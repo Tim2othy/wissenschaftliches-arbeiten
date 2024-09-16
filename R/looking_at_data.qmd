@@ -64,6 +64,10 @@ valid_data <- sd[-split_index, ]
 
 ```
 
+```{r}
+
+```
+
 # 2. Single tree on data sets
 
 ```{r}
