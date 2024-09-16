@@ -49,8 +49,6 @@
 \usepackage{natbib}
 \bibliographystyle{plainnat} % Use any other style like abbrvnat if desired
 
-
- 
 \begin{document}
 
 \include{./Title/title}
@@ -58,7 +56,8 @@
 \pagenumbering{arabic}% Arabic and reset to 1)
 
 \begin{abstract}
-Modern economic research heavily relies on linear regression. However, to conduct effective economic research, it is crucial to understand both the strengths and weaknesses of linear regression, as well as where it outperforms or is outperformed by other methods. This paper explores Regression Trees as an alternative to linear \cite{condorcet1785} regression.  \cite{breiman1984}.In it I will explain the theory behind regression trees and compare them to linear regression using a series of simple simulations, focusing on interaction effects and pruning. The paper also highlights extensions to regression trees that enhance their performance. Subsequently, both methods are applied to a dataset of student performance, emphasizing the strengths and weaknesses of linear regression and tree-based methods.
+Modern economic research heavily relies on linear regression. However, to conduct effective economic research, it is crucial to understand both the strengths and weaknesses of linear regression, as well as where it outperforms or is outperformed by other methods. This paper explores Regression Trees as an alternative to linear This is a citation: \citep{breiman1984}.
+\cite{condorcet1785} regression.  \cite{breiman1984}.In it I will explain the theory behind regression trees and compare them to linear regression using a series of simple simulations, focusing on interaction effects and pruning. The paper also highlights extensions to regression trees that enhance their performance. Subsequently, both methods are applied to a dataset of student performance, emphasizing the strengths and weaknesses of linear regression and tree-based methods.
 \end{abstract}
 
 \newpage
@@ -398,15 +397,7 @@ This is a very important area of research, and clearly, there are still many ope
 
 \newpage
 
-\begin{thebibliography}{9}
-\bibitem{breiman1984} Breiman, L., Friedman, J.H., Olshen, R.A., Stone, C.J. (1984). Classification and Regression Trees. Chapman \& Hall/CRC, Boca Raton.
-\bibitem{hastie2021} James, G., Witten, D., Hastie, T., Tibshirani, R. (2021). An Introduction to Statistical Learning with Applications in R (Second Edition). Springer.
-\bibitem{tan2019} Tan, Y. V., Roy, J. (2019). Bayesian additive regression trees and the General BART model. Statistics in Medicine, 38(25), 5048-5069.
-\bibitem{chipman2010} Chipman, H. A., George, E. I., McCulloch, R. E. (2010). BART: Bayesian additive regression trees. The Annals of Applied Statistics, 4(1), 266-298.
-\bibitem{biau2016} Biau, G., Scornet, E. (2016). A Random Forest Guided Tour. TEST, 25, 197-227.
-\bibitem{condorcet1785} Marquis de Condorcet (1785). Essai sur l'application de l'analyse à la probabilité des décisions rendues à la pluralité des voix. Paris.
-\end{thebibliography}
-
+\bibliography{sources}
 
 
 \end{document}

@@ -1,17 +1,27 @@
 # Fdb version 4
-["pdflatex"] 1726511940.60181 "c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/Hausarbeit/Hausarbeit.tex" "Hausarbeit.pdf" "Hausarbeit" 1726511942.27244 2
+["bibtex Hausarbeit"] 1726512187.77191 "Hausarbeit.aux" "Hausarbeit.bbl" "Hausarbeit" 1726512223.43746 0
+  "./Title/title.aux" 1726512221 1181 401b2fb75065425c4dec3bc1e868378b ""
+  "./sources.bib" 1726512034 1476 e2bdd4a03b646dcc18f12cf92907c1de ""
+  "Hausarbeit.aux" 1726512222 2679 43e4811d6160089618590467ca255fbb "pdflatex"
+  "c:/texlive/2024/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1724693502 26816 ffe5423d2019860bad9f54bc402fac15 ""
+  (generated)
+  "Hausarbeit.bbl"
+  "Hausarbeit.blg"
+  (rewritten before read)
+["pdflatex"] 1726512220.7319 "c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/Hausarbeit/Hausarbeit.tex" "Hausarbeit.pdf" "Hausarbeit" 1726512223.43856 0
   "Graphics/Greedy Classification Tree.png" 1724779837 7557 553f89daeeaea0796245150d3e93c229 ""
   "Graphics/NLD Pred.png" 1724779836 44055 cf74ddc8354670e070d0ac32358621bf ""
   "Graphics/OLS vs Tree.png" 1724779836 22866 6a6f5578ea6154199ab75f15030b7003 ""
   "Graphics/Pruning.png" 1724779837 22143 ebbf994558dc9af8f8fa873ea95435cd ""
   "Graphics/UNI_Bonn_Logo_Standard_RZ.eps" 1724781636 1703474 3214e4016b64129034e19447647c6aab ""
-  "Hausarbeit.aux" 1726511942 2762 47e38b12b1978b76f8b0a4f19ad38391 "pdflatex"
-  "Hausarbeit.out" 1726511942 1477 3a103eb4fedc4bd26140c4ecbd0c6837 "pdflatex"
-  "Hausarbeit.tex" 1726511937 29197 46ea8e74e2a08d3fc63ecde228296b80 ""
-  "Hausarbeit.toc" 1726511942 887 cc7cdc5b373a8b9b42a64ee861aea152 "pdflatex"
-  "Title/title.aux" 1726511941 1181 401b2fb75065425c4dec3bc1e868378b "pdflatex"
+  "Hausarbeit.aux" 1726512222 2679 43e4811d6160089618590467ca255fbb "pdflatex"
+  "Hausarbeit.bbl" 1726512188 746 6f851900a9c469f933687dfa4dd67536 "bibtex Hausarbeit"
+  "Hausarbeit.out" 1726512222 1477 3a103eb4fedc4bd26140c4ecbd0c6837 "pdflatex"
+  "Hausarbeit.tex" 1726512219 28299 a074ba6c10ee7d52327090f3c11bb63d ""
+  "Hausarbeit.toc" 1726512222 887 cc7cdc5b373a8b9b42a64ee861aea152 "pdflatex"
+  "Title/title.aux" 1726512221 1181 401b2fb75065425c4dec3bc1e868378b "pdflatex"
   "Title/title.tex" 1724781636 1228 896748ff9ba81a64da1a2f10cb442b21 ""
-  "c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/Hausarbeit/Hausarbeit.tex" 1726511937 29197 46ea8e74e2a08d3fc63ecde228296b80 ""
+  "c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/Hausarbeit/Hausarbeit.tex" 1726512219 28299 a074ba6c10ee7d52327090f3c11bb63d ""
   "c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1724692802 2375 baa924870cfb487815765f9094cf3728 ""
   "c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1724692802 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1724692802 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
@@ -26,6 +36,7 @@
   "c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/ec-lmr10.tfm" 1724692802 12056 7e13df7fe4cbce21b072ba7c4f4deb6e ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/ec-lmr12.tfm" 1724692802 12092 7b1546e2d096cfd5dcbd4049b0b1ec2e ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/ec-lmr17.tfm" 1724692802 12156 ca1ae6a3c8564e89597f1f993fba1608 ""
+  "c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/ec-lmri12.tfm" 1724692802 17144 271aaf9ebb339934b04110dc5211fba4 ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/ec-lmtt12.tfm" 1724692802 1368 6a60e6a5e029141041d64d339b87e533 ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/lmex10.tfm" 1724692803 992 ce925c9346c7613270a79afbee98c070 ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/lmmi10.tfm" 1724692803 1528 6d36b2385e0ca062a654de6ac59cb34f ""
@@ -53,6 +64,7 @@
   "c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr12.pfb" 1724692803 113634 9384aebdf26f9881e046a4b5574566db ""
   "c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr17.pfb" 1724692803 119752 1bd8d06e4079df624bf59ce3ad7c9aa6 ""
   "c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb" 1724692803 122174 a2d5e73f396ddbeb3bdf5c79aea0993d ""
+  "c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmri12.pfb" 1724692803 109265 e6c7d377db6dfccd4a123fb26da8cffb ""
   "c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy10.pfb" 1724692803 27863 09ce3735688ffde955e72da27c95b61a ""
   "c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy8.pfb" 1724692803 27802 5c876bb2c4040caaf035d60bd74a86bd ""
   "c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmtt12.pfb" 1724692803 110323 19372944fba298bb4c4758abff959582 ""
@@ -161,4 +173,3 @@
   "Hausarbeit.toc"
   "Title/title.aux"
   (rewritten before read)
-  "Title/title.aux"

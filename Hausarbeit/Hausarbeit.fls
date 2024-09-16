@@ -187,6 +187,9 @@ INPUT c:/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 INPUT ./Hausarbeit.aux
 INPUT ./Hausarbeit.aux
 INPUT Hausarbeit.aux
+INPUT ./Title/title.aux
+INPUT ./Title/title.aux
+INPUT ./Title/title.aux
 OUTPUT Hausarbeit.aux
 INPUT c:/texlive/2024/texmf-dist/tex/latex/microtype/mt-cmr.cfg
 INPUT c:/texlive/2024/texmf-dist/tex/latex/microtype/mt-cmr.cfg
@@ -200,8 +203,14 @@ INPUT c:/texlive/2024/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 INPUT c:/texlive/2024/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 INPUT c:/texlive/2024/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 INPUT c:/texlive/2024/texmf-dist/tex/latex/graphics/color.sty
-OUTPUT Hausarbeit.out
+INPUT ./Hausarbeit.out
+INPUT ./Hausarbeit.out
+INPUT Hausarbeit.out
+INPUT Hausarbeit.out
 OUTPUT Hausarbeit.pdf
+INPUT ./Hausarbeit.out
+INPUT ./Hausarbeit.out
+OUTPUT Hausarbeit.out
 INPUT ./Title/title.tex
 INPUT ./Title/title.tex
 OUTPUT ./Title/title.aux
@@ -249,7 +258,10 @@ INPUT c:/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 INPUT c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc
 INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/ec-lmr10.tfm
 INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/ec-lmbx10.tfm
-OUTPUT Hausarbeit.toc
+INPUT ./Hausarbeit.toc
+INPUT ./Hausarbeit.toc
+INPUT Hausarbeit.toc
+INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/ec-lmbx12.tfm
 INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/rm-lmr12.tfm
 INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/rm-lmr8.tfm
 INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/rm-lmr6.tfm
@@ -259,6 +271,7 @@ INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/lmmi6.tfm
 INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/lmsy10.tfm
 INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/lmsy8.tfm
 INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/lmsy6.tfm
+OUTPUT Hausarbeit.toc
 INPUT c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc
 INPUT c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc
 INPUT c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc
@@ -289,6 +302,10 @@ INPUT c:/texlive/2024/texmf-dist/tex/latex/lm/t1lmtt.fd
 INPUT c:/texlive/2024/texmf-dist/tex/latex/lm/t1lmtt.fd
 INPUT c:/texlive/2024/texmf-dist/tex/latex/lm/t1lmtt.fd
 INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/ec-lmtt12.tfm
+INPUT ./Hausarbeit.bbl
+INPUT ./Hausarbeit.bbl
+INPUT Hausarbeit.bbl
+INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/ec-lmri12.tfm
 INPUT Hausarbeit.aux
 INPUT ./Title/title.aux
 INPUT ./Title/title.aux
@@ -305,6 +322,7 @@ INPUT c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr10.pfb
 INPUT c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr12.pfb
 INPUT c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr17.pfb
 INPUT c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb
+INPUT c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmri12.pfb
 INPUT c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy10.pfb
 INPUT c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy8.pfb
 INPUT c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmtt12.pfb
