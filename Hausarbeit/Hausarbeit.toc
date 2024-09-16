@@ -6,7 +6,7 @@
 \contentsline {section}{\numberline {3}Simulations}{7}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Linear Data}{8}{subsection.3.1}%
 \contentsline {subsection}{\numberline {3.2}Non-linear Data}{8}{subsection.3.2}%
-\contentsline {section}{\numberline {4}Predicting Student grades using Tree-based methods}{11}{section.4}%
+\contentsline {section}{\numberline {4}Predicting grades}{11}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Pruning}{11}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}4.3 Comparing Linear Regression, Regression Trees, and BART}{12}{subsection.4.2}%
-\contentsline {section}{\numberline {5}Conclusion}{12}{section.5}%
+\contentsline {subsection}{\numberline {4.2}Comparing Linear Regression, Regression Trees, and BART}{12}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Conclusion}{13}{section.5}%

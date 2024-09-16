@@ -75,7 +75,7 @@ Given the widespread use of linear regression, it is particularly important to i
 
 Linear regression performs poorly on many types of data, particularly those with non-linear relationships and interaction effects. Regression Trees can be useful in many situations where linear regression falls short.
 
-L. Breiman, J.H. Friedman, R.A. Olshen, and C.J. Stone. Classication and Regression Trees. Chapman & Hall/CRC, Boca Raton, 1984 pdf being the origin of this method developing the algorithm.
+L. Breiman, J.H. Friedman, R.A. Olshen, and C.J. Stone. Classication and Regression Trees. Chapman \& Hall/CRC, Boca Raton, 1984 pdf being the origin of this method developing the algorithm.
 
 Hastie and Tibshirani's an Introduction to Statistical Learning serves as an excelent modern introduction to Regression trees, while while Tan and Roy (2019) can give a deeper dive on BART a powerful ensemble method. 
 Random forests, a very popular Tree based ML method are explained very well in A Random Forest Guided Tour Gerard Biau Erwan Scornet.
@@ -154,7 +154,7 @@ Instead of evaluating a model on the data we trained it on, we evaluate it on a 
 While pruning can significantly improve the performance of individual regression trees, they often still underperform compared to other advanced machine learning methods. This limitation led to the development of ensemble methods, which combine many regression trees to create more robust and accurate predictions. As Condorcet's jury theorem shows, as long as each predictor is better at guessing or answering a question, adding more will increase the chance of getting a correct answer.
 !!!
 
-Ensemble methods improve results by leveraging the "wisdom of crowds" effect. If each tree has, for example, a 70% chance of being correct, and the errors are uncorrelated, combining many trees will tend to improve overall accuracy. The two main approaches to creating ensembles are:
+Ensemble methods improve results by leveraging the "wisdom of crowds" effect. If each tree has, for example, a 70\% chance of being correct, and the errors are uncorrelated, combining many trees will tend to improve overall accuracy. The two main approaches to creating ensembles are:
 
 1. Growing many independent trees and averaging them. Random Forests are a very popular ML method that does this.
 2. Growing trees on the residuals of the current tree model, as in boosting methods or Bayesian Additive Regression Trees (BART).
@@ -223,7 +223,7 @@ The data was generated using 4 normal distributions with varying variance, in th
 %insert image non linear data
 
 
-Again, we ran the simulation 400 times. In this case, the error rate of the Classification Tree is 37.57%. While the linear classifier has an error rate of 51.03%. If this weren't a classification but a regression problem, one can imagine the red data having a high Z value, and the blue data having a low Z value, the result would be much the same. One could imagine a linear regression of the form $Z = x^2 - y^2$ forming a sort of saddle point, but this is not what the typical regression will look like, and especially would this interaction not be captured naturally by the linear model. Whereas the regression trees, because of their recursive nature, can naturally capture interaction effects. By first splitting along one axis and then along a different one, this will happen automatically.
+Again, we ran the simulation 400 times. In this case, the error rate of the Classification Tree is 37.57\%. While the linear classifier has an error rate of 51.03\%. If this weren't a classification but a regression problem, one can imagine the red data having a high Z value, and the blue data having a low Z value, the result would be much the same. One could imagine a linear regression of the form $Z = x^2 - y^2$ forming a sort of saddle point, but this is not what the typical regression will look like, and especially would this interaction not be captured naturally by the linear model. Whereas the regression trees, because of their recursive nature, can naturally capture interaction effects. By first splitting along one axis and then along a different one, this will happen automatically.
 
 This simulation also shows how Trees capture interaction effects naturally; the fact that a large X value is only indicative of the observation being Red if the Y value is small is naturally captured by the tree.
 
@@ -245,7 +245,6 @@ Results:
     \item MSE for OLS model: 0.9917 
     \item MSE for regression tree model: 1.4935 
 \end{itemize}
-
 
 
 
@@ -285,8 +284,7 @@ Results:
 
 
 
-
-\section{Predicting Student grades using Tree-based methods}
+\section{Predicting grades}
 
 
 Next, I will apply Tree-based methods and also linear regression to a dataset to showcase differences in a more realistic situation. This dataset of student performance includes 649 students and looks at 33 variables. This dataset is publicly available at !!!!
@@ -298,7 +296,7 @@ One can easily train a large tree on the dataset and find the variable importanc
 
 The most important thing to do is to use cross-validation and prune your regression tree; otherwise, nothing of interest will be learned as one will have just overfitted on the dataset.
 
-For this, I split the data into training (70%) and validation (30%) sets.
+For this, I split the data into training (70\%) and validation (30\%) sets.
 
 It can be useful to prune some trees manually by hand to get an intuitive feeling for how Regression Trees overfit. Instead of using the sophisticated built-in option to automatically perform 10-fold cross-validation and select the best performing tree, I did it by hand first.
 
@@ -338,14 +336,12 @@ And and optimal value for `cp` which in this case is 0.028 and 0.035.
 
 The most typical results will look something like this:
 
-```
 "Complex Tree - Training MSE: 1.71463455830232"
 "Complex Tree -     Test MSE: 10.813428171376"
 "Pruned Tree  - Training MSE: 8.52684386213971"
 "Pruned Tree  -     Test MSE: 8.18867861784212"
-```
 
-The pruned tree performs just one single split on failures, splitting the 15% of students who have previously failed the exam into one region (Estimate = 8.4) and the 85% of students with 0 failures into a second region (13 = estimate). This seems like something a human could have also done by hand.
+The pruned tree performs just one single split on failures, splitting the 15\% of students who have previously failed the exam into one region (Estimate = 8.4) and the 85\% of students with 0 failures into a second region (13 = estimate). This seems like something a human could have also done by hand.
 
 The fact that the test error is lower than the training error should not be surprising; with only 1 split, the tree couldn't overfit even if it tried. It will always make almost the exact same split anyway. It's just chance if it will get a lower or higher error on the test set.
 
@@ -353,15 +349,54 @@ The fact that the test error is lower than the training error should not be surp
 
 
 
-\subsection{4.3 Comparing Linear Regression, Regression Trees, and BART}
+\subsection{Comparing Linear Regression, Regression Trees, and BART}
+
+After seeing how the tree has performed, it's informative to compare it to the results linear regression gets.
 
 
+Again using a 70\% 30\% split and using a tree that isn't overfitting these are the typicall results one gets for Regression trees and multivariate linear regression. Here the linear regression isn't optimized at all, it's the very first result one gets, no pruning or trying to combat overfitting.
+
+Even without any prunig or anything linear regression beats the tree by a wide margin.
+
+Taining MSE   Tree: 8.526844 
+Validation MSE Tree: 8.188679 
+
+Training MSE   Regr: 6.787159 
+Validation MSE Regr: 6.865478
+
+Summonig Condorcet to help us out wo can use ensemble methods.
+
+Using bart with the dafault hyperparameters. That is
+
+
+This is with
+A burn-in and sampling period of 2000 iterations each and 200 Trees per iteration. Result in the following MSEs for BART:
+
+Training MSE   BART: 5.777039 
+Validation MSE BART: 6.52317
+
+Depending on how the data is split into training and test set, and other random the numbers for all three models can vary quite widly. But almost is the single Tree outperformed by the linear regression and BART outperforms them both.
+
+In return BART is far less easy to interpret then the other two methods. And we made no attempt at improving the performance of the regression model. Presumably it's performance can be increased in some way. But there are of course also other datasets where complicated ensemble methods really outperform lenear methods by a wide margin.
 
 
 
 
 \section{Conclusion}
-Regression trees are powerful tools for handling non-linear and interactive effects, often outperforming linear regression in these scenarios. They are also very easy to interpret. However, trees require pruning to combat overfitting. Ensemble methods, by averaging independent trees or fitting trees on the residuals, can significantly improve results. BART, in particular, is a sophisticated method offering good results in many scenarios. While regression trees have their strengths, it's important to choose the right tool for each specific data analysis task.
+Regression trees are powerful tools for handling non-linear and interactive effects, often outperforming linear regression in these scenarios. They are also very easy to interpret. However, trees require pruning to combat overfitting. Ensemble methods, by averaging independent trees or fitting trees on the residuals, can significantly improve results. BART, in particular, is a sophisticated method offering good results in many scenarios. While regression trees have their strengths, it's important to choose the right tool for each specific data analysis task. Clearly there is a reason that there are "about188.000 results" on google scolar when one searches "Regression Tree" verses "about 4.320.000 results" searching for "Linear Regression". Although especially random forests are quite popular.
+
+The most obvious problem with simple regression trees is that they overfit immeadiatly without doing anything usefil. It seems unimaginable only to be alble to do one split on a dataset this large, with that many variables. If Students that drink more alcohol score slightly less in the Training set a linear regression could incorperate this slight factor and it might well be that this also applies in the Test set and improves model performance. If it' not a real effect and just noise this slight coefficent won't incease Test error by a lot. Whearas the Regression Tree after having made it's initial useful split can't help find the best optimal split, apparently hyperfocusing on some, most useful seeming area, that mostly turns out to just be noise.
+
+While BART beats linear regression it gives up on interprebility for the most part, while linear regression is very interprable, in a similar way to regression trees. Arguable more. Regression trees 
+
+
+In conclusion regression trees definitly have their applications, as the simulations show, on very non linear data, even a simple tree can outperform liner regression by a wide margin. But on real life data often linear liner regression will perform better and be more  be more interpretable and useful. Maybe the trees really shine only on data that has very strong interaction effetts more than the single dataset I considered. 
+
+Of course one can always find better datasets more made for trees to work better than my data, better methods to tell which is the best method to use. 
+
+This is a very important area of research and clearly there are still many open questions.
+
+
 
  
 

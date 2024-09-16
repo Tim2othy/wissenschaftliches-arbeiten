@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.8.26)  16 SEP 2024 20:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.8.26)  16 SEP 2024 20:21
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -566,7 +566,7 @@ File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count353
 \l__pdf_internal_box=\box110
-) (./Hausarbeit.aux)
+) (./Hausarbeit.aux (./Title/title.aux))
 \openout1 = `Hausarbeit.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 48.
@@ -661,6 +661,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 \c@lstlisting=\count360
 Package hyperref Info: Link coloring ON on input line 48.
+ (./Hausarbeit.out) (./Hausarbeit.out)
 \@outlinefile=\write3
 \openout3 = `Hausarbeit.out'.
 
@@ -678,7 +679,7 @@ Package epstopdf Info: Source file: <./Graphics/UNI_Bonn_Logo_Standard_RZ.eps>
 (epstopdf)             Command: <repstopdf --outfile=./Graphics/UNI_Bonn_Logo_Standard_RZ-eps-converted-to.pdf ./Graphics/UNI_Bonn_Logo_Standard_RZ.eps>
 (epstopdf)             \includegraphics on input line 14.
 Package epstopdf Info: Output file is already uptodate.
-<./Graphics/UNI_Bonn_Logo_Standard_RZ-eps-converted-to.pdf, id=4, 147.55125pt x 57.21375pt>
+<./Graphics/UNI_Bonn_Logo_Standard_RZ-eps-converted-to.pdf, id=48, 147.55125pt x 57.21375pt>
 File: ./Graphics/UNI_Bonn_Logo_Standard_RZ-eps-converted-to.pdf Graphic file (type pdf)
 <use ./Graphics/UNI_Bonn_Logo_Standard_RZ-eps-converted-to.pdf>
 Package pdftex.def Info: ./Graphics/UNI_Bonn_Logo_Standard_RZ-eps-converted-to.pdf  used on input line 14.
@@ -725,34 +726,22 @@ l.58 \newpage
 
 
 
-]
-No file Hausarbeit.toc.
+] (./Hausarbeit.toc
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <12> on input line 4.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 4.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 4.
+)
 \tf@toc=\write4
 \openout4 = `Hausarbeit.toc'.
 
 
 
 [2]
-c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/Hausarbeit/Hausarbeit.tex:78: Misplaced alignment tab character &.
-l.78 ...assication and Regression Trees. Chapman &
-                                                   Hall/CRC, Boca Raton, 198...
-I can't figure out why you would want to use a tab mark
-here. If you just want an ampersand, the remedy is
-simple: Just type `I\&' now. But if some right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
-
-
 
 [3]
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 100.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 100.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 100.
-
 
 [4{c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
 
@@ -761,40 +750,36 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 [6]
 
 [7]
-<./Graphics/OLS vs Tree.png, id=64, 752.8125pt x 752.8125pt>
+<./Graphics/OLS vs Tree.png, id=114, 752.8125pt x 752.8125pt>
 File: ./Graphics/OLS vs Tree.png Graphic file (type png)
 <use ./Graphics/OLS vs Tree.png>
 Package pdftex.def Info: ./Graphics/OLS vs Tree.png  used on input line 237.
 (pdftex.def)             Requested size: 376.40532pt x 376.40532pt.
+
+
+[8]
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 245.
  (c:/texlive/2024/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-<./Graphics/NLD Pred.png, id=65, 542.5725pt x 294.0075pt>
+<./Graphics/NLD Pred.png, id=119, 542.5725pt x 294.0075pt>
 File: ./Graphics/NLD Pred.png Graphic file (type png)
 <use ./Graphics/NLD Pred.png>
-Package pdftex.def Info: ./Graphics/NLD Pred.png  used on input line 255.
+Package pdftex.def Info: ./Graphics/NLD Pred.png  used on input line 254.
 (pdftex.def)             Requested size: 271.28558pt x 147.00339pt.
-<./Graphics/Greedy Classification Tree.png, id=67, 331.2375pt x 295.65pt>
+<./Graphics/Greedy Classification Tree.png, id=121, 331.2375pt x 295.65pt>
 File: ./Graphics/Greedy Classification Tree.png Graphic file (type png)
 <use ./Graphics/Greedy Classification Tree.png>
-Package pdftex.def Info: ./Graphics/Greedy Classification Tree.png  used on input line 270.
+Package pdftex.def Info: ./Graphics/Greedy Classification Tree.png  used on input line 269.
 (pdftex.def)             Requested size: 165.61833pt x 147.82463pt.
-<./Graphics/Pruning.png, id=68, 584.1825pt x 328.5pt>
+<./Graphics/Pruning.png, id=122, 584.1825pt x 328.5pt>
 File: ./Graphics/Pruning.png Graphic file (type png)
 <use ./Graphics/Pruning.png>
-Package pdftex.def Info: ./Graphics/Pruning.png  used on input line 281.
+Package pdftex.def Info: ./Graphics/Pruning.png  used on input line 280.
 (pdftex.def)             Requested size: 292.09053pt x 164.24959pt.
 
-Overfull \hbox (1.39786pt too wide) in paragraph at lines 289--289
-[][]\T1/lmr/bx/n/17.28 (-20) Predicting Stu-dent grades us-ing Tree-based meth-
- []
 
-
-
-[8{c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
-
-[9 <./Graphics/OLS vs Tree.png>]
+[9{c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc} <./Graphics/OLS vs Tree.png>]
 
 [10 <./Graphics/NLD Pred.png> <./Graphics/Greedy Classification Tree.png> <./Graphics/Pruning.png>]
 
@@ -802,37 +787,31 @@ Overfull \hbox (1.39786pt too wide) in paragraph at lines 289--289
 
 [12]
 
-[13] (./Hausarbeit.aux (./Title/title.aux))
+[13]
+
+[14]
+
+[15] (./Hausarbeit.aux (./Title/title.aux))
  ***********
 LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-07-20>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `Hausarbeit.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Hausarbeit.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  874931FF59DB03B0757C9268B662C1DE;1677.
+Package rerunfilecheck Info: File `Hausarbeit.out' has not changed.
+(rerunfilecheck)             Checksum: 3A103EB4FEDC4BD26140C4ECBD0C6837;1477.
  ) 
 Here is how much of TeX's memory you used:
- 16336 strings out of 473579
- 259329 string characters out of 5732263
+ 16371 strings out of 473579
+ 259809 string characters out of 5732263
  1935960 words of memory out of 5000000
- 38806 multiletter control sequences out of 15000+600000
- 611527 words of font info for 135 fonts, out of 8000000 for 9000
+ 38823 multiletter control sequences out of 15000+600000
+ 614895 words of font info for 140 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 75i,7n,79p,1068b,476s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,7n,79p,1068b,493s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi6.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy8.pfb>
-Output written on Hausarbeit.pdf (14 pages, 293223 bytes).
+Output written on Hausarbeit.pdf (16 pages, 299940 bytes).
 PDF statistics:
- 185 PDF objects out of 1000 (max. 8388607)
- 131 compressed objects within 2 object streams
- 37 named destinations out of 1000 (max. 500000)
- 30746 words of extra memory for PDF output out of 35830 (max. 10000000)
+ 238 PDF objects out of 1000 (max. 8388607)
+ 182 compressed objects within 2 object streams
+ 39 named destinations out of 1000 (max. 500000)
+ 32882 words of extra memory for PDF output out of 35830 (max. 10000000)
 
