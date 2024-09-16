@@ -291,15 +291,15 @@ INPUT ./Graphics/NLD Pred.png
 INPUT ./Graphics/NLD Pred.png
 INPUT ./Graphics/NLD Pred.png
 INPUT ./Graphics/NLD Pred.png
-INPUT ./Graphics/Greedy Classification Tree.png
-INPUT ./Graphics/Greedy Classification Tree.png
-INPUT ./Graphics/Greedy Classification Tree.png
-INPUT ./Graphics/Greedy Classification Tree.png
-INPUT ./Graphics/Pruning.png
-INPUT ./Graphics/Pruning.png
-INPUT ./Graphics/Pruning.png
-INPUT ./Graphics/Pruning.png
 INPUT c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc
+INPUT ./Graphics/Greedy Classification Tree.png
+INPUT ./Graphics/Greedy Classification Tree.png
+INPUT ./Graphics/Greedy Classification Tree.png
+INPUT ./Graphics/Greedy Classification Tree.png
+INPUT ./Graphics/Pruning.png
+INPUT ./Graphics/Pruning.png
+INPUT ./Graphics/Pruning.png
+INPUT ./Graphics/Pruning.png
 INPUT c:/texlive/2024/texmf-dist/tex/latex/lm/t1lmtt.fd
 INPUT c:/texlive/2024/texmf-dist/tex/latex/lm/t1lmtt.fd
 INPUT c:/texlive/2024/texmf-dist/tex/latex/lm/t1lmtt.fd

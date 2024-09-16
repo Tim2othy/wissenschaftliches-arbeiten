@@ -58,12 +58,12 @@
 Modern economic research heavily relies on linear regression. However, to conduct effective economic research, it is crucial to understand both the strengths and weaknesses of linear regression, as well as where it outperforms or is outperformed by other methods. This paper explores Regression Trees as an alternative to linear regression .In it I will explain the theory behind regression trees and compare them to linear regression using a series of simple simulations, focusing on interaction effects and pruning. The paper also highlights extensions to regression trees that enhance their performance. Subsequently, both methods are applied to a dataset of student performance, emphasizing the strengths and weaknesses of linear regression and tree-based methods.
 \end{abstract}
 
-\newpage
+%\newpage
 
 
 \tableofcontents
 
-\newpage
+%\newpage
 
 
 \section{Introduction}
@@ -95,6 +95,8 @@ In section 3 I will run a number of simulations comparing RRTT and LLRR and show
 In section 4 I will apply these methods to a dataset of student test performance. Paying special attention to overfitting pruning and test vs validation vs training set. Also showing some of the shortcomings of RRTT and using BART.
 
 Section 5 is the conclusion and will sum up what I have found and further interesting areas where research could be done.
+
+This dataset used in this paper is publicly available at \href{https://www.kaggle.com/datasets/uciml/student-alcohol-consumption}{Kaggle: Student Alcohol Consumption Dataset}. All code used for the simulations and data analysis is avialible at \href{https://github.com/Tim2othy/wissenschaftliches-arbeiten}{GitHub}.
 
 
 
@@ -289,7 +291,7 @@ Results:
 \section{Predicting grades}
 
 
-Next, I will apply Tree-based methods and also linear regression to a dataset to showcase differences in a more realistic situation. This dataset of student performance includes 649 students and looks at 33 variables. This dataset is publicly available at \href{https://www.kaggle.com/datasets/uciml/student-alcohol-consumption}{Kaggle: Student Alcohol Consumption Dataset}
+Next, I will apply Tree-based methods and also linear regression to a dataset to showcase differences in a more realistic situation. This dataset of student performance includes 649 students and looks at 33 variables.
 
 
 One can easily train a large tree on the dataset and find the variable importance, to then be better at further analyses. For example, if one does not remove the variables representing previous test scores, practically all the model does is predict final test score based on previous test score, and all other variables are practically irrelevant.
@@ -394,7 +396,7 @@ Of course, one can always find datasets more suited for trees to work better tha
 This is a very important area of research, and clearly, there are still many open questions.
 
 
-\newpage
+%\newpage
 
 \bibliography{sources}
 
