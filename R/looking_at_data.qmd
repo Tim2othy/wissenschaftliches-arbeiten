@@ -391,29 +391,27 @@ adj = mse_data[1,2]
 len = length(cp_table[,"nsplit"])
 
 data_conc = data.frame(
-    rep(cp_table[, "nsplit"],4),
+    rep(cp_table[, "nsplit"],3),
     c(cp_table[, "xerror"]*adj,
       cp_table[, "rel error"]*adj,
-      c(mse_values[1,],mse_values[2,])
+      c(mse_values[2,])
       ),
-    c(rep("xe_er",len),
-      rep("re_er",len),
-      rep("tr_er",len),
-      rep("te_er",len)
+    c(rep("Cross validation Error",len),
+      rep("Training Error",len),
+      rep("Test Error",len)
   )
 )
 
 ggplot(data_conc, aes(x = data_conc[,1], y = data_conc[,2], color = data_conc[,3])) +
   geom_line() +
   geom_point() +
-  scale_color_manual(values = c("orange", "red","blue","green")) +
+  scale_color_manual(values = c("orange", "red","blue")) +
   labs(
     x = "Number of Splits", y = "Mean Squared Error",
     title = "MSE vs Tree Complexity",
     color = "MSE Type"
   ) +
   theme_minimal()
-
 ```
 
 # 6. Comparing BART, Regression Tree and linear regression
@@ -424,7 +422,7 @@ Create tree
 
 ```{r}
 
-tree_model <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = opt_cp-0.0001 , minsplit = 5))
+tree_model <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = opt_cp , minsplit = 5))
 rpart.plot(tree_model, fallen.leaves = TRUE)
 
 ```
@@ -539,6 +537,23 @@ cor(fitmat)
 
 
 
+```
+
+```{r}
+# BART error
+# Calculate MSE for training set
+train_pred_bart <- bart_minim$yhat.train.mean
+train_mse_bart <- mean((y_train - train_pred_bart)^2)
+
+# Calculate MSE for validation set
+valid_pred_bart <- bart_minim$yhat.test.mean
+valid_mse_bart <- mean((y_valid - valid_pred_bart)^2)
+
+```
+
+```{r}
+print(train_mse_bart)
+print(valid_mse_bart)
 ```
 
 ```{r}
