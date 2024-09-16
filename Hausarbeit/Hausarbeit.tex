@@ -11,7 +11,6 @@
 \usepackage{microtype}				% for micro typography (for a better typeface)
 \usepackage{blindtext}
 
-
 \usepackage{longtable} 		
 \usepackage{multicol}				
 \usepackage{multirow}
@@ -46,7 +45,7 @@
     pdfborderstyle={/S/U/W 0}
 }
 
-\usepackage{natbib}
+\usepackage[round]{natbib}
 \bibliographystyle{plainnat} % Use any other style like abbrvnat if desired
 
 \begin{document}
@@ -56,8 +55,7 @@
 \pagenumbering{arabic}% Arabic and reset to 1)
 
 \begin{abstract}
-Modern economic research heavily relies on linear regression. However, to conduct effective economic research, it is crucial to understand both the strengths and weaknesses of linear regression, as well as where it outperforms or is outperformed by other methods. This paper explores Regression Trees as an alternative to linear This is a citation: \citep{breiman1984}.
-\cite{condorcet1785} regression.  \cite{breiman1984}.In it I will explain the theory behind regression trees and compare them to linear regression using a series of simple simulations, focusing on interaction effects and pruning. The paper also highlights extensions to regression trees that enhance their performance. Subsequently, both methods are applied to a dataset of student performance, emphasizing the strengths and weaknesses of linear regression and tree-based methods.
+Modern economic research heavily relies on linear regression. However, to conduct effective economic research, it is crucial to understand both the strengths and weaknesses of linear regression, as well as where it outperforms or is outperformed by other methods. This paper explores Regression Trees as an alternative to linear regression .In it I will explain the theory behind regression trees and compare them to linear regression using a series of simple simulations, focusing on interaction effects and pruning. The paper also highlights extensions to regression trees that enhance their performance. Subsequently, both methods are applied to a dataset of student performance, emphasizing the strengths and weaknesses of linear regression and tree-based methods.
 \end{abstract}
 
 \newpage
@@ -80,10 +78,10 @@ Given the widespread use of linear regression, it is particularly important to i
 
 Linear regression performs poorly on many types of data, particularly those with non-linear relationships and interaction effects. Regression Trees can be useful in many situations where linear regression falls short.
 
-L. Breiman, J.H. Friedman, R.A. Olshen, and C.J. Stone. Classication and Regression Trees. Chapman \& Hall/CRC, Boca Raton, 1984 pdf being the origin of this method developing the algorithm.
+Since \citep{breiman1984} presented the CART algorithm there has been a lot of work on various Tree based methods.
 
-Hastie and Tibshirani's an Introduction to Statistical Learning serves as an excelent modern introduction to Regression trees, while while Tan and Roy (2019) can give a deeper dive on BART a powerful ensemble method. 
-Random forests, a very popular Tree based ML method are explained very well in A Random Forest Guided Tour Gerard Biau Erwan Scornet.
+\citep{hastie2021} serves as an excelent modern introduction to Regression trees, while while \citep{tan2019} give a deeper dive on BART a powerful ensemble method. 
+Random forests, a very popular Tree based ML method are explained very well in\citep{biau2016}
 
 
 
@@ -120,7 +118,7 @@ The algorithm employs a greedy approach called Recursive binary splitting to fin
 %%%Insert red image
 
 
-This is one example of what a regression tree does !!!!
+This is one example of what a regression tree does %%% image
 
 
 
@@ -156,14 +154,14 @@ Instead of evaluating a model on the data we trained it on, we evaluate it on a 
 
 
 \subsection{Ensemble Methods}
-While pruning can significantly improve the performance of individual regression trees, they often still underperform compared to other advanced machine learning methods. This limitation led to the development of ensemble methods, which combine many regression trees to create more robust and accurate predictions. As Condorcet's jury theorem shows, as long as each predictor is better at guessing or answering a question, adding more will increase the chance of getting a correct answer.!!!
+While pruning can significantly improve the performance of individual regression trees, they often still underperform compared to other advanced machine learning methods. This limitation led to the development of ensemble methods, which combine many regression trees to create more robust and accurate predictions. As Condorcet's jury theorem shows, as long as each predictor is better at guessing or answering a question, adding more will increase the chance of getting a correct answeroei \citep{condorcet1785}.
 
 Ensemble methods improve results by leveraging the "wisdom of crowds" effect. If each tree has, for example, a 70\% chance of being correct, and the errors are uncorrelated, combining many trees will tend to improve overall accuracy. The two main approaches to creating ensembles are:
 
 1. Growing many independent trees and averaging them. Random Forests are a very popular ML method that does this.
 2. Growing trees on the residuals of the current tree model, as in boosting methods or Bayesian Additive Regression Trees (BART).
 
-Random Forests create an ensemble by growing many decorrelated trees. Each tree is trained on a random subset of the training data and is only allowed to consider a random subset of features at each split. The final prediction is then formed by averaging the predictions of all trees (typically around 500). This approach reduces overfitting while maintaining the ability to capture complex patterns in the data. !!!!! CITE **A Random Forest Guided Tour**
+Random Forests create an ensemble by growing many decorrelated trees. Each tree is trained on a random subset of the training data and is only allowed to consider a random subset of features at each split. The final prediction is then formed by averaging the predictions of all trees (typically around 500). This approach reduces overfitting while maintaining the ability to capture complex patterns in the data \citep{biau2016}.
 
 I will go into slightly more detail for the BART method, as that is the extension I used on the dataset. BART model the data as a sum of many Trees plus noise:
 
@@ -191,7 +189,7 @@ The algorithm then uses Markov Chain Monte Carlo (MCMC) sampling to draw from th
 
 BART uses a Bayesian approach, specifying priors on the tree structures, terminal node parameters, and error variance. Nodes at depth $d$ are nonterminal with probability $\alpha(1 + d)^{-\beta}$. This prior on shallow trees makes them be weak learners, more suited to being averaged. Each tree explains a small different part of $f$. It also has other priors that inform how it assigns estimates to the terminal nodes, but that is beyond the scope of this paper.
 
-Default values for these hyperparameters of $\alpha = 0.95$ and $\beta = 2$ are recommended by Chipman et al. (2010). Default values generally provide good performance, but optimal tuning can be achieved via cross-validation. !!!!
+Default values for these hyperparameters of $\alpha = 0.95$ and $\beta = 2$ are recommended by \citep{chipman2010}. Default values generally provide good performance, but optimal tuning can be achieved via cross-validation. !!!!
 
 Ensemble methods like Random Forests and BART have shown remarkable success in various applications, often outperforming individual regression trees and even many other machine learning techniques. They offer a powerful toolset for modeling complex relationships in data, providing both predictive accuracy and, in the case of BART, measures of uncertainty.
 
@@ -291,7 +289,8 @@ Results:
 \section{Predicting grades}
 
 
-Next, I will apply Tree-based methods and also linear regression to a dataset to showcase differences in a more realistic situation. This dataset of student performance includes 649 students and looks at 33 variables. This dataset is publicly available at !!!!
+Next, I will apply Tree-based methods and also linear regression to a dataset to showcase differences in a more realistic situation. This dataset of student performance includes 649 students and looks at 33 variables. This dataset is publicly available at \href{https://www.kaggle.com/datasets/uciml/student-alcohol-consumption}{Kaggle: Student Alcohol Consumption Dataset}
+
 
 One can easily train a large tree on the dataset and find the variable importance, to then be better at further analyses. For example, if one does not remove the variables representing previous test scores, practically all the model does is predict final test score based on previous test score, and all other variables are practically irrelevant.
 

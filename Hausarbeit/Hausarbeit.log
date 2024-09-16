@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.8.26)  16 SEP 2024 20:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.8.26)  16 SEP 2024 21:03
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -537,7 +537,7 @@ package with kernel methods
 \c@Hfootnote=\count350
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
-Package srcltx Info: Expanded filename `hpdftex.def' to `hpdftex.def.tex' on input line 40.
+Package srcltx Info: Expanded filename `hpdftex.def' to `hpdftex.def.tex' on input line 39.
 
 :<+ hpdftex.def.tex
 (c:/texlive/2024/texmf-dist/tex/latex/hyperref/hpdftex.def
@@ -558,7 +558,7 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 \Hy@SectionHShift=\skip68
 )
 :<-
-Package hyperref Info: Option `colorlinks' set `true' on input line 47.
+Package hyperref Info: Option `colorlinks' set `true' on input line 46.
 (c:/texlive/2024/texmf-dist/tex/latex/natbib/natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip69
@@ -566,7 +566,7 @@ Package: natbib 2010/09/13 8.31b (PWD, AO)
 LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count353
 )
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 52.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 51.
  (c:/texlive/2024/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) (c:/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
@@ -576,24 +576,24 @@ File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 ) (./Hausarbeit.aux (./Title/title.aux))
 \openout1 = `Hausarbeit.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -629,19 +629,19 @@ LaTeX Font Info:    ... okay on input line 52.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \microtypecontext on input line 52.
-Package microtype Info: Applying patch `item' on input line 52.
-Package microtype Info: Applying patch `toc' on input line 52.
-Package microtype Info: Applying patch `eqnum' on input line 52.
-Package microtype Info: Applying patch `footnote' on input line 52.
-Package microtype Info: Applying patch `verbatim' on input line 52.
+LaTeX Info: Redefining \microtypecontext on input line 51.
+Package microtype Info: Applying patch `item' on input line 51.
+Package microtype Info: Applying patch `toc' on input line 51.
+Package microtype Info: Applying patch `eqnum' on input line 51.
+Package microtype Info: Applying patch `footnote' on input line 51.
+Package microtype Info: Applying patch `verbatim' on input line 51.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 52.
+LaTeX Info: Redefining \showhyphens on input line 51.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -662,12 +662,18 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (
 \everyMPtoPDFconversion=\toks35
 ) (c:/texlive/2024/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+ (c:/texlive/2024/texmf-dist/tex/latex/grfext/grfext.sty
+Package: grfext 2019/12/03 v1.3 Manage graphics extensions (HO)
+)
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPEG,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 504.
  (c:/texlive/2024/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 \c@lstlisting=\count361
-Package hyperref Info: Link coloring ON on input line 52.
+Package hyperref Info: Link coloring ON on input line 51.
  (./Hausarbeit.out) (./Hausarbeit.out)
 \@outlinefile=\write3
 \openout3 = `Hausarbeit.out'.
@@ -727,7 +733,7 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.63 \newpage
+l.61 \newpage
               [1
 
 
@@ -757,32 +763,32 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 [6]
 
 [7]
-<./Graphics/OLS vs Tree.png, id=122, 752.8125pt x 752.8125pt>
+<./Graphics/OLS vs Tree.png, id=135, 752.8125pt x 752.8125pt>
 File: ./Graphics/OLS vs Tree.png Graphic file (type png)
 <use ./Graphics/OLS vs Tree.png>
-Package pdftex.def Info: ./Graphics/OLS vs Tree.png  used on input line 241.
+Package pdftex.def Info: ./Graphics/OLS vs Tree.png  used on input line 239.
 (pdftex.def)             Requested size: 376.40532pt x 376.40532pt.
 
 
 [8]
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 249.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 247.
  (c:/texlive/2024/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-<./Graphics/NLD Pred.png, id=127, 542.5725pt x 294.0075pt>
+<./Graphics/NLD Pred.png, id=140, 542.5725pt x 294.0075pt>
 File: ./Graphics/NLD Pred.png Graphic file (type png)
 <use ./Graphics/NLD Pred.png>
-Package pdftex.def Info: ./Graphics/NLD Pred.png  used on input line 258.
+Package pdftex.def Info: ./Graphics/NLD Pred.png  used on input line 256.
 (pdftex.def)             Requested size: 271.28558pt x 147.00339pt.
-<./Graphics/Greedy Classification Tree.png, id=129, 331.2375pt x 295.65pt>
+<./Graphics/Greedy Classification Tree.png, id=142, 331.2375pt x 295.65pt>
 File: ./Graphics/Greedy Classification Tree.png Graphic file (type png)
 <use ./Graphics/Greedy Classification Tree.png>
-Package pdftex.def Info: ./Graphics/Greedy Classification Tree.png  used on input line 273.
+Package pdftex.def Info: ./Graphics/Greedy Classification Tree.png  used on input line 271.
 (pdftex.def)             Requested size: 165.61833pt x 147.82463pt.
-<./Graphics/Pruning.png, id=130, 584.1825pt x 328.5pt>
+<./Graphics/Pruning.png, id=143, 584.1825pt x 328.5pt>
 File: ./Graphics/Pruning.png Graphic file (type png)
 <use ./Graphics/Pruning.png>
-Package pdftex.def Info: ./Graphics/Pruning.png  used on input line 284.
+Package pdftex.def Info: ./Graphics/Pruning.png  used on input line 282.
 (pdftex.def)             Requested size: 292.09053pt x 164.24959pt.
 
 
@@ -791,7 +797,7 @@ Package pdftex.def Info: ./Graphics/Pruning.png  used on input line 284.
 [10 <./Graphics/NLD Pred.png> <./Graphics/Greedy Classification Tree.png> <./Graphics/Pruning.png>]
 
 [11]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 362.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 361.
  (c:/texlive/2024/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -820,18 +826,18 @@ Package rerunfilecheck Info: File `Hausarbeit.out' has not changed.
 (rerunfilecheck)             Checksum: 3A103EB4FEDC4BD26140C4ECBD0C6837;1477.
  ) 
 Here is how much of TeX's memory you used:
- 16767 strings out of 473579
- 265016 string characters out of 5732263
+ 16826 strings out of 473579
+ 266242 string characters out of 5732263
  1935960 words of memory out of 5000000
- 39209 multiletter control sequences out of 15000+600000
- 619468 words of font info for 141 fonts, out of 8000000 for 9000
+ 39256 multiletter control sequences out of 15000+600000
+ 619680 words of font info for 143 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
  75i,7n,79p,1068b,654s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi6.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmri12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmtt12.pfb>
-Output written on Hausarbeit.pdf (16 pages, 343631 bytes).
+Output written on Hausarbeit.pdf (16 pages, 345450 bytes).
 PDF statistics:
- 254 PDF objects out of 1000 (max. 8388607)
- 194 compressed objects within 2 object streams
- 39 named destinations out of 1000 (max. 500000)
+ 270 PDF objects out of 1000 (max. 8388607)
+ 209 compressed objects within 3 object streams
+ 43 named destinations out of 1000 (max. 500000)
  35442 words of extra memory for PDF output out of 35830 (max. 10000000)
 
