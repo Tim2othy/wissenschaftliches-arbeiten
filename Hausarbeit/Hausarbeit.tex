@@ -12,7 +12,7 @@
 \usepackage{blindtext}
 
 \usepackage{longtable}
-\usepackage{multicol}				
+\usepackage{multicol}
 \usepackage{multirow}
 \usepackage{booktabs}
 \usepackage{tabularx}
@@ -23,7 +23,7 @@
 \usepackage{mdwlist}				% lists
 
 \usepackage{setspace} 				% setting of the lines (rows)
-\newtheorem{mydef}{Merksatz}  		% if examples or mnemotechnic verses are used with continuous numeration 
+\newtheorem{mydef}{Merksatz}  		% if examples or mnemotechnic verses are used with continuous numeration
 \newtheorem{bsp}{Beispiel}
 
 \usepackage{calc}
@@ -39,7 +39,7 @@
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
-    filecolor=magenta,      
+    filecolor=magenta,
     urlcolor=cyan,
     citecolor=blue,
     pdfborderstyle={/S/U/W 0}
@@ -55,29 +55,29 @@
 \pagenumbering{arabic}% Arabic and reset to 1
 
 \begin{abstract}
-Test17. Modern economic research heavily relies on linear regression. $\frac{2}{x}$ However, to conduct effective economic research, it is crucial to understand both the strengths and weaknesses of linear regression, as well as where it outperforms or is outperformed by other methods. 
+    Test18. Modern economic research heavily relies on linear regression. $\frac{2}{x}$ However, to conduct effective economic research, it is crucial to understand both the strengths and weaknesses of linear regression, as well as where it outperforms or is outperformed by other methods.
 
-$$\frac{1}{\delta - 1 - y} \times (\Pi - \iota + \nu - 3 )$$
+    $$\frac{1}{\delta - 1 - y} \times (\Pi - \iota + \nu - 3 )$$
 
-This paper explores Regression Trees as an alternative to linear regression.
+    This paper explores Regression Trees as an alternative to linear regression.
 
-\begin{equation}
-    \Pi
-\end{equation}
+    \begin{equation}
+        \Pi
+    \end{equation}
 
-In it I will explain the theory behind regression trees and compare them to linear regression using a series of simple simulations, focusing on interaction effects and pruning.
+    In it I will explain the theory behind regression trees and compare them to linear regression using a series of simple simulations, focusing on interaction effects and pruning.
 
-$$
-\sum_{i = 0}^{\infty}(22 - \Pr ( x < 3 | y = 3) + x(y - \mathcal{F} - \mathbf{E} - 35))
-$$
+    $$
+        \sum_{i = 0}^{\infty}(22 - \Pr ( x < 3 | y = 3) + x(y - \mathcal{F} - \mathbf{E} - 35))
+    $$
 
-The paper also highlights extensions to regression trees that enhance their performance.
+    The paper also highlights extensions to regression trees that enhance their performance.
 
-\begin{equation}
-    \varPi
-\end{equation}
+    \begin{equation}
+        \varPi
+    \end{equation}
 
-Subsequently, both methods are applied to a dataset of student performance, emphasizing the strengths and weaknesses of linear regression and tree-based methods.
+    Subsequently, both methods are applied to a dataset of student performance, emphasizing the strengths and weaknesses of linear regression and tree-based methods.
 \end{abstract}
 
 
@@ -102,14 +102,14 @@ Linear regression performs poorly on many types of data, particularly those with
 
 Since \citep{breiman1984} presented the CART algorithm there has been a lot of work on various Tree based methods.
 
-\citep{hastie2021} serves as an excelent modern introduction to Regression trees, while while \citep{tan2019} give a deeper dive on BART a powerful ensemble method. 
+\citep{hastie2021} serves as an excelent modern introduction to Regression trees, while while \citep{tan2019} give a deeper dive on BART a powerful ensemble method.
 Random forests, a very popular Tree based ML method are explained very well in\citep{biau2016}.
 
 
 
 I found how simulations are good at showcasing model in an ideal setting. The simulations show how regression trees outperform linear regression on datasets with non liner relationships. etc. And how pruning can help find the optimal tradeoff between overfitting and not capturing enought of the signal. While applying the methods to the real world data can showcase how trees capture  interaction effects and how pruning works I discovered. Also the complications of worknig with real world data, as opposed to simulations.
 
-  
+
 In section 2 I will give a brief overview of the theory of regression trees, and where and where not we might expect them to perform will. And will also explain the bias variance trade-off and explain how pruning helps and ensemble methods that are extensions to trees.
 
 In section 3 I will run a number of simulations comparing RRTT and LLRR and showcasing different aspects of RRTT under ideal conditions.
@@ -204,7 +204,7 @@ The BART algorithm proceeds by first generating e.g., 200 trees, without any spl
 
 
 \begin{equation}
-R_{-j} = Y - \sum_{t\not=j} g(X,T_j,M_j).
+    R_{-j} = Y - \sum_{t\not=j} g(X,T_j,M_j).
 \end{equation}
 
 
@@ -276,8 +276,8 @@ One could try to showcase more differences between the two methods now, especial
 
 Results:
 \begin{itemize}
-    \item MSE for OLS model: 0.9917 
-    \item MSE for regression tree model: 1.4935 
+    \item MSE for OLS model: 0.9917
+    \item MSE for regression tree model: 1.4935
 \end{itemize}
 
 
@@ -355,7 +355,7 @@ Here one can see very well how the Cross validation error clearly helps against 
     \caption{Pruning finds the lowest Test error}
 \end{figure}
 
-A different problem is that the results can vary quite widley. Different splits in training and test data might lead to MSEs on the test set for the pruned tree between 6.9 and 9. 
+A different problem is that the results can vary quite widley. Different splits in training and test data might lead to MSEs on the test set for the pruned tree between 6.9 and 9.
 
 And and optimal value for `cp` which in this case is 0.028 and 0.035.
 
@@ -382,10 +382,10 @@ Using a 70\%-30\% split and a tree that isn't overfitting, these are the typical
 Even without any pruning, linear regression outperforms the tree by a wide margin:
 
 \begin{verbatim}
-Training MSE   Tree: 8.526844 
-Validation MSE Tree: 8.188679 
+Training MSE   Tree: 8.526844
+Validation MSE Tree: 8.188679
 
-Training MSE   Regr: 6.787159 
+Training MSE   Regr: 6.787159
 Validation MSE Regr: 6.865478
 \end{verbatim}
 
@@ -394,7 +394,7 @@ Invoking Condorcet to assist us, we can use ensemble methods.
 Using BART with the default hyperparameters, that is, a burn-in and sampling period of 2000 iterations each and 200 Trees per iteration, results in the following MSEs for BART:
 
 \begin{verbatim}
-Training MSE   BART: 5.777039 
+Training MSE   BART: 5.777039
 Validation MSE BART: 6.52317
 \end{verbatim}
 
@@ -410,9 +410,9 @@ The most obvious problem with simple regression trees is that they overfit immed
 
 While BART beats linear regression, it gives up on interpretability for the most part, while linear regression is very interpretable, in a similar way to regression trees. Arguably more so.
 
-In conclusion, regression trees definitely have their applications. As the simulations show, on very non-linear data, even a simple tree can outperform linear regression by a wide margin. But on real-life data, linear regression will often perform better and be more interpretable and useful. Perhaps trees really shine only on data that has very strong interaction effects, more than the single dataset I considered. 
+In conclusion, regression trees definitely have their applications. As the simulations show, on very non-linear data, even a simple tree can outperform linear regression by a wide margin. But on real-life data, linear regression will often perform better and be more interpretable and useful. Perhaps trees really shine only on data that has very strong interaction effects, more than the single dataset I considered.
 
-Of course, one can always find datasets more suited for trees to work better than my data, and better methods to determine which is the best method to use. 
+Of course, one can always find datasets more suited for trees to work better than my data, and better methods to determine which is the best method to use.
 
 This is a very important area of research, and clearly, there are still many open questions.
 
