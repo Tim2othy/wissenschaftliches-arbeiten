@@ -24,11 +24,14 @@ library(styler)
 
 Function to calculate MSE (That I should really use more)
 
-```{r}
+$x-y^{44}$
 
+Can I view this equation?
+
+```{r}
 # Function to calculate MSE
 calculate_mse <- function(actual, predicted) {
-  mean((actual - predicted)^2)
+    mean((actual - predicted)^2)
 }
 ```
 
@@ -39,7 +42,7 @@ load("C:/Users/timtj/GitHub/wissenschaftliches-arbeiten/R/student_por.RData")
 sd <- data.frame(student_por)
 
 sd <- sd %>%
-  mutate_if(is.character, as.factor)
+    mutate_if(is.character, as.factor)
 
 sd$sumalc <- sd$Walc + sd$Dalc
 sd$Dalc <- NULL
@@ -64,14 +67,11 @@ valid_data <- sd[-split_index, ]
 
 ```
 
-```{r}
 
-```
 
 # 2. Single tree on data sets
 
 ```{r}
-
 tree_model <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = 0.025, minsplit = 5))
 rpart.plot(tree_model, fallen.leaves = TRUE)
 
@@ -80,8 +80,6 @@ rpart.plot(tree_model, fallen.leaves = TRUE)
 Calc error
 
 ```{r}
-
-
 # Calculate MSE for training set
 train_pred <- predict(tree_model, train_data)
 train_mse <- mean((train_data$G3 - train_pred)^2)
@@ -100,20 +98,19 @@ cat("Validation MSE:", valid_mse)
 ## 2.1 Understanding why the error on test and on validation set are always the same
 
 ```{r}
-m = tree_model$cptable
+m <- tree_model$cptable
 m
 
 
 ```
 
 ```{r}
-pruned_tree <- prune(tree_model, cp = 0.8)
+pr<-ned_tree <- prune(tree_model, cp = 0.8)
 
 rpart.plot(pruned_tree)
 ```
 
 ```{r}
-
 # for test tree
 # Calculate MSE for training set
 train_predPP <- predict(pruned_tree, train_data)
@@ -126,9 +123,6 @@ valid_msePP <- mean((valid_data$G3 - valid_predPP)^2)
 # Print results
 cat("Training MSE:", train_msePP, "\n")
 cat("Validation MSE:", valid_msePP)
-
-
-
 ```
 
 So:
@@ -156,8 +150,6 @@ But obviously this is the case, they are both just using the training set, why w
 ## 3.1 Basic Regression Tree
 
 ```{r}
-
-
 tree_model <- rpart(G3 ~ ., data = sd)
 
 rpart.plot(tree_model, shadow.col = "gray")
@@ -167,26 +159,30 @@ var_importance <- tree_model$variable.importance
 
 # Variable Importance Plot
 var_importance <- data.frame(
-  variable = names(tree_model$variable.importance),
-  importance = tree_model$variable.importance
+    variable = names(tree_model$variable.importance),
+    importance = tree_model$variable.importance
 )
 ggplot(
-  var_importance,
-  aes(x = reorder(variable,importance),
-      y = importance)) +
-  geom_bar(stat = "identity", fill = "skyblue") +
-  coord_flip() +
-  theme_minimal() +
-  labs(title = "Variable Importance",
-       x = "Variables",
-       y = "Importance")
+    var_importance,
+    aes(
+        x = reorder(variable, importance),
+        y = importance
+    )
+) +
+    geom_bar(stat = "identity", fill = "skyblue") +
+    coord_flip() +
+    theme_minimal() +
+    labs(
+        title = "Variable Importance",
+        x = "Variables",
+        y = "Importance"
+    )
 
 ```
 
 ## 3.2 Basic linear regression
 
 ```{r}
-
 lm_model <- lm(G3 ~ ., data = sd)
 
 # Summary
@@ -198,7 +194,6 @@ print(summary_lm)
 ## 3.3 Compare MSE of both models
 
 ```{r}
-
 sd$lm_pred <- predict(lm_model)
 sd$tree_pred <- predict(tree_model)
 
@@ -213,24 +208,22 @@ print(mse_tree)
 ## 3.4 Visualize predictions
 
 ```{r}
-
 ggplot(sd, aes(x = G3)) +
-  geom_point(aes(y = lm_pred, color = "Linear Regression"), alpha = 0.5) +
-  geom_point(aes(y = tree_pred, color = "Regression Tree"), alpha = 0.5) +
-  geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
-  theme_minimal() +
-  labs(
-    title = "Predicted vs Actual G3 Scores",
-    x = "Actual G3", y = "Predicted G3",
-    color = "Model"
-  ) +
-  scale_color_manual(values = c("Linear Regression" = "blue", "Regression Tree" = "red"))
+    geom_point(aes(y = lm_pred, color = "Linear Regression"), alpha = 0.5) +
+    geom_point(aes(y = tree_pred, color = "Regression Tree"), alpha = 0.5) +
+    geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
+    theme_minimal() +
+    labs(
+        title = "Predicted vs Actual G3 Scores",
+        x = "Actual G3", y = "Predicted G3",
+        color = "Model"
+    ) +
+    scale_color_manual(values = c("Linear Regression" = "blue", "Regression Tree" = "red"))
 ```
 
 # 4. Plot for understanding trees
 
 ```{r}
-
 sd_mini <- sd[, c("sumalc", "absences", "G3")]
 
 tree_model <- rpart(G3 ~ sumalc + absences, data = sd_mini, control = rpart.control(cp = 0.002, minsplit = 40))
@@ -243,12 +236,12 @@ grid <- expand.grid(sumalc = sumalc_seq, absences = absences_seq)
 grid$G3_pred <- predict(tree_model, newdata = grid)
 
 ggplot(grid, aes(x = sumalc, y = absences, fill = G3_pred)) +
-  geom_tile() +
-  geom_text(aes(label = round(G3_pred, 1)), size = 3) +
-  scale_fill_gradient(low = "darkred", high = "lightblue", guide = "none") +
-  labs(x = "Alcohol consumption", y = "Absences", title = "Predicting Exam score based on alcohol consumption and Absences") +
-  theme_minimal() +
-  geom_point(data = sd_mini, aes(x = sumalc, y = absences), color = "blue", size = 2, inherit.aes = FALSE) # Add blue points for actual data
+    geom_tile() +
+    geom_text(aes(label = round(G3_pred, 1)), size = 3) +
+    scale_fill_gradient(low = "darkred", high = "lightblue", guide = "none") +
+    labs(x = "Alcohol consumption", y = "Absences", title = "Predicting Exam score based on alcohol consumption and Absences") +
+    theme_minimal() +
+    geom_point(data = sd_mini, aes(x = sumalc, y = absences), color = "blue", size = 2, inherit.aes = FALSE) # Add blue points for actual data
 
 
 ```
@@ -267,10 +260,8 @@ plotcp(complex_tree)
 
 ```{r}
 # Find optimal CP value
-opt_cp   <- complex_tree$cptable[which.min(complex_tree$cptable[, "xerror"]), "CP"]
+opt_cp <- complex_tree$cptable[which.min(complex_tree$cptable[, "xerror"]), "CP"]
 opt_sp_1 <- complex_tree$cptable[which.min(complex_tree$cptable[, "xerror"]), "nsplit"]
-
-
 
 print(opt_sp_1) # for xerror using cross validation
 print(opt_cp) # for xerror
@@ -289,25 +280,24 @@ rpart.plot(pruned_tree, main = "Optimal Pruned Tree")
 using the split of earlier data, for double not over fitting.
 
 ```{r}
-
 # Calculate the MSEs
 MSE_complex <- function() {
-  train_pred_complex <- predict(complex_tree, train_data)
-  test_pred_complex <- predict(complex_tree, valid_data)
-  train_mse_complex <- calculate_mse(train_data$G3, train_pred_complex)
-  test_mse_complex <- calculate_mse(valid_data$G3, test_pred_complex)
+    train_pred_complex <- predict(complex_tree, train_data)
+    test_pred_complex <- predict(complex_tree, valid_data)
+    train_mse_complex <- calculate_mse(train_data$G3, train_pred_complex)
+    test_mse_complex <- calculate_mse(valid_data$G3, test_pred_complex)
 
-  print(paste("Complex Tree - Training MSE:", train_mse_complex))
-  print(paste("Complex Tree -     Test MSE:", test_mse_complex))
+    print(paste("Complex Tree - Training MSE:", train_mse_complex))
+    print(paste("Complex Tree -     Test MSE:", test_mse_complex))
 }
 MSE_pruned <- function() {
-  train_pred_pruned <- predict(pruned_tree, train_data)
-  test_pred_pruned <- predict(pruned_tree, valid_data)
-  train_mse_pruned <- calculate_mse(train_data$G3, train_pred_pruned)
-  test_mse_pruned <- calculate_mse(valid_data$G3, test_pred_pruned)
+    train_pred_pruned <- predict(pruned_tree, train_data)
+    test_pred_pruned <- predict(pruned_tree, valid_data)
+    train_mse_pruned <- calculate_mse(train_data$G3, train_pred_pruned)
+    test_mse_pruned <- calculate_mse(valid_data$G3, test_pred_pruned)
 
-  print(paste("Pruned Tree  - Training MSE:", train_mse_pruned))
-  print(paste("Pruned Tree  -     Test MSE:", test_mse_pruned))
+    print(paste("Pruned Tree  - Training MSE:", train_mse_pruned))
+    print(paste("Pruned Tree  -     Test MSE:", test_mse_pruned))
 }
 
 MSE_complex()
@@ -321,36 +311,29 @@ cp_table <- complex_tree$cptable
 ## 5.3 Make pruning plot
 
 ```{r}
-
-
 num_splits <- cp_table[, "nsplit"]
 
 plot(
-  cp_table[, "nsplit"],
-  cp_table[, "xerror"]
-
+    cp_table[, "nsplit"],
+    cp_table[, "xerror"]
 )
-
 
 # Calculate MSE for each CP value
 mse_values <- sapply(cp_table[, "CP"], function(cp) {
-  pruned <- prune(complex_tree, cp = cp)
-  train_pred <- predict(pruned, train_data)
-  test_pred <- predict(pruned, valid_data)
-  train_mse <- calculate_mse(train_data$G3, train_pred)
-  test_mse <- calculate_mse(valid_data$G3, test_pred)
-  c(train_mse, test_mse)
+    pruned <- prune(complex_tree, cp = cp)
+    train_pred <- predict(pruned, train_data)
+    test_pred <- predict(pruned, valid_data)
+    train_mse <- calculate_mse(train_data$G3, train_pred)
+    test_mse <- calculate_mse(valid_data$G3, test_pred)
+    c(train_mse, test_mse)
 })
 
 # Making data for ggplot
 mse_data <- data.frame(
-  num_splits = rep(num_splits, 2),
-  mse = c(mse_values[1, ], mse_values[2, ]),
-  type = rep(c("Training MSE", "Test MSE"), each = length(num_splits))
+    num_splits = rep(num_splits, 2),
+    mse = c(mse_values[1, ], mse_values[2, ]),
+    type = rep(c("Training MSE", "Test MSE"), each = length(num_splits))
 )
-
-
-
 
 temp_mse_data <- mse_data %>% filter(type == "Test MSE")
 opt_splits <- temp_mse_data$num_splits[which.min(temp_mse_data$mse)]
@@ -371,51 +354,52 @@ Make the plot
 
 ```{r}
 ggplot(mse_data, aes(x = num_splits, y = mse, color = type)) +
-  geom_line() +
-  geom_point() +
-  scale_color_manual(values = c("blue", "red")) +
-  labs(
-    x = "Number of Splits", y = "Mean Squared Error",
-    title = "MSE vs Tree Complexity",
-    color = "MSE Type"
-  ) +
-  theme_minimal() +
-  geom_vline(xintercept = opt_splits, linetype = "dashed", color = "purple") +
-  annotate("text",
-    x = opt_splits + 18, y = min_mse -1 , label = paste("Optimal number of splits =", opt_splits),
-    vjust = -1, color = "purple"
-  )
+    geom_line() +
+    geom_point() +
+    scale_color_manual(values = c("blue", "red")) +
+    labs(
+        x = "Number of Splits", y = "Mean Squared Error",
+        title = "MSE vs Tree Complexity",
+        color = "MSE Type"
+    ) +
+    theme_minimal() +
+    geom_vline(xintercept = opt_splits, linetype = "dashed", color = "purple") +
+    annotate("text",
+        x = opt_splits + 18, y = min_mse - 1, label = paste("Optimal number of splits =", opt_splits),
+        vjust = -1, color = "purple"
+    )
 ```
 
 other plot for fun
 
 ```{r}
+adj <- mse_data[1, 2]
+len <- length(cp_table[, "nsplit"])
 
-adj = mse_data[1,2]
-len = length(cp_table[,"nsplit"])
-
-data_conc = data.frame(
-    rep(cp_table[, "nsplit"],3),
-    c(cp_table[, "xerror"]*adj,
-      cp_table[, "rel error"]*adj,
-      c(mse_values[2,])
-      ),
-    c(rep("Cross validation Error",len),
-      rep("Training Error",len),
-      rep("Test Error",len)
-  )
+data_conc <- data.frame(
+    rep(cp_table[, "nsplit"], 3),
+    c(
+        cp_table[, "xerror"] * adj,
+        cp_table[, "rel error"] * adj,
+        c(mse_values[2, ])
+    ),
+    c(
+        rep("Cross validation Error", len),
+        rep("Training Error", len),
+        rep("Test Error", len)
+    )
 )
 
-ggplot(data_conc, aes(x = data_conc[,1], y = data_conc[,2], color = data_conc[,3])) +
-  geom_line() +
-  geom_point() +
-  scale_color_manual(values = c("orange", "red","blue")) +
-  labs(
-    x = "Number of Splits", y = "Mean Squared Error",
-    title = "MSE vs Tree Complexity",
-    color = "MSE Type"
-  ) +
-  theme_minimal()
+ggplot(data_conc, aes(x = data_conc[, 1], y = data_conc[, 2], color = data_conc[, 3])) +
+    geom_line() +
+    geom_point() +
+    scale_color_manual(values = c("orange", "red", "blue")) +
+    labs(
+        x = "Number of Splits", y = "Mean Squared Error",
+        title = "MSE vs Tree Complexity",
+        color = "MSE Type"
+    ) +
+    theme_minimal()
 ```
 
 # 6. Comparing BART, Regression Tree and linear regression
@@ -425,8 +409,7 @@ ggplot(data_conc, aes(x = data_conc[,1], y = data_conc[,2], color = data_conc[,3
 Create tree
 
 ```{r}
-
-tree_model <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = opt_cp , minsplit = 5))
+tree_model <- rpart(G3 ~ ., data = train_data, control = rpart.control(cp = opt_cp, minsplit = 5))
 rpart.plot(tree_model, fallen.leaves = TRUE)
 
 ```
@@ -442,7 +425,6 @@ summary(lm_model)
 Create BART
 
 ```{r}
-
 # Prepare data for BART
 x_train <- train_data[, !names(train_data) %in% "G3"]
 y_train <- train_data$G3
@@ -453,13 +435,14 @@ y_valid <- valid_data$G3
 
 # Fit BART model
 bart_model <- wbart(
-  x.train = x_train,
-  y.train = y_train,
-  x.test = x_valid,
-  nskip = 1000,
-  ntree = 200,
-  ndpost = 1000,
-  printevery = 500)
+    x.train = x_train,
+    y.train = y_train,
+    x.test = x_valid,
+    nskip = 1000,
+    ntree = 200,
+    ndpost = 1000,
+    printevery = 500
+)
 ```
 
 calculate the errors
@@ -467,18 +450,17 @@ calculate the errors
 ```{r}
 # Print results
 comp <- function() {
-  cat("Training MSE   Tree:", train_mse_tree, "\n")
-  cat("Validation MSE Tree:", valid_mse_tree, "\n\n")
-  cat("Training MSE   Regr:", train_mse_regr, "\n")
-  cat("Validation MSE Regr:", valid_mse_regr, "\n\n")
-  cat("Training MSE   BART:", train_mse_bart, "\n")
-  cat("Validation MSE BART:", valid_mse_bart, "\n")
+    cat("Training MSE   Tree:", train_mse_tree, "\n")
+    cat("Validation MSE Tree:", valid_mse_tree, "\n\n")
+    cat("Training MSE   Regr:", train_mse_regr, "\n")
+    cat("Validation MSE Regr:", valid_mse_regr, "\n\n")
+    cat("Training MSE   BART:", train_mse_bart, "\n")
+    cat("Validation MSE BART:", valid_mse_bart, "\n")
 }
 
 ```
 
 ```{r}
-
 # tree error
 # Calculate MSE for training set
 train_pred_tree <- predict(tree_model, train_data)
@@ -516,31 +498,22 @@ comp()
 ## 6.2 Closer look at BART
 
 ```{r}
-
 bart_minim <- wbart(
-  x.train = x_train,
-  y.train = y_train,
-  x.test = x_valid,
-  nskip = 100,
-  ntree = 100,
-  ndpost = 50,
-  printevery = 500)
-
-
+    x.train = x_train,
+    y.train = y_train,
+    x.test = x_valid,
+    nskip = 100,
+    ntree = 100,
+    ndpost = 50,
+    printevery = 500
+)
 
 
 fitmat <- cbind(train_data$G3, bart_model$yhat.train.mean, bart_minim$yhat.train.mean)
 
-
-
 pairs(fitmat)
 
 cor(fitmat)
-
-
-
-
-
 ```
 
 ```{r}
@@ -561,8 +534,6 @@ print(valid_mse_bart)
 ```
 
 ```{r}
-
-
 # compute row percentages
 percount <- bart_model$varcount / apply(bart_model$varcount, 1, sum)
 # mean of row percentages
@@ -580,8 +551,8 @@ rgy <- range(qm, na.rm = TRUE)
 ```{r}
 # Create the plot
 plot(c(1, p), rgy,
-  type = "n", xlab = "variable",
-  ylab = "post mean, percent var use", axes = FALSE
+    type = "n", xlab = "variable",
+    ylab = "post mean, percent var use", axes = FALSE
 )
 
 # Add x-axis
@@ -596,7 +567,7 @@ lines(1:p, mvp, col = "black", lty = 4, pch = 4, type = "b", lwd = 1.5)
 
 # Add vertical lines
 for (i in 1:p) {
-  lines(c(i, i), qm[, i], col = "blue", lty = 3, lwd = 1.0)
+    lines(c(i, i), qm[, i], col = "blue", lty = 3, lwd = 1.0)
 }
 ```
 
@@ -607,7 +578,6 @@ for (i in 1:p) {
 using the usual method
 
 ```{r}
-
 tree_model_2splits <- rpart(G3 ~ ., data = sd, control = rpart.control(maxdepth = 2))
 
 # Plot the tree
@@ -626,8 +596,6 @@ MSE should be 7.783039
 recreating the same tree by hand (I promise this will make sense later)
 
 ```{r}
-
-
 # Split the data based on failures
 failures_yes <- subset(sd, failures >= 1)
 failures_no <- subset(sd, failures == 0)
@@ -655,9 +623,9 @@ mse_failures_no_higher_no <- mean((failures_no_higher_no$G3 - mean_failures_no_h
 
 # Calculate the total MSE
 total_mse <- (mse_failures_yes_absences_yes * nrow(failures_yes_absences_yes) +
-  mse_failures_yes_absences_no * nrow(failures_yes_absences_no) +
-  mse_failures_no_higher_yes * nrow(failures_no_higher_yes) +
-  mse_failures_no_higher_no * nrow(failures_no_higher_no)) / nrow(sd)
+    mse_failures_yes_absences_no * nrow(failures_yes_absences_no) +
+    mse_failures_no_higher_yes * nrow(failures_no_higher_yes) +
+    mse_failures_no_higher_no * nrow(failures_no_higher_no)) / nrow(sd)
 
 total_mse
 
@@ -668,8 +636,6 @@ MSE should also be 7.783039
 Creating the same tree but with swapped splits by hand
 
 ```{r}
-
-
 # Split the data based on failures
 failures_yes <- subset(sd, failures >= 1)
 failures_no <- subset(sd, failures == 0)
@@ -699,9 +665,9 @@ mse_failures_no_absences_no <- mean((failures_no_absences_no$G3 - mean_failures_
 
 # Calculate the total MSE
 total_mse_swapped <- (mse_failures_yes_higher_yes * nrow(failures_yes_higher_yes) +
-  mse_failures_yes_higher_no * nrow(failures_yes_higher_no) +
-  mse_failures_no_absences_yes * nrow(failures_no_absences_yes) +
-  mse_failures_no_absences_no * nrow(failures_no_absences_no)) / nrow(sd)
+    mse_failures_yes_higher_no * nrow(failures_yes_higher_no) +
+    mse_failures_no_absences_yes * nrow(failures_no_absences_yes) +
+    mse_failures_no_absences_no * nrow(failures_no_absences_no)) / nrow(sd)
 
 total_mse_swapped
 
