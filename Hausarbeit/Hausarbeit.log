@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.8.26)  24 SEP 2024 15:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.8.26)  24 SEP 2024 15:06
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -756,21 +756,8 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 
 [2]
 
-Package natbib Warning: Citation `breiman1984' on page 3 undefined on input line 103.
-
-
-Package natbib Warning: Citation `hastie2021' on page 3 undefined on input line 105.
-
-
-Package natbib Warning: Citation `tan2019' on page 3 undefined on input line 105.
-
-
-Package natbib Warning: Citation `biau2016' on page 3 undefined on input line 106.
-
-
-
 [3]
-<./Graphics/waste_of_time.png, id=97, 464.4853pt x 532.99126pt>
+<./Graphics/waste_of_time.png, id=109, 464.4853pt x 532.99126pt>
 File: ./Graphics/waste_of_time.png Graphic file (type png)
 <use ./Graphics/waste_of_time.png>
 Package pdftex.def Info: ./Graphics/waste_of_time.png  used on input line 143.
@@ -778,7 +765,7 @@ Package pdftex.def Info: ./Graphics/waste_of_time.png  used on input line 143.
 
 
 [4]
-<./Graphics/image.png, id=107, 631.60968pt x 411.78844pt>
+<./Graphics/image.png, id=119, 631.60968pt x 411.78844pt>
 File: ./Graphics/image.png Graphic file (type png)
 <use ./Graphics/image.png>
 Package pdftex.def Info: ./Graphics/image.png  used on input line 158.
@@ -787,29 +774,17 @@ Package pdftex.def Info: ./Graphics/image.png  used on input line 158.
 
 [5 <./Graphics/waste_of_time.png>]
 
-Package natbib Warning: Citation `condorcet1785' on page 6 undefined on input line 185.
-
-
-
 [6 <./Graphics/image.png>]
-
-Package natbib Warning: Citation `biau2016' on page 7 undefined on input line 192.
-
-
 
 [7]
 
-Package natbib Warning: Citation `chipman2010' on page 8 undefined on input line 220.
-
-
-
 [8]
-<./Graphics/OLS vs Tree.png, id=133, 752.8125pt x 752.8125pt>
+<./Graphics/OLS vs Tree.png, id=154, 752.8125pt x 752.8125pt>
 File: ./Graphics/OLS vs Tree.png Graphic file (type png)
 <use ./Graphics/OLS vs Tree.png>
 Package pdftex.def Info: ./Graphics/OLS vs Tree.png  used on input line 242.
 (pdftex.def)             Requested size: 188.20265pt x 188.20265pt.
-<./Graphics/NLD Pred.png, id=134, 542.5725pt x 294.0075pt>
+<./Graphics/NLD Pred.png, id=155, 542.5725pt x 294.0075pt>
 File: ./Graphics/NLD Pred.png Graphic file (type png)
 <use ./Graphics/NLD Pred.png>
 Package pdftex.def Info: ./Graphics/NLD Pred.png  used on input line 260.
@@ -823,12 +798,12 @@ File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 
 [10{c:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc} <./Graphics/NLD Pred.png>]
-<./Graphics/big_manual_tree.pdf, id=148, 804.00375pt x 654.445pt>
+<./Graphics/big_manual_tree.pdf, id=170, 804.00375pt x 654.445pt>
 File: ./Graphics/big_manual_tree.pdf Graphic file (type pdf)
 <use ./Graphics/big_manual_tree.pdf>
 Package pdftex.def Info: ./Graphics/big_manual_tree.pdf  used on input line 318.
 (pdftex.def)             Requested size: 241.20299pt x 196.335pt.
-<./Graphics/small_manual_tree.pdf, id=149, 804.00375pt x 654.445pt>
+<./Graphics/small_manual_tree.pdf, id=171, 804.00375pt x 654.445pt>
 File: ./Graphics/small_manual_tree.pdf Graphic file (type pdf)
 <use ./Graphics/small_manual_tree.pdf>
 Package pdftex.def Info: ./Graphics/small_manual_tree.pdf  used on input line 328.
@@ -836,7 +811,7 @@ Package pdftex.def Info: ./Graphics/small_manual_tree.pdf  used on input line 32
 
 
 [11 <./Graphics/big_manual_tree.pdf>]
-<./Graphics/triple_pruning_plot.pdf, id=163, 1240.635pt x 604.2575pt>
+<./Graphics/triple_pruning_plot.pdf, id=184, 1240.635pt x 604.2575pt>
 File: ./Graphics/triple_pruning_plot.pdf Graphic file (type pdf)
 <use ./Graphics/triple_pruning_plot.pdf>
 Package pdftex.def Info: ./Graphics/triple_pruning_plot.pdf  used on input line 354.
@@ -844,6 +819,8 @@ Package pdftex.def Info: ./Graphics/triple_pruning_plot.pdf  used on input line 
 
 
 [12 <./Graphics/small_manual_tree.pdf>]
+
+[13 <./Graphics/triple_pruning_plot.pdf>]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 384.
  (c:/texlive/2024/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
@@ -854,8 +831,6 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             See the microtype manual for details.
 
 
-[13 <./Graphics/triple_pruning_plot.pdf>]
-
 [14]
 
 [15]
@@ -863,9 +838,8 @@ Package microtype Info: Loading generic protrusion settings for font family
 (./Hausarbeit.bbl)
 :<-
 
-Package natbib Warning: There were undefined citations.
 
-(./Hausarbeit.aux (./Title/title.aux))
+[16] (./Hausarbeit.aux (./Title/title.aux))
  ***********
 LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-07-20>
@@ -874,18 +848,18 @@ Package rerunfilecheck Info: File `Hausarbeit.out' has not changed.
 (rerunfilecheck)             Checksum: 3A103EB4FEDC4BD26140C4ECBD0C6837;1477.
  ) 
 Here is how much of TeX's memory you used:
- 16856 strings out of 473579
- 267123 string characters out of 5732263
- 1935960 words of memory out of 5000000
- 39267 multiletter control sequences out of 15000+600000
- 631482 words of font info for 158 fonts, out of 8000000 for 9000
+ 16895 strings out of 473579
+ 267768 string characters out of 5732263
+ 1934960 words of memory out of 5000000
+ 39295 multiletter control sequences out of 15000+600000
+ 635937 words of font info for 160 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 75i,7n,79p,1068b,658s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi6.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmtt12.pfb>
-Output written on Hausarbeit.pdf (16 pages, 388837 bytes).
+ 75i,7n,79p,1068b,480s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi6.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmri12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmtt12.pfb>
+Output written on Hausarbeit.pdf (17 pages, 411336 bytes).
 PDF statistics:
- 282 PDF objects out of 1000 (max. 8388607)
- 213 compressed objects within 3 object streams
- 41 named destinations out of 1000 (max. 500000)
- 43649 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 315 PDF objects out of 1000 (max. 8388607)
+ 243 compressed objects within 3 object streams
+ 49 named destinations out of 1000 (max. 500000)
+ 45697 words of extra memory for PDF output out of 51595 (max. 10000000)
 

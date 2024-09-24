@@ -326,6 +326,7 @@ INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/ec-lmtt12.tfm
 INPUT ./Hausarbeit.bbl
 INPUT ./Hausarbeit.bbl
 INPUT Hausarbeit.bbl
+INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/lm/ec-lmri12.tfm
 INPUT Hausarbeit.aux
 INPUT ./Title/title.aux
 INPUT ./Title/title.aux
@@ -343,6 +344,7 @@ INPUT c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr10.pfb
 INPUT c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr12.pfb
 INPUT c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr17.pfb
 INPUT c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb
+INPUT c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmri12.pfb
 INPUT c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy10.pfb
 INPUT c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy8.pfb
 INPUT c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmtt12.pfb
