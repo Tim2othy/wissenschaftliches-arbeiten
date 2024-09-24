@@ -55,7 +55,19 @@
 \pagenumbering{arabic}% Arabic and reset to 1)
 
 \begin{abstract}
-Test2. Modern economic research heavily relies on linear regression. However, to conduct effective economic research, it is crucial to understand both the strengths and weaknesses of linear regression, as well as where it outperforms or is outperformed by other methods. This paper explores Regression Trees as an alternative to linear regression .In it I will explain the theory behind regression trees and compare them to linear regression using a series of simple simulations, focusing on interaction effects and pruning. The paper also highlights extensions to regression trees that enhance their performance. Subsequently, both methods are applied to a dataset of student performance, emphasizing the strengths and weaknesses of linear regression and tree-based methods.
+Test12. Modern economic research heavily relies on linear regression.
+
+$$
+    \sum (4-3) \times \int 4
+$$
+
+However, to conduct effective economic research, it is crucial to understand both the strengths and weaknesses of linear regression, as well as where it outperforms or is outperformed by other methods. This paper explores Regression Trees as an alternative to linear regression . $e^{\alpha-45} \div (4-3) \times 3$ In it I will explain the theory behind regression trees and compare them to linear regression using a series of simple simulations, focusing on interaction effects and pruning.
+
+$$
+\sum (4-3) \times \int 4
+$$
+
+The paper also highlights extensions to regression trees that enhance their performance. Subsequently, both methods are applied to a dataset of student performance, emphasizing the strengths and weaknesses of linear regression and tree-based methods.
 \end{abstract}
 
 \newpage
@@ -104,9 +116,9 @@ Regression Trees are a type of supervised machine learning algorithm that recurs
 
 The core mechanism of Regression Trees involves splitting the predictor space into regions that minimize the residual sum of squares, given by:
 
-\begin{equation}
+$$
     \sum_{j=1}^{J} \sum_{i \in R_j} ( y_i- \hat{ y}_{R_j} )^2
-\end{equation}
+$$
 
 
 
@@ -115,8 +127,7 @@ Each branching of the tree divides the predictor space into two regions, for num
 
 The algorithm employs a greedy approach called Recursive binary splitting to find the optimal split at each stage to minimize prediction error. This process continues until a specified threshold is reached, such as a minimum number of observations in each leaf node or a maximum tree depth.
 
-\begin{figure}
-    \centering
+\begin{figure}\centering
     \includegraphics[scale=0.40]{waste_of_time.png}
     \caption{Visualization of Regression Tree's predictions}
 \end{figure}
@@ -144,9 +155,9 @@ To address the issue of overfitting and improve overall performance, researchers
 
 First, a large tree is grown that is likely to overfit the training data. Then, a complexity parameter $\alpha$ is introduced to penalize the tree's size. The pruning process is guided by the following formula:
 
-\begin{equation}
+$$
     \sum_{m=1}^{|T|} \sum_{i: x_i \in R_m} (y_i - \hat{y}_{R_j})^2 + \alpha|T|
-\end{equation}
+$$
 
 
 
@@ -170,9 +181,9 @@ Random Forests create an ensemble by growing many decorrelated trees. Each tree 
 
 I will go into slightly more detail for the BART method, as that is the extension I used on the dataset. BART model the data as a sum of many Trees plus noise:
 
-\begin{equation}
+$$
     Y_i = \sum_{j=1}^{m} g(X_i; T_j, M_j) + \epsilon_i
-\end{equation}
+$$
 
 
 Where $m$ is the number of trees, typically around 200. And $g(X_i; T_j, M_j)$ represents the contribution of the $j$-th tree. $T_j$ and $M_j$ represent the tree's structure and predictions respectively. And $\epsilon_i$ is the noise term.
@@ -180,9 +191,9 @@ Where $m$ is the number of trees, typically around 200. And $g(X_i; T_j, M_j)$ r
 The BART algorithm proceeds by first generating e.g., 200 trees, without any splits. For each Tree $j$, it calculates the residual error $R_{-j}$ by taking in all the current trees except $j$:
 
 
-\begin{equation}
+$$
 R_{-j} = Y - \sum_{t\not=j} g(X,T_j,M_j).
-\end{equation}
+$$
 
 
 
@@ -218,7 +229,6 @@ This first simulation shows where linear regression excels and trees aren't espe
     \centering
     \includegraphics[scale=0.25]{OLS vs Tree.png}
     \caption{Linear Relation between Variables}
-    \label{fig:sub1}
 \end{figure}
 
 
