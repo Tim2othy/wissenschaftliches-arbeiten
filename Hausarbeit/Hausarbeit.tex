@@ -150,7 +150,11 @@ First, a large tree is grown that is likely to overfit the training data. Then, 
 \end{equation}
 
 
+
 Where $|T|$ is the number of terminal nodes in the tree. For each value of $\alpha$, the algorithm finds the subtree that minimizes this cost function. The optimal $\alpha$ is then selected using cross-validation, which helps achieve a good trade-off between bias and variance. The larger the cost complexity parameter $\alpha$, the better each split has to be to justify its existence. Recursivly the least important split is removed. As one prunes a large tree by increasing $\alpha$, the tree is naturally pruned in a predictable and well-behaved fashion, allowing one to select the preferred tree.
+
+
+
 
 Instead of evaluating a model on the data we trained it on, we evaluate it on a separate set. In the `rpart` library, cross-validation is performed, and the error for all different trees is produced right away, allowing one to select the tree that performs best on the cross-validation error. This lets one achieve a good trade-off between bias and variance. A large $\alpha$ results in very small trees, while a small $\alpha$ results in larger trees.
 
@@ -326,7 +330,7 @@ Here one can see very well how the Cross validation error clearly helps against 
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.50]{triple_pruning_plot.pdf}
+    \includegraphics[scale=0.30]{triple_pruning_plot.pdf}
     \caption{Pruning finds the lowest Test error}
 \end{figure}
 
