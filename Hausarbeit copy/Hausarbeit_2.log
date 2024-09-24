@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.8.26)  24 SEP 2024 13:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.8.26)  24 SEP 2024 13:47
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/Hausarbeit/Hausarbeit.tex
-(c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/Hausarbeit/Hausarbeit.tex
+**"c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/Hausarbeit copy/Hausarbeit_2.tex"
+(c:/Users/timtj/GitHub/wissenschaftliches-arbeiten/Hausarbeit copy/Hausarbeit_2.tex
 LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-07-20>
 (c:/texlive/2024/texmf-dist/tex/latex/base/article.cls
@@ -573,8 +573,8 @@ File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count354
 \l__pdf_internal_box=\box110
-) (./Hausarbeit.aux (./Title/title.aux))
-\openout1 = `Hausarbeit.aux'.
+) (./Hausarbeit_2.aux (./Title/title.aux))
+\openout1 = `Hausarbeit_2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 51.
 LaTeX Font Info:    ... okay on input line 51.
@@ -674,9 +674,9 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 \c@lstlisting=\count361
 Package hyperref Info: Link coloring ON on input line 51.
- (./Hausarbeit.out) (./Hausarbeit.out)
+ (./Hausarbeit_2.out) (./Hausarbeit_2.out)
 \@outlinefile=\write3
-\openout3 = `Hausarbeit.out'.
+\openout3 = `Hausarbeit_2.out'.
 
 
 :<+ ./Title/title.tex
@@ -739,7 +739,7 @@ l.61 \newpage
 
 
 
-] (./Hausarbeit.toc
+] (./Hausarbeit_2.toc
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <12> on input line 4.
 LaTeX Font Info:    External font `lmex10' loaded for size
@@ -748,7 +748,7 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <6> on input line 4.
 )
 \tf@toc=\write4
-\openout4 = `Hausarbeit.toc'.
+\openout4 = `Hausarbeit_2.toc'.
 
 
 
@@ -832,29 +832,29 @@ Package microtype Info: Loading generic protrusion settings for font family
 [14]
 
 [15]
-:<+ Hausarbeit.bbl
-(./Hausarbeit.bbl)
+:<+ Hausarbeit_2.bbl
+(./Hausarbeit_2.bbl)
 :<-
 
 
-[16] (./Hausarbeit.aux (./Title/title.aux))
+[16] (./Hausarbeit_2.aux (./Title/title.aux))
  ***********
 LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-07-20>
  ***********
-Package rerunfilecheck Info: File `Hausarbeit.out' has not changed.
+Package rerunfilecheck Info: File `Hausarbeit_2.out' has not changed.
 (rerunfilecheck)             Checksum: 3A103EB4FEDC4BD26140C4ECBD0C6837;1477.
  ) 
 Here is how much of TeX's memory you used:
  16854 strings out of 473579
- 267158 string characters out of 5732263
+ 267233 string characters out of 5732263
  1934960 words of memory out of 5000000
  39280 multiletter control sequences out of 15000+600000
  619680 words of font info for 143 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 75i,7n,79p,1068b,480s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,7n,79p,1077b,480s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi6.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmri12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmtt12.pfb>
-Output written on Hausarbeit.pdf (17 pages, 400391 bytes).
+Output written on Hausarbeit_2.pdf (17 pages, 400383 bytes).
 PDF statistics:
  301 PDF objects out of 1000 (max. 8388607)
  233 compressed objects within 3 object streams
