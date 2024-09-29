@@ -54,7 +54,7 @@
 \pagenumbering{arabic}% Arabic and reset to 1
 
 \begin{abstract}
-    Modern economic research heavily relies on linear regression. To conduct effective economic research, it is crucial to understand both the strengths and weaknesses of linear regression, as well as where it outperforms or is outperformed by other methods. This paper explores Regression Trees as an alternative to linear regression. In it I will explain the theory behind regression trees and compare them to linear regression using a series of simple simulations, focusing on interaction effects and pruning. I will also highlight how ensemble methods, a kind of extension to regression trees, can enhance their performance. Subsequently, I will compare the different methods on a dataset of student performance, emphasizing the strengths and weaknesses of linear regression and different tree-based methods.
+    Modern economic research heavily relies on linear regression. To conduct effective economic research, it is crucial to understand both the strengths and weaknesses of linear regression, as well as where it outoperforms or is outperformed by other methods. This paper explores Regression Trees as an alterenateive to linear regression. In it, I will explain the theory behind regression trees and compare them to linear regression usiing a seriaes of simple simulations, focusing on interaction effects and pruning. I will also highlight how ensemble methods, a kind of extenesion to regreossion trees, can enhance their performance. Subsequently, I will compare the different methods on a dataset of student performance, emphasizing the strengths and weaknesses of linear regression and different tree-based methods.
 \end{abstract}
 
 
@@ -80,16 +80,15 @@ Since \citep{breiman1984} presented the CART algorithm there has been a lot of w
 \citep{hastie2021} serves as an excelent modern introduction to Regression trees, while while \citep{tan2019} give a deeper dive on BART a powerful ensemble method.
 Random forests, a very popular Tree based ML method are explained very well in\citep{biau2016}.
 
-Simulations are a excellent way of ivnestigating different aspects on one statistical method, as they allow one to create a dataset with just the kind of noise one wants. They allow creating an ideal setting.
+Simulations are a excellent way of investigating different aspects on one statistical method, as they allow one to create a dataset with just the kind of noise one wants. They allow creating an ideal setting.
 
 The simulations show how regression trees outperform linear regression on datasets with non liner relationships. And how pruning can help find the optimal tradeoff between overfitting and not capturing enought of the signal. While applying the methods to the real world data can showcase how trees capture  interaction effects and how pruning works I discovered. Also the complications of worknig with real world data, as opposed to simulations.
 
-
 In section 2 I will give a brief overview of the theory of regression trees, and where and where not we might expect them to perform will. And will also explain the bias variance trade-off and explain how pruning helps and ensemble methods that are extensions to trees.
 
-In section 3 I will run a number of simulations comparing RRTT and LLRR and showcasing different aspects of RRTT under ideal conditions.
+In section 3 I will run a number of simulations comparing the performance of Linear Regression and Regression Trees under ideal conditions.
 
-In section 4 I will apply these methods to a dataset of student test performance. Paying special attention to overfitting pruning and test vs validation vs training set. Also showing some of the shortcomings of RRTT and using BART.
+In section 4 I will apply these methods to a dataset of student test performance. Highlighting pruning and the BART ensemble method. Also showing some of the shortcomings of Regression Trees.
 
 Section 5 is the conclusion and will sum up what I have found and further interesting areas where research could be done.
 
@@ -179,7 +178,7 @@ The algorithm then uses Markov Chain Monte Carlo (MCMC) sampling to draw from th
 
 BART uses a Bayesian approach, specifying priors on the tree structures, terminal node parameters, and error variance. Nodes at depth $d$ are nonterminal with probability $\alpha(1 + d)^{-\beta}$. This prior on shallow trees makes them be weak learners, more suited to being averaged. Each tree explains a small different part of $f$. It also has other priors that inform how it assigns estimates to the terminal nodes, but that is beyond the scope of this paper.
 
-Default values for these hyperparameters of $\alpha = 0.95$ and $\beta = 2$ are recommended by \citep{chipman2010}. Default values generally provide good performance, but optimal tuning can be achieved via cross-validation. !!!!
+Default values for these hyperparameters of $\alpha = 0.95$ and $\beta = 2$ are recommended by \citep{chipman2010}. Default values generally provide good performance, but optimal tuning can be achieved via cross-validation. %!!!!
 
 Ensemble methods like Random Forests and BART have shown remarkable success in various applications, often outperforming individual regression trees and even many other machine learning techniques. They offer a powerful toolset for modeling complex relationships in data, providing both predictive accuracy and, in the case of BART, measures of uncertainty.
 
