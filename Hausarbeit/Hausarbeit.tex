@@ -1,16 +1,16 @@
 \documentclass[12pt]{article}
-\usepackage[
-   left=1.25in,
-   right=1.25in,
-   top=1.5in,
-   bottom=1.5in]{geometry}
+\usepackage[left=3cm, right=2cm, top=2cm, bottom=2cm]{geometry}
 
 \usepackage[english]{babel}				% orthography
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}				% font family
+\usepackage{times}				% font family
 \usepackage{microtype}				% for micro typography (for a better typeface)
+\usepackage{setspace}
+\setstretch{1.5} % 1.5 line spacing
+\newtheorem{mydef}{Merksatz}  		% if examples or mnemotechnic verses are used with continuous numeration
+\newtheorem{bsp}{Beispiel}
 \usepackage{blindtext}
-
+\usepackage{fancyhdr}
 \usepackage{longtable}
 \usepackage{multicol}
 \usepackage{multirow}
@@ -21,17 +21,13 @@
 \usepackage[active]{srcltx}
 \usepackage{listings}				% algorithm
 \usepackage{mdwlist}				% lists
-
-\usepackage{setspace} 				% setting of the lines (rows)
-\newtheorem{mydef}{Merksatz}  		% if examples or mnemotechnic verses are used with continuous numeration
-\newtheorem{bsp}{Beispiel}
-
 \usepackage{calc}
 \usepackage{tablefootnote}			% footnotes in tables
 \hyphenation{voll-st\"andigen}		% for defining word devisions globally
 
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
+
 \usepackage{graphicx}
 \graphicspath{{./Graphics/}}          % path to the pictures
 
@@ -58,13 +54,11 @@
 \end{abstract}
 
 
-
 %\newpage
 
 \tableofcontents
 
 %\newpage
-
 
 \section{Introduction}
 While linear regression is arguably the most frequently used method by empirical economists and can be valuable in many situations, it is essential to examine its limitations and areas where alternative methods excel. Regression trees have emerged as a powerful machine-learning technique for predictive modelling, with numerous extensions greatly improving their utility. Regression trees offer an alternative approach that can be beneficial in various scenarios. This paper will discuss their advantages over traditional linear regression methods, cover the fundamentals of regression trees, compare them with linear regression, address the issue of overfitting, and introduce advanced ensemble methods such as Bayesian Additive Regression Trees (BART).
@@ -95,7 +89,6 @@ Section 5 is the conclusion and will sum up what I have found and further intere
 This dataset used in this paper is publicly available at \href{https://www.kaggle.com/datasets/uciml/student-alcohol-consumption}{Kaggle: Student Alcohol Consumption Dataset}. All code used for the simulations and data analysis is available at \href{https://github.com/Tim2othy/wissenschaftliches-arbeiten}{my GitHub}.
 
 
-
 \section{Regression Trees}
 
 Regression Trees are a type of supervised machine-learning algorithm that recursively splits the predictor space into smaller rectangular subregions. This process approximates an unknown function $f$ by minimizing a measure of loss at each split. Unlike linear regression, Regression Trees don't make assumptions about linearity or non-interaction between different dimensions, making them particularly useful for complex, non-linear relationships in data.
@@ -105,8 +98,6 @@ The core mechanism of Regression Trees involves splitting the predictor space in
 \begin{equation}
     \sum_{j=1}^{J} \sum_{i \in R_j} ( y_i- \hat{y}_{R_j})^2
 \end{equation}
-
-
 
 In each region, $\hat{y}$ simply takes on the mean of all observations in that region. Each branching of the tree divides the predictor space into two regions, for numerical variables typically of the form $\{x \le c\}$ or $\{x > c\}$. In each resulting region, the predicted value $\hat{y}$ is simply the mean of all observations within that region.
 
@@ -121,14 +112,11 @@ Regression Trees offer several advantages over traditional linear regression met
 
 One other major benefit of Trees over Linear Regression is that they capture interaction effects naturally. If for example being blonde typically increases pay, but only for women, a Regression Tree will often naturally split along gender and then, for women only, along hair colour. Whereas in a linear Regression the researcher would have to manually include terms for all interaction effects they want to study. However, Regression Trees are not without challenges. One of the primary issues is their tendency to overfit the data, especially when allowed to grow deep. Unlike linear regression, where overfitting primarily occurs with high-dimensional data, regression trees can overfit even with low-dimensional data. This is because they have the flexibility to create very specific rules that may capture noise in the training data rather than true underlying patterns.
 
-
 \begin{figure}
     \centering
     \includegraphics[scale=0.50]{image.png}
     \caption{Regression Tree overfitting}
 \end{figure}
-
-
 
 \subsection{Pruning}
 
@@ -160,7 +148,6 @@ I will go into slightly more detail for the BART method, as that is the extensio
 \begin{equation}
     Y_i = \sum_{j=1}^{m} g(X_i; T_j, M_j) + \epsilon_i
 \end{equation}
-
 
 Where $m$ is the number of trees, typically around 200. And $g(X_i; T_j, M_j)$ represents the contribution of the $j$-th tree. $T_j$ and $M_j$ represent the tree's structure and predictions respectively. And $\epsilon_i$ is the noise term.
 
@@ -308,7 +295,7 @@ The fact that the test error is lower than the training error should not be surp
 
 After examining the tree's performance, it's informative to compare it to the results obtained from linear regression.
 
-Using a 70\%-30\% split and a tree that isn't overfitting, these are the typical results one gets for Regression Trees and multivariate linear regression. Here, the linear regression isn't optimized at all; it's the very first result one gets, without any pruning or attempts to combat overfitting.
+Using a 70\%-30\% split and a tree that isn't overfitting, these are the typical results one gets for Regression Trees and multivariate linear regression. The linear regression is not optimized in any way to counter overfitting.
 
 Even without any pruning, linear regression outperforms the tree by a wide margin:
 
@@ -318,16 +305,16 @@ Validation MSE Tree: 8.188679
 
 Training MSE   Regr: 6.787159
 Validation MSE Regr: 6.865478
+
+Training MSE   BART: 5.777039
+Validation MSE BART: 6.52317
 \end{verbatim}
 
 Invoking Condorcet to assist us, we can use ensemble methods.
 
 Using BART with the default hyperparameters, that is, a burn-in and sampling period of 2000 iterations each and 200 Trees per iteration, results in the following MSEs for BART:
 
-\begin{verbatim}
-Training MSE   BART: 5.777039
-Validation MSE BART: 6.52317
-\end{verbatim}
+
 
 Depending on how the data is split into training and test sets, and other random factors, the numbers for all three models can vary quite widely. However, the single Tree is almost always outperformed by linear regression, and BART outperforms them both.
 
