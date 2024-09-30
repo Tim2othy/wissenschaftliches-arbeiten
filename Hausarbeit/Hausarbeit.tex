@@ -102,7 +102,6 @@ Regression Trees offer several advantages over traditional linear regression met
 
 One major weakness of Regression Trees however is their tendency to overfit on the data. To capture interesting relationships one must allow ones Tree to grow deep with multple levels of splits. Their flexibility allowing them to create very specific rules also allows them to capture noise in the training data rather than true underlying patterns. Figure~\ref{overfitting_tree}, illustrates how a Regression Tree can overfit a dataset.
 
-
 \begin{figure}
     \centering
     \includegraphics[scale=0.50]{image.png}
@@ -111,21 +110,15 @@ One major weakness of Regression Trees however is their tendency to overfit on t
 \end{figure}
 
 
-
-
 \subsection{Pruning}
 
-To address the issue of overfitting and improve overall performance, researchers have developed methods to "prune" regression trees. One of the most effective techniques is cost complexity pruning. This process involves several steps:
-
-First, a large tree is grown that is likely to overfit the training data. Then, a complexity parameter $\alpha$ is introduced to penalize the tree's size. The pruning process is guided by the following formula:
+The main way to adress the overfitting problem is to, in keeping with the arborial theme, "prune" one's regression tree. In cost complexity pruning one starts by growing a large tree is grown that is bound to overfit the training data. Then, a complexity parameter $\alpha$ is introduced to penalize the tree's size. The pruning process is guided by the following formula:
 
 \begin{equation}
     \sum_{m=1}^{|T|} \sum_{i: x_i \in R_m} (y_i - \hat{y}_{R_j})^2 + \alpha|T|
 \end{equation}
 
-Where $|T|$ is the number of terminal nodes in the tree. For each value of $\alpha$, the algorithm finds the subtree that minimizes this cost function. The optimal $\alpha$ is then selected using cross-validation, which helps achieve a good trade-off between bias and variance. The larger the cost complexity parameter $\alpha$, the better each split has to be to justify its existence. Recursively the least important split is removed. As one prunes a large tree by increasing $\alpha$, the tree is naturally pruned in a predictable and well-behaved fashion, allowing one to select the preferred tree.
-
-Instead of evaluating a model on the data we trained it on, we evaluate it on a separate set. In the \texttt{rpart} library cross-validation is performed, and the error for all different trees is produced right away, allowing one to select the tree that performs best on the cross-validation error. This lets one achieve a good trade-off between bias and variance. A large $\alpha$ results in very small trees, while a small $\alpha$ results in larger trees.
+Where $|T|$ is the number of terminal nodes in the tree. The tree shrinks in a predictable fashin as the cost complexity parameter $\alpha$, is increased and it becomes harder for each split to justify its existence. As one prunes a large tree by increasing $\alpha$, the tree naturally shrinks in a well-behaved fashion, allowing one to select the subtree with the lowest cross-validation error. Evaluating a model on different data then it was trained on allows us to see it's real prformance and select a subtree that achieves a good trade-off between bias and variance. In the \texttt{rpart} library cross-validation is performed automatically each time one grows a tree.
 
 
 \subsection{Ensemble Methods}
