@@ -88,24 +88,30 @@ The core mechanism of Regression Trees involves splitting the predictor space in
     \sum_{j=1}^{J} \sum_{i \in R_j} ( y_i- \hat{y}_{R_j})^2
 \end{equation}
 
-In each region, $\hat{y}$ simply takes on the mean of all observations in that region. Each branching of the tree divides the predictor space into two regions, for numerical variables typically of the form $\{x \le c\}$ or $\{x > c\}$. In each resulting region, the predicted value $\hat{y}$ is simply the mean of all observations within that region.
+In each region, $\hat{y}$ typically takes on the mean of all observations in that region. Each branching of the tree divides the predictor space into one extra reason, for numerical variables typically of the form $\{x \le c\}$ or $\{x > c\}$. This process continues until a specified threshold is reached, such as a minimum number of observations in each leaf node or a maximum tree depth. Figure~\ref{red_visual} shows one way to visualize the way a Regression Tree will carve up the predictor space and make predictions for each reagion.
 
-The algorithm employs a greedy approach called Recursive binary splitting to find the optimal split at each stage to minimize prediction error. This process continues until a specified threshold is reached, such as a minimum number of observations in each leaf node or a maximum tree depth.
+The algorithm employs a greedy approach called Recursive binary splitting to find the optimal split at each stage to minimize prediction error.
 
 \begin{figure}\centering
-    \includegraphics[scale=0.40]{waste_of_time.png}
+    \includegraphics[scale=0.40]{red_visual.png}
     \caption{Visualization of Regression Tree's predictions}
+    \label{red_visual}
 \end{figure}
 
-Regression Trees offer several advantages over traditional linear regression methods. They can capture non-linear relationships between predictors and the response variable without requiring explicit specification of these relationships. Furthermore, they naturally account for interaction effects. For instance, if being blonde typically increases pay, but only for women, a Regression Tree will often automatically split along gender and then, for women only, along hair colour. This ability to model complex interactions without manual specification is a significant strength of the method.
+Regression Trees offer several advantages over traditional linear regression methods.  Furthermore, they naturally account for interaction effects. For instance, if, in ones dataset, being tall increases income but only for men, a Regression Tree will naturally partition the data along gender and only along hight for the male half. Wheras for a linear regression to capture this interaction effect would require one to explecitly include this interaction on one of ones regressors. This ability to model complex interactions without manual specification is a significant strength of the method.
 
-One other major benefit of Trees over Linear Regression is that they capture interaction effects naturally. If for example being blonde typically increases pay, but only for women, a Regression Tree will often naturally split along gender and then, for women only, along hair colour. Whereas in a linear Regression the researcher would have to manually include terms for all interaction effects they want to study. However, Regression Trees are not without challenges. One of the primary issues is their tendency to overfit the data, especially when allowed to grow deep. Unlike linear regression, where overfitting primarily occurs with high-dimensional data, regression trees can overfit even with low-dimensional data. This is because they have the flexibility to create very specific rules that may capture noise in the training data rather than true underlying patterns.
+One major weakness of Regression Trees however is their tendency to overfit on the data. To capture interesting relationships one must allow ones Tree to grow deep with multple levels of splits. Their flexibility allowing them to create very specific rules also allows them to capture noise in the training data rather than true underlying patterns. Figure~\ref{overfitting_tree}, illustrates how a Regression Tree can overfit a dataset.
+
 
 \begin{figure}
     \centering
     \includegraphics[scale=0.50]{image.png}
     \caption{Regression Tree overfitting}
+    \label{overfitting_tree}
 \end{figure}
+
+
+
 
 \subsection{Pruning}
 
