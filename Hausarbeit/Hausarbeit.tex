@@ -122,40 +122,35 @@ Where $|T|$ is the number of terminal nodes in the tree. The tree shrinks in a p
 
 
 \subsection{Ensemble Methods}
-While pruning can significantly improve the performance of individual regression trees, they often still underperform compared to other advanced machine learning methods. This limitation led to the development of ensemble methods, which combine many regression trees to create more robust and accurate predictions. As Condorcet's jury theorem shows, if predictors are uncorrelated and each predictor's answer is better than pure chance adding more predictors will increase the quality of the average of all answers \citep{condorcet1785}.
+While pruning can improve the performance of regression trees, they often still underperform compared to other machine-learning methods. This has lead to the development of a number of ensemble methods, which combine many regression trees to create more robust and accurate predictions. As the well know jury theorem shows, if predictors are (sufficiently) uncorrelated and a predictor's answer is better than pure chance adding more predictors will increase the quality of the average of all answers \citep{condorcet1785}. Ensemble methods leverage this "wisdom of crowds" effect.
 
-Ensemble methods improve results by leveraging the "wisdom of crowds" effect. If each tree has, for example, a 70\% chance of being correct, and the errors are uncorrelated, combining many trees will tend to improve overall accuracy. The two main approaches to creating ensembles are:
+Two ways this can be done is by Growing many independent trees and averaging them. Random Forests are a very popular ML method that does this. Or by iterativly growing trees on the residuals of the current model, improving the overall model over multiple generations, as in boosting or Bayesian Additive Regression Trees (BART).
 
-1. Growing many independent trees and averaging them. Random Forests are a very popular ML method that does this.
-2. Growing trees on the residuals of the current tree model, as in boosting methods or Bayesian Additive Regression Trees (BART).
+Random Forests create an ensemble by growing many decorrelated trees. Each tree is trained on a random subset of the training data and is only allowed to consider a random subset of features at each split. The final prediction is then formed by averaging the predictions of all trees, typically around 500. This approach reduces overfitting while maintaining the ability to capture complex patterns in the data \citep{biau2016}.
 
-Random Forests create an ensemble by growing many decorrelated trees. Each tree is trained on a random subset of the training data and is only allowed to consider a random subset of features at each split. The final prediction is then formed by averaging the predictions of all trees (typically around 500). This approach reduces overfitting while maintaining the ability to capture complex patterns in the data \citep{biau2016}.
-
-I will go into slightly more detail for the BART method, as that is the extension I used on the dataset. BART model the data as a sum of many Trees plus noise:
+I will go into slightly more detail for the BART method, the method I used on the dataset. BART model the data as a sum of many Trees plus noise:
 
 \begin{equation}
     Y_i = \sum_{j=1}^{m} g(X_i; T_j, M_j) + \epsilon_i
 \end{equation}
 
-Where $m$ is the number of trees, typically around 200. And $g(X_i; T_j, M_j)$ represents the contribution of the $j$-th tree. $T_j$ and $M_j$ represent the tree's structure and predictions respectively. And $\epsilon_i$ is the noise term.
+Where $m$ is the number of trees, typically around 200. And $g(X_i; T_j, M_j)$ represents the contribution of the $j$-th tree. $T_j$ and $M_j$ represent the tree's structure and predictions respectively.
 
-The BART algorithm proceeds by first generating e.g., 200 trees, without any splits. For each Tree $j$, it calculates the residual error $R_{-j}$ by taking in all the current trees except $j$:
+BART emyloys a Bayesian approach, incorporating a prior that discourages trees from growing too large. Specifically, the probability that a node at depth $d$ is non-terminal is given by $\alpha(1 + d)^{-\beta}$. This prior on shallow trees, restricts the trees to be weak learners that only explain a small portion of the overall data and are better suited to being combined through summation and averaging. In doing this BART avoids overfitting and leverages the strengths of ensemble learning. Additionally, BART employs other priors to guide the estimation of terminal node parameters, though a detailed discussion of these is beyond the scope of this paper. This Bayesian approach enables the model to provide both accurate predictions and quantative measures of uncertainty.
+
+Default values for these hyperparameters of $\alpha = 0.95$ and $\beta = 2$ are recommended by \citep{chipman2010}. And generally provide good performance.
+
+The BART algorithm proceeds by first generating e.g., 200 trees, without any splits. For each Tree $j$, considering all the current trees except $j$, the residual error $R_{-j}$ is calculated:
 
 \begin{equation}
     R_{-j} = Y - \sum_{t\not=j} g(X,T_j,M_j).
 \end{equation}
 
-Then it proposes a change to that tree's structure, such as pruning a node, growing a node, or changing some splitting rule. It then accepts or rejects this modification based on its posterior probability. Which variable will be used is randomly selected to serve as the splitting variable, similar to random forests. If one averages many trees but does not ensure they are uncorrelated, most of them might make the same split, thereby eliminating their wisdom of crowds. This process is repeated for all $m$ trees. That constitutes one iteration of the algorithm. Typically, BART uses 1000 burn-in iterations followed by 1000 sampling iterations. An estimate for f(x) can be obtained not by simply taking the final sum of trees the last iteration produced, but by taking the average over all sample iterations, discarding the burn-in iterations.
+Then a change to that tree's structure is proposed, such as pruning or growing a node, or changing a splitting rule, and is accepted or rejected based on its posterior probability. Meaning the split has to be in accordance with the model parameters as well as fit the data well enough. This process is repeated for all $m$ trees. That constitutes one iteration of the algorithm. Typically, BART uses 1000 burn-in iterations followed by 1000 sampling iterations. An estimate for $f(x)$ is obtained by taking the average over all sample iterations.
 
-A more complete exposition can be found in Chipman et al. (2010). of the BART method and how it's Bayesian.
+A more complete exposition can be found in \citep{tan2019} or \citep{chipman2010}.
 
-The algorithm then uses Markov Chain Monte Carlo (MCMC) sampling to draw from the posterior distribution of the model parameters.
-
-BART uses a Bayesian approach, specifying priors on the tree structures, terminal node parameters, and error variance. Nodes at depth $d$ are nonterminal with probability $\alpha(1 + d)^{-\beta}$. This prior on shallow trees makes them weak learners, more suited to being average. Each tree explains a small different part of $f$. It also has other priors that inform how it assigns estimates to the terminal nodes, but that is beyond the scope of this paper.
-
-Default values for these hyperparameters of $\alpha = 0.95$ and $\beta = 2$ are recommended by \citep{chipman2010}. Default values generally provide good performance, but optimal tuning can be achieved via cross-validation. %!!!!
-
-Ensemble methods like Random Forests and BART have shown remarkable success in various applications, often outperforming individual regression trees and even many other machine-learning techniques. They offer a powerful toolset for modelling complex relationships in data, providing both predictive accuracy and, in the case of BART, measures of uncertainty.
+Ensemble methods have shown remarkable success in various applications, often outperforming individual regression trees and even many other machine-learning techniques. They offer a powerful toolset for modelling complex relationships in data.
 
 While individual regression trees offer interpretability and the ability to capture non-linear relationships, their tendency to overfit limits their effectiveness. Pruning helps mitigate this, but ensemble methods take the concept further, leveraging the strengths of multiple trees to create highly accurate and robust models.
 
