@@ -314,17 +314,21 @@ In return, BART is far less easy to interpret than the other two methods. We did
 
 \section{Conclusion}
 
-Regression trees are powerful tools for handling non-linear and interactive effects, often outperforming linear regression in these scenarios. They are also very easy to interpret. However, trees require pruning to combat overfitting. Ensemble methods, by averaging independent trees or fitting trees on the residuals, can significantly improve results. BART, in particular, is a sophisticated method offering good results in many scenarios. While regression trees have their strengths, it's important to choose the right tool for each specific data analysis task. Clearly, there is a reason that there are ``about 188,000 results'' on Google Scholar when one searches for ``Regression Tree'' versus ``about 4,320,000 results'' when searching for ``Linear Regression''. However, especially random forests are quite popular.
+The simulations in this paper highlighted the extremes where Regression trees or linear regression are at their most powerful, and show how regression trees are adept at handling non-linear and interactive effects. Certainly there is enough room in the statistical world for both models to have their own nitche.
 
-The most obvious problem with simple regression trees is that they overfit immediately without doing anything useful. It seems unimaginable to be able to do only one split on a dataset this large, with that many variables. If students who drink more alcohol score slightly less in the Training set, a linear regression could incorporate this slight factor, and it might well be that this also applies in the Test set and improves model performance. If it's not a real effect and just noise, this slight coefficient won't increase Test error by a lot. Whereas the Regression Tree, after having made its initial useful split, can't help find the best optimal split, apparently hyper-focusing on some seemingly useful area that mostly turns out to be just noise.
+The section on real world data highlights the importance of avoiding overfitting, both by not using a seperate sets at all and by overfitting in harder to notice ways. And shows how Ensemble methods such as BART, while often losing most interpretability can achieve very impressive resuts.
 
-While BART beats linear regression, it gives up on interpretability for the most part, while linear regression is very interpretable, in a similar way to regression trees. Arguably more so.
+The most obvious problem with simple regression trees is that they overfit immediately without doing anything useful. It seems unimaginable to be able to do only one split on a dataset this large, with that many variables. For example, if one has a dataset where students who drink more alcohol score slightly lower on a test, a linear regression might incorporate this subtle trend, possibly slightly improving performance on the test set. If this effect is mere noise, the coefficient will not be too large and will not drive up the test error too much. In contrast, at least on this dataset, regression trees seem unable not to hyper-focus on one area, that turns out to almost always just be noise, resulting in just one singly branching generally being optimal. While the liner regression doesn't overfit with over a dozen coefficients the tree manages to overfit with just two splits.
 
-In conclusion, regression trees have their applications. As the simulations show, on very non-linear data, even a simple tree can outperform linear regression by a wide margin. However on real-life data, linear regression will often perform better and be more interpretable and useful. Perhaps trees shine only on data that has very strong interaction effects, more than the single dataset I considered.
+Although the data might just be especially suited for linear regression.
 
-Of course, one can always find datasets more suited for trees to work better than my data, and better methods to determine which is the best method to use.
+While BART often outperforms linear regression, it sacrifices interpretability, which is a key advantage of both linear models and regression trees, only slightly outperforming linear regression in predictive ability.
 
-This is a very important area of research, and clearly, there are still many open questions.
+Regression trees certainly have their applications. As simulations demonstrate, for highly non-linear data, even a simple tree can outperform linear regression by a significant margin. However, in real-world datasets, linear regression frequently performs better and provides greater interpretability. Perhaps trees excel only when strong interaction effects exist, which might be less common in typical datasets.
+
+Ultimately, the choice of model depends on the characteristics of the data. While one can always find datasets where trees outperform other models, determining the most appropriate method for a given task remains a critical area of research with many unanswered questions.
+
+Because linear regression is used so much is such an important area of research as even a small increase in our statistical sophistication or knowlegde about when which model is superior will have large positive effects.
 
 %\newpage
 
