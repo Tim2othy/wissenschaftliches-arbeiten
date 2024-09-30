@@ -57,23 +57,35 @@
 %\newpage
 
 \section{Introduction}
-Modern economic research heavily relies on linear regression. To conduct effective economic research, it is crucial to understand the strengths and weaknesses of linear regression and where it outperforms or is outperformed by other methods. This paper explores Regression Trees as an alternative to linear regression. In it, I will explain the theory behind regression trees and compare them to linear regression using a series of simple simulations, focusing on interaction effects and pruning. I will also highlight how ensemble methods, a kind of extension to regression trees, can enhance their performance. Subsequently, I will compare the different methods on a dataset of student performance, emphasizing the strengths and weaknesses of linear regression and different tree-based methods.
-While linear regression is arguably the most frequently used method by empirical economists and can be valuable in many situations, it is essential to examine its limitations and areas where alternative methods excel. Regression trees have emerged as a powerful machine-learning technique for predictive modelling, with numerous extensions greatly improving their utility. Regression trees offer an alternative approach that can be beneficial in various scenarios. This paper will discuss their advantages over traditional linear regression methods, cover the fundamentals of regression trees, compare them with linear regression, address the issue of overfitting, and introduce advanced ensemble methods such as Bayesian Additive Regression Trees (BART).
 
-In this paper, I will first give a brief exposition on Regression Trees, their theory, extensions, and applications and contrast them with linear regression. I will perform easily interpretable simulations comparing Regression Trees and Linear Regression. Show how Regression Trees can be used on a Dataset of information about students and their test performance.
+A large part of modern economic research is built upon linear regression. To conduct and understand economic research, it is crucial to be informed about the strengths and weaknesses of linear regression and where it outperforms or is outperformed by other methods. Linear regression is arguably the most frequently used method by empirical economists and can be valuable in many situations. However, linear regression performs poorly on many types of data, particularly those with non-linear relationships and interaction effects. Therefore, it is essential to examine its limitations and areas where alternative methods excel.Regression Trees, a powerful machine-learning technique, as an alternative to linear regression. Regression Trees can be useful in many situations where linear regression falls short. Regression Trees also have numerous extensions that greatly improve their usefulness, and I will highlight how ensemble methods, such as Bayesian Additive Regression Trees (BART) and Random Forests, can enhance their performance.While linear regression is arguably the most frequently used method by empirical economists and can be valuable in many situations, it is essential to examine its limitations and areas where alternative methods excel.Given the widespread use of linear regression, it is particularly important to identify where it performs well and where it falls short, as well as where other methods can improve upon it. Due to their interpretability, trees may also serve well in educational roles. Linear regression performs poorly on many types of data, particularly those with non-linear relationships and interaction effects. Regression Trees can be useful in many situations where linear regression falls short.
 
-Given the widespread use of linear regression, it is particularly important to identify where it performs well and where it falls short, as well as where other methods can improve upon it. Due to their interpretability, trees may also serve well in educational roles.
 
-Linear regression performs poorly on many types of data, particularly those with non-linear relationships and interaction effects. Regression Trees can be useful in many situations where linear regression falls short.
 
-Since \citep{breiman1984} presented the CART algorithm there has been a lot of work on various Tree based methods.
 
-\citep{hastie2021} serves as an excellent modern introduction to Regression trees, while while \citep{tan2019} give a deeper dive on BART a powerful ensemble method.
-Random forests, a very popular Tree based ML method are explained very well in\citep{biau2016}.
 
+
+The CART algorithm or variations on it, that most tree based methods use was first introduced in \citep{breiman1984}. Since then many extensions have been developed such as Random Forets, a very popular Tree based ML method. \citep{biau2016} serves as a good introduction to that method. \citep{hastie2021} serves as an excellent modern introduction to Regression trees and gives a gentile introduction to the topic and many extensions. \citep{tan2019} give a deeper dive on BART, one powerful ensemble method.
+
+
+
+
+
+In this paper I will explain the theory behind regression trees and compare them to linear regression using a series of simple simulations, focusing on interaction effects and pruning.  will discuss their advantages over traditional linear regression methods, cover the fundamentals of regression trees, compare them with linear regression, address the issue of overfitting, and introduce advanced ensemble methods such as Bayesian Additive Regression Trees (BART).
+
+In this paper I will exploree I will explain the theory behind regression trees and compare Regression Trees to linear regression using a series of simple simulations, focusing on interaction effects and pruning. I will also highlight how ensemble methods, a kind of extension to regression trees, can enhance their performance. Subsequently, I will compare the different methods on a dataset of student performance, emphasizing the strengths and weaknesses of linear regression and different tree-based methods.
+
+give a brief exposition on Regression Trees, their theory, extensions, and applications and contrast them with linear regression. I will perform easily interpretable simulations comparing Regression Trees and Linear Regression. Show how Regression Trees can be used on a Dataset of information about students and their test performance.
 Simulations are an excellent way of investigating different aspects of one statistical method, as they allow one to create a dataset with just the kind of noise one wants. They allow creating an ideal setting.
 
 The simulations show how regression trees outperform linear regression on datasets with non-linear relationships. And how pruning can help find the optimal trade-off between overfitting and not capturing enough of the signal. While applying the methods to real-world data can showcase how trees capture interaction effects and how pruning works I discovered. Also the complications of working with real-world data, as opposed to simulations.
+
+
+
+
+
+
+
 
 In section 2 I will give a brief overview of the theory of regression trees, and where and where not we might expect them to perform well. And will also explain the bias-variance trade-off and explain how pruning helps and ensemble methods that are extensions to trees.
 
