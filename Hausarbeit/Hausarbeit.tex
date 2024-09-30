@@ -60,20 +60,11 @@
 
 A large part of modern economic research is built upon linear regression. To conduct and understand economic research, it is particularly crucial to identify where it performs well and where it's limitations lie and other methods can improve upon it. Regression Trees are a powerful machine-learning technique, that can be useful in many situations where linear regression falls short. Particularly for data that includes non-linear relationships and interaction effects Linear regression will often perfor poorly. And Regression Trees can be a important alternative. Regression Trees also have numerous extensions that greatly improve their usefulness and aplicabillity that it is worthwhile to study.
 
-
 The CART algorithm or variations on it, that most tree based methods use was first introduced in \citep{breiman1984}. Since then many extensions have been developed such as Random Forets, a very popular Tree based ML method. \citep{biau2016} serves as a good introduction to that method. \citep{hastie2021} serves as an excellent modern introduction to Regression trees and gives a gentile introduction to the topic and many extensions. \citep{tan2019} give a deeper dive on BART, one powerful ensemble method.
-
 
 In this paper I will explain the theory behind regression trees and, compare them to linear regression using a series of simple simulations and on a dataset of student test performance. Simulations can allow for comparison under ideal circumstances, allowing one to focus on the issue one is interested in, while real world data can give a more realistic perspective on a methods actual performance. I will focus especially on the regression Trees ability to naturally capture interaction effects, and how pruning can combat overfitting. I will also highlight how ensemble methods, a kind of extension to regression trees, can enhance their performance substantially.
 
-
-In section 2 I will give a brief overview of the theory of regression trees, and where and where not we might expect them to perform well. And will also explain the bias-variance trade-off and explain how pruning helps and ensemble methods that are extensions to trees.
-
-In section 3 I will run a number of simulations comparing the performance of Linear Regression and Regression Trees under ideal conditions.
-
-In section 4 I will apply these methods to a dataset of student test performance. Highlighting pruning and the BART ensemble method. Also showing some of the shortcomings of Regression Trees.
-
-Section 5 is the conclusion and will sum up what I have found and further interesting areas where research could be done.
+In section 2 I will give a brief overview of the theory of regression trees, and where and where not we might expect them to perform well. And will also explain the bias-variance trade-off and explain how pruning helps and ensemble methods that are extensions to trees. In section 3 I will run a number of simulations comparing the performance of Linear Regression and Regression Trees under ideal conditions. In section 4 I will apply these methods to a dataset of student test performance. Highlighting pruning and the BART ensemble method. Also showing some of the shortcomings of Regression Trees. Section 5 is the conclusion and will sum up what I have found and further interesting areas where research could be done.
 
 This dataset used in this paper is publicly available at \href{https://www.kaggle.com/datasets/uciml/student-alcohol-consumption}{Kaggle: Student Alcohol Consumption Dataset}. All code used for the simulations and data analysis is available at \href{https://github.com/Tim2othy/wissenschaftliches-arbeiten}{my GitHub}.
 
@@ -92,11 +83,12 @@ In each region, $\hat{y}$ typically takes on the mean of all observations in tha
 
 The algorithm employs a greedy approach called Recursive binary splitting to find the optimal split at each stage to minimize prediction error.
 
-\begin{figure}\centering
+
+\begin{wrapfigure}{r}{0.5\textwidth}
     \includegraphics[scale=0.40]{red_visual.png}
     \caption{Visualization of Regression Tree's predictions}
     \label{red_visual}
-\end{figure}
+\end{wrapfigure}
 
 Regression Trees offer several advantages over traditional linear regression methods.  Furthermore, they naturally account for interaction effects. For instance, if, in ones dataset, being tall increases income but only for men, a Regression Tree will naturally partition the data along gender and only along hight for the male half. Wheras for a linear regression to capture this interaction effect would require one to explecitly include this interaction on one of ones regressors. This ability to model complex interactions without manual specification is a significant strength of the method.
 
@@ -157,12 +149,12 @@ Ensemble methods have demonstrated remarkable success across various application
 
 Simulations can serve as a testing ground for statistical methods, allowing for easier repeatability and eliminating many of the complications that arise when using datasets. Simulations are especially useful in comparing two different methods. In this section I will compare Linear regression and regression trees on linear and non-linear simulated data, each simulation having been run 400 times to average out noise. The regression Trees were limited to four terminal nodes for both simulations.
 
-\begin{figure}
+\begin{wrapfigure}{r}{0.5\textwidth}
     \centering
     \includegraphics[scale=0.25]{OLS vs Tree.png}
-    \caption{Linear Relation between Variables}
+    \caption{On linear Data}
     \label{OLS_VS_TREE}
-\end{figure}
+\end{wrapfigure}
 
 For the first simulation the data follow a simple linear relationship with $Y = \beta_0 + \beta_1X + \epsilon$, with $\epsilon$ normally distributed. For this simulation the mean squared error (MSE) for the Linear regression is \texttt{0.992} and \texttt{1.494} for the Tree. Figure~\ref{OLS_VS_TREE} shows quite clearly that this is the kind of data where it will be hard to beat linear regression.
 
@@ -173,23 +165,15 @@ In this second simulation, the data have a non-linear relationship. The data was
 \begin{figure}
     \centering
     \includegraphics[scale=0.30]{NLD Pred.png}
-    \caption{Complex, overfitting Tree}
+    \caption{On non-linear Data}
 \end{figure}
 
 Using classifiers instead of regressors for this simulation the error rates of the tree and linear classifier are \texttt{37.57\%} and \texttt{51.03\%} respectively. The interaction effect between the two dimensions is not captured by the linear model, while the regression trees naturally captures it.
 
 
-
-
-
-
 \section{Predicting grades}
 
 Next, I will apply Tree-based methods and also linear regression to a dataset to showcase differences in a more realistic situation. This dataset of student performance includes 649 students and looks at 33 variables.
-
-
-
-
 
 
 \subsection{Pruning}
@@ -200,12 +184,12 @@ To prevent overfitting and ensure meaningful insights, it is crucial to use cros
 
 By growing a large tree with a complexity parameter of \( \text{cp} = 0.01 \), I obtained a tree with a training Mean Squared Error (MSE) of 4.521 and a test error of 9.027, clearly indicating overfitting with the large tree. A smaller tree grown with \( \text{cp} = 0.025 \) resulted in a training MSE of 7.841 and a only slightly worse test error of 8.651.
 
-\begin{figure}
+\begin{wrapfigure}{r}{0.5\textwidth}
     \centering
     \includegraphics[scale=0.30]{small_manual_tree.pdf}
     \caption{Smaller, better Tree}
     \label{small_tree}
-\end{figure}
+\end{wrapfigure}
 
 While it may seem counterintuitive that this simpler tree (Figure~\ref{small_tree}) outperforms the larger one, the larger tree fits the noise rather than the underlying signal, which explains its poor performance.
 
@@ -215,7 +199,7 @@ To mitigate this, it's important to use separate validation and test sets, not a
 
 When evaluating the trees using a separate test set, in this case, the optimal pruned tree ends up making just one split, seperating 15\% of students who had failed the exam before from the students who had no failures.
 
-\begin{wrapfigure}{r}{0.5\textwidth}
+\begin{wraptable}{r}{0.5\textwidth}
     \centering
     \begin{tabular}{| l | c | c |}
         \hline
@@ -227,11 +211,9 @@ When evaluating the trees using a separate test set, in this case, the optimal p
     \end{tabular}
     \caption{MSE values for different models}
     \label{table_pruning}
-\end{wrapfigure}
+\end{wraptable}
 
-
-Typical test errors are shown in Figure~\ref{table_pruning}. It is not surprising that the test error is lower than the training error for the pruned tree; with only one split, the tree couldn't overfit even if it tried, so any difference in error between the training and test sets is due to chance.
-
+Typical test errors are shown in Table~\ref{table_pruning}. It is not surprising that the test error is lower than the training error for the pruned tree; with only one split, the tree couldn't overfit even if it tried, so any difference in error between the training and test sets is due to chance.
 
 \begin{figure}
     \centering
@@ -248,21 +230,11 @@ While we now know that the tree isn't overfitting it also isn't very insightful.
 
 After examining the regression tree's performance, it's informative to compare it with particularly linear regression and BART, this comparison provides insight into the strengths and weaknesses of different techniques for our dataset. Interestingly, even without any specific optimization to counter overfitting, linear regression outperforms the pruned regression tree by a significant margin.
 
-Invoking Condorcet to assist us, we can use ensemble methods.
+Invoking Condorcet, I will also evaluate the BART model, using the default hyperparameters.
 
-For our BART implementation, we used the default hyperparameters:
-\begin{itemize}
-    \item Burn-in period: 2000 iterations
-    \item Sampling period: 2000 iterations
-    \item Trees per iteration: 200
-\end{itemize}
+Table~\ref{big_comparison} presents the MSEs for each model. It's important to note that these results can vary depending on the specific data split into training and validation sets, as well as other random factors in the modeling process. However the single regression tree is typically outperformed by linear regression, and BART generally outperforms both.
 
-The results are shown in Figure~\ref{big_comparison}.
-
-Figure~\ref{big_comparison} presents the MSEs for each model. It's important to note that these results can vary depending on the specific data split into training and validation sets, as well as other random factors in the modeling process. However the single regression tree is typically outperformed by linear regression, and BART generally outperforms both.
-
-
-\begin{wrapfigure}{r}{0.5\textwidth}
+\begin{wraptable}{r}{0.5\textwidth}
     \centering
     \begin{tabular}{| l | c | c |}
         \hline
@@ -275,7 +247,7 @@ Figure~\ref{big_comparison} presents the MSEs for each model. It's important to 
     \end{tabular}
     \caption{MSE values for different models}
     \label{big_comparison}
-\end{wrapfigure}
+\end{wraptable}
 
 While BART demonstrates superior performance in terms of MSE, it comes with a significant trade-off in terms of interpretability. The ensemble nature of BART, combining predictions from hundreds of trees, makes it far less intuitive to understand compared to a single regression tree or a linear model.
 
