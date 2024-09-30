@@ -183,12 +183,12 @@ To prevent overfitting and ensure meaningful insights, it is crucial to use cros
 
 By growing a large tree with a complexity parameter of \( \text{cp} = 0.01 \), I obtained a tree with a training Mean Squared Error (MSE) of 4.521 and a test error of 9.027, clearly indicating overfitting with the large tree. A smaller tree grown with \( \text{cp} = 0.025 \) resulted in a training MSE of 7.841 and a only slightly worse test error of 8.651.
 
-\begin{wrapfigure}{r}{0.5\textwidth}
+\begin{figure}
     \centering
     \includegraphics[scale=0.30]{small_manual_tree.pdf}
     \caption{Smaller, better tree}
     \label{small_tree}
-\end{wrapfigure}
+\end{figure}
 
 While it may seem counterintuitive that this simpler tree (Figure~\ref{small_tree}) outperforms the larger one, the larger tree fits the noise rather than the underlying signal, which explains its poor performance.
 
