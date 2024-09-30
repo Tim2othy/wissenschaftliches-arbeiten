@@ -179,6 +179,10 @@ In this second simulation, the data have a non-linear relationship. The data was
 Using classifiers instead of regressors for this simulation the error rates of the tree and linear classifier are \texttt{37.57\%} and \texttt{51.03\%} respectively. The interaction effect between the two dimensions is not captured by the linear model, while the regression trees naturally captures it.
 
 
+
+
+
+
 \section{Predicting grades}
 
 Next, I will apply Tree-based methods and also linear regression to a dataset to showcase differences in a more realistic situation. This dataset of student performance includes 649 students and looks at 33 variables.
@@ -200,11 +204,27 @@ By growing a large tree with a complexity parameter of \( \text{cp} = 0.01 \), I
 
 While it may seem counterintuitive that this simpler tree (Figure~\ref{small_tree}) outperforms the larger one, the larger tree fits the noise rather than the underlying signal, which explains its poorer generalization.
 
+%%%%%%%%%%%%
 
+To find the best possible tree, one should employ proper automatic pruning. Growing and pruning a large tree, selecting the optimal subtree using cross-validation. Simply going with the optimal tree choosen using cross validation though is not necissarilly enough. It can happen that a particular subtree coincidentally performs very well on the test set and achieves a very low cross-validation error, because there are many diffrent subtrees being evaluated one can be very good merely be chance. In extreme cases, the pruned tree selected via cross-validation might achieving a MSE on the validation data of only 5.272 but a much higher test MSE of 11.492, indicating that it was merely lucky during cross-validation. To mitigate this, it's important to use a seperate validation and test sets, not allowing oneself to experiment around with the test set until one finds one tree that happens to perform especially on it by chance.
 
+Evaluating the trees also using a test set in this case the optimal pruned tree ends up making just one split based on the number of previous failures. It separates the 15\% of students who had failed the exam before (with an estimated score of 8.4) from the remaining 85\% who had no failures (with an estimated score of 13).
 
+\begin{wrapfigure}{r}{0.5\textwidth}
+    \centering
+    \begin{tabular}{| l | c | c |}
+        \hline
+        Model        & Training MSE & Test MSE \\
+        \hline
+        Complex Tree & 1.715        & 10.813   \\
+        Pruned Tree  & 8.527        & 8.189    \\
+        \hline
+    \end{tabular}
+    \caption{MSE values for different models}
+    \label{table_pruning}
+\end{wrapfigure}
 
-To find the best possible tree, one should employ proper automatic pruning. For this experiment I grew and pruned a large tree on the training data.
+Very typical Test errors are shown in Figure~\ref{table_pruning}.It is not surprising that the test error is lower than the training error; with only one split, the tree couldn’t overfit even if it tried. Since it always makes almost the same split, any difference in error between the training and test sets is due to random chance.
 
 \begin{figure}
     \centering
@@ -213,77 +233,9 @@ To find the best possible tree, one should employ proper automatic pruning. For 
     \label{prune}
 \end{figure}
 
+Figure~\ref{prune} shows how the Cross-validation error helps against overfitting as it does not decrease (almost) monotonically, but still overfits to a large extent. In this case the optimal tree using cross validation has 9 splits while the optimal tree evaluated on the test set has only one.
 
-
-One challenge in pruning is that, even when using separate training and validation sets, searching for the optimal complexity parameter \( \text{cp} \) to minimize test error can lead to a situation where a particular subtree coincidentally performs very well on the test set by chance. Figure~\ref{prune} shows how some subtrees can appear especially good for a particular value of \( \text{cp} \). However, selecting this tree might still result in overfitting. To mitigate this, it's important to use a seperate validation and test sets, not allowing oneself to experiment around with the test set until one finds one tree that happens to perform especially on it by chance.
-
-
-
-
-
-
-Sometimes it's so extreme that the optimal pruned tree using cross-validation, once it's evaluated on the test set, gets an MSE on the training data of 5.272, but on the Test set MSE of 11.4923, clearly overfitting and just lucky during cross-validation.
-
-Here one can see very well how the Cross-validation error helps against overfitting, it doesn't decrease monotonically, but still overfits to a large extent. The optimal tree using cross validation has 9 splits while the optimal one on the test error only has 1.
-
-
-A different problem is that the results can vary quite widely. Different splits in training and test data might lead to MSEs on the test set for the pruned tree between 6.9 and 9.
-
-An optimal value for texttt{cp} which in this case is 0.028 and 0.035.
-
-
-
-
-
-
-
-The pruned tree performs just one single split on failures, splitting the 15\% of students who have previously failed the exam into one region (Estimate = 8.4) and the 85\% of students with 0 failures into a second region (13 = estimate). This seems like something a human could have also done by hand.
-
-The fact that the test error is lower than the training error should not be surprising; with only 1 split, the tree couldn't overfit even if it tried. It will always make almost the exact same split anyway. It's just chance if it will get a lower or higher error on the test set.
-
-
-
-
-
-
-
-
-In extreme cases, the pruned tree selected via cross-validation might overfit, achieving a training MSE of 5.272 but a much higher test MSE of 11.492, indicating that it was merely lucky during cross-validation.
-
-This highlights how cross-validation helps combat overfitting. As seen, the cross-validation error doesn't decrease monotonically, and the model can still overfit substantially. In this case, the optimal tree using cross-validation had 9 splits, while the tree minimizing test error had only 1 split.
-
-Another issue is the variability in results. Different splits of the training and test sets can lead to test set MSEs for the pruned tree ranging from 6.9 to 9. The optimal \( \text{cp} \) values in these cases varied between 0.028 and 0.035.
-
-Typically, the results look like this:
-
-\begin{wrapfigure}{r}{0.5\textwidth}
-    \centering
-    \begin{tabular}{| l | c | c |}
-        \hline
-        Model        & Training MSE & Valid or Test MSE \\
-        \hline
-        Complex Tree & 1.715        & 10.813            \\
-        Pruned Tree  & 8.527        & 8.189             \\
-        \hline
-    \end{tabular}
-    \caption{MSE values for different models}
-\end{wrapfigure}
-
-
-
-The pruned tree ends up making just one split based on the number of previous failures. It separates the 15\% of students who had failed the exam before (with an estimated score of 8.4) from the remaining 85\% who had no failures (with an estimated score of 13). This simple tree is something a human could likely deduce manually.
-
-It is not surprising that the test error is lower than the training error; with only one split, the tree couldn’t overfit even if it tried. Since it always makes almost the same split, any difference in error between the training and test sets is due to random chance.
-
-
-
-
-
-
-
-
-
-
+While we now know that the tree isn't overfitting it also isn't very insightful. With only one split the simple tree is something a human could likely have done by hand.
 
 
 
@@ -310,6 +262,10 @@ Invoking Condorcet to assist us, we can use ensemble methods. Using BART with th
 Depending on how the data is split into training and test sets, and other random factors, the numbers for all three models can vary quite widely. However, the single Tree is almost always outperformed by linear regression, and BART outperforms them both.
 
 In return, BART is far less easy to interpret than the other two methods. We did not attempt to improve the performance of the regression model. Presumably, its performance can be increased in some way. But there are, of course, also other datasets where complicated ensemble methods significantly outperform linear methods.
+
+
+
+
 
 
 \section{Conclusion}
