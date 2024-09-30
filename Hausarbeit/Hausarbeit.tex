@@ -155,25 +155,20 @@ Ensemble methods have demonstrated remarkable success across various application
 
 \section{Simulations}
 
-Simulations can serve as a testing ground for statistical methods, allowing for easier repeatability and eliminating many of the complications that arise when using datasets. Simulations are especially useful in comparing two different methods. Here, I will compare Linear regression and regression trees on linear and non-linear data.
+Simulations can serve as a testing ground for statistical methods, allowing for easier repeatability and eliminating many of the complications that arise when using datasets. Simulations are especially useful in comparing two different methods. In this section I will compare Linear regression and regression trees on linear and non-linear simulated data, each simulation having been run 400 times to average out noise. The regression Trees were limited to four terminal nodes for both simulations.
 
 \begin{figure}
     \centering
     \includegraphics[scale=0.25]{OLS vs Tree.png}
     \caption{Linear Relation between Variables}
+    \label{OLS_VS_TREE}
 \end{figure}
 
-This first simulation shows where linear regression excels and trees aren't especially useful. The data follows a simple linear relationship, exactly as the normal least squares regression assumes it does. The data was generated as: $Y = \beta_0 + \beta_1X + \epsilon$, with epsilon normally distributed. I ran the simulations 400 times with regression trees, having four terminal nodes. And compared the Mean Squared Error (MSE) for both methods. The mean squared error for the Linear regression is texttt{0.992} and for the tree it is: texttt{1.494}. The attached figure quite clearly shows how linear regression is more suited to this kind of data.
+For the first simulation the data follow a simple linear relationship with $Y = \beta_0 + \beta_1X + \epsilon$, with $\epsilon$ normally distributed. For this simulation the mean squared error (MSE) for the Linear regression is \texttt{0.992} and \texttt{1.494} for the Tree. Figure~\ref{OLS_VS_TREE} shows quite clearly that this is the kind of data where it will be hard to beat linear regression.
 
-The linear regression also wins out on intuitiveness. The derivative of the line of best fit can be interpreted as the expected increase in variable y as the x variable increases. While the step function of the regression tree doesn't serve any obvious function. It's just a worse regression.
+The linear regression also wins out on intuitiveness. The derivative of the line of best fit can be interpreted as the expected increase in variable $y$ as the $x$ variable increases. While the Tree's step function lacks this.
 
-In this second simulation, the data have a non-linear relationship. In this case, I used classification trees instead of regression trees, as this allows using colour as our third dimension instead of having to use a three-dimensional plot.
-
-The data was generated using 4 normal distributions with varying variance, in the four corners of the plot. With the North-West and SE being red and the NE and SW distribution producing blue data points.
-
-In this case, the error rates of the tree and linear classifier are texttt{37.57\%} and texttt{51.03\%} respectively. If this weren't a classification but a regression problem the results would be much the same. The interaction effect here is not captured naturally by the linear model, while the regression trees can naturally capture interaction effects.
-
-This simulation also shows how Trees capture interaction effects naturally; the fact that a large X value is only indicative of the observation being Red if the Y value is small is naturally captured by the tree.
+In this second simulation, the data have a non-linear relationship. The data was generated using 4 normal distributions with varying variance, in the four corners of a two dimensional space. With the datapoints of the North-West and South-East distributions coloured in red and the North-Eastern and South-Western points in blue.
 
 \begin{figure}
     \centering
@@ -181,7 +176,7 @@ This simulation also shows how Trees capture interaction effects naturally; the 
     \caption{Complex, overfitting Tree}
 \end{figure}
 
-One could try to showcase more differences between the two methods now, especially on a simulation with more dimensions, seeing how an optimally pruned tree compares against multiple linear regression. But it is more interesting to do this on a real dataset, so we will leave the simulations behind us for now.
+Using classifiers instead of regressors for this simulation the error rates of the tree and linear classifier are \texttt{37.57\%} and \texttt{51.03\%} respectively. The interaction effect between the two dimensions is not captured by the linear model, while the regression trees naturally captures it.
 
 
 \section{Predicting grades}
