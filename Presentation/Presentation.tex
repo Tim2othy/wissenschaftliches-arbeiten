@@ -22,8 +22,8 @@ citestyle=bwl-FU
 \title{Regression Trees}
 \author{Timothy Currie}
 \institute{Universität Bonn}
-\date{\vspace{2cm} \textbf{\large{Wissenschaftliches Arbeiten}} \\ \textbf{25/06/2024} \\ 
-       \vspace{1cm} \textbf{Supervisor:} Dr. Elias Wolf \\ 
+\date{\vspace{2cm} \textbf{\large{Wissenschaftliches Arbeiten}} \\ \textbf{25/06/2024} \\
+       \vspace{1cm} \textbf{Supervisor:} Dr. Elias Wolf \\
        \textbf{Matrikelnummer:} 50074426}
 \begin{document}
 \maketitle
@@ -43,17 +43,17 @@ citestyle=bwl-FU
 \begin{frame}{Motivation}
     \begin{itemize}
         \item Linear regression performs poorly on many kinds of data.
-        \item E.g. data with non-linear relationships and interaction effects.
+        \item E\.g\. data with non-linear relationships and interaction effects.
         \item What might be a better approach for these situations?
-            
+
         \item Regression Trees can be useful in many situations.
     \end{itemize}
- \begin{figure}
-            \centering
-            \includegraphics[scale=0.5]{Motivation Together.png}
-            \caption{Can you guess where regression trees and where linear regression will perform better?}
-            \label{fig:sub1}
-        \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.5]{Motivation Together.png}
+        \caption{Can you guess where regression trees and where linear regression will perform better?}
+        \label{fig:sub1}
+    \end{figure}
 \end{frame}
 
 
@@ -63,15 +63,15 @@ citestyle=bwl-FU
 
 \begin{frame}{Outline of the Talk}
     \begin{large}
-    \begin{enumerate}
-        \item Motivation
-        \item Basics of Regression Trees
-        \item Comparing regression Trees and Linear Regression
-        \item Overfitting and Pruning
-        \item Ensemble methods and BART
-        \item Conclusion
-        \item References
-    \end{enumerate}
+        \begin{enumerate}
+            \item Motivation
+            \item Basics of Regression Trees
+            \item Comparing regression Trees and Linear Regression
+            \item Overfitting and Pruning
+            \item Ensemble methods and BART
+            \item Conclusion
+            \item References
+        \end{enumerate}
     \end{large}
 \end{frame}
 
@@ -79,25 +79,25 @@ citestyle=bwl-FU
 \begin{frame}{Basics of Regression Trees}
     \begin{itemize}
         \item Regression trees split the predictor space into regions that minimize the RSS given by
-    
-    \begin{align*}
-        \sum_{j=1}^{J} \sum_{i \in R_j} ( y_i- \hat{ y}_{R_j} )^2
-    \end{align*}
-    
-    
-    \item In each region $\hat{y}$ simply takes on the mean of all observations in that region.
-    
+
+              \begin{align*}
+                  \sum_{j=1}^{J} \sum_{i \in R_j} ( y_i- \hat{y}_{R_j} )^2
+              \end{align*}
+
+
+        \item In each region $\hat{y}$ simply takes on the mean of all observations in that region.
+
         \item Typically we can't find the optimal regions.
         \item Instead we use a greedy algorithm \textbf{Recursive binary splitting} to find the optimal split to minimize prediction error at each stage.
-        
-        \vspace{1cm}
+
+              \vspace{1cm}
         \item \textbf{Main differences between linear regression and trees}
-        \begin{itemize}
-            \item Regression trees do not assume a linear relationship between predictors and the response.
-        
-            \item Trees capture interaction effects naturally.
-        \end{itemize}
-       
+              \begin{itemize}
+                  \item Regression trees do not assume a linear relationship between predictors and the response.
+
+                  \item Trees capture interaction effects naturally.
+              \end{itemize}
+
     \end{itemize}
 \end{frame}
 
@@ -106,7 +106,7 @@ citestyle=bwl-FU
     \begin{columns}[T]
         \begin{column}{0.5\textwidth}
             \begin{figure}
-            \centering
+                \centering
                 \includegraphics[width=1\linewidth]{Linear Data before.png}
                 \caption{Linear Relation between Variables}
                 \label{fig:sub2}  % Changed label to be unique
@@ -114,9 +114,9 @@ citestyle=bwl-FU
         \end{column}
         \begin{column}{0.5\textwidth}
             \begin{itemize}
-            \vspace{0.7cm}
+                \vspace{0.7cm}
                 \item We will run all simulations 400 times.
-                 \item For now the regression trees will have 4 terminal Nodes.
+                \item For now the regression trees will have 4 terminal Nodes.
                 \item And we will always compare the Mean Squared Error (MSE).
                 \item Data generated as: $Y = \beta_0 + \beta_1X + \epsilon$
                 \item Where $\epsilon \sim N(0, \sigma^2)$
@@ -129,25 +129,25 @@ citestyle=bwl-FU
 \begin{frame}{Simulation: Linear Data}
     \begin{columns}[T]
         \begin{column}{0.5\textwidth}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1\linewidth]{OLS vs Tree.png}
-            \caption{Linear Relation between Variables}
-            \label{fig:sub4}  % Changed label to be unique
+            \begin{figure}
+                \centering
+                \includegraphics[width=1\linewidth]{OLS vs Tree.png}
+                \caption{Linear Relation between Variables}
+                \label{fig:sub4}  % Changed label to be unique
             \end{figure}
         \end{column}
         \begin{column}{0.5\textwidth}
-        
-            \begin{itemize}
-                        \vspace{0.7cm}
 
-            \item We will run all simulations 400 times.
-                 \item For now the regression trees will have 4 terminal Nodes.
+            \begin{itemize}
+                \vspace{0.7cm}
+
+                \item We will run all simulations 400 times.
+                \item For now the regression trees will have 4 terminal Nodes.
                 \item And we will always compare the Mean Squared Error (MSE).
-                \vspace{1cm}
+                      \vspace{1cm}
                 \item \textbf{Results:}
-                \item \textbf{MSE} for OLS model: \textbf{0.9917} 
-                \item \textbf{MSE} for regression tree model: \textbf{1.4935} 
+                \item \textbf{MSE} for OLS model: \textbf{0.9917}
+                \item \textbf{MSE} for regression tree model: \textbf{1.4935}
             \end{itemize}
         \end{column}
     \end{columns}
@@ -156,15 +156,15 @@ citestyle=bwl-FU
 
 
 \begin{frame}{Simulation: Non-linear Data}
-    
-        \begin{figure}
-            \centering
-            \includegraphics[scale=0.6]{NLD.png}
-            \caption{Data with non-linear relationship}
-            \label{fig:sub5}  % Changed label to be unique
-        \end{figure}
-        \vspace{-0.5cm}
-        \begin{itemize}
+
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.6]{NLD.png}
+        \caption{Data with non-linear relationship}
+        \label{fig:sub5}  % Changed label to be unique
+    \end{figure}
+    \vspace{-0.5cm}
+    \begin{itemize}
         \item Non-Linear Data generated using 4 normal distributions
         \item NW \& SE = red, NE \& SW = blue
     \end{itemize}
@@ -218,18 +218,18 @@ citestyle=bwl-FU
 \begin{frame}{Pruning}
     \begin{itemize}
         \item \textbf{Cost complexity pruning} counteracts overfitting by removing non-essential splits.
-        \item Lets us grow a large Tree and then 
-        \begin{align*}
-            \sum_{m=1}^{|T|} \sum_{i: x_i \in R_m} (y_i - \hat{y}_{R_j})^2 + \alpha|T|.
-        \end{align*}
-    \begin{itemize}
-        \item Select a parameter \( \alpha \).
-        \item For each \( \alpha \), find the subtree that minimizes the cost.
-           \item Use cross-validation to select the best \( \alpha \).
-         \item Instead of evaluating a Model on the data we trained it on we evaluate it on a separate set.
-        \end{itemize}
+        \item Lets us grow a large Tree and then
+              \begin{align*}
+                  \sum_{m=1}^{|T|} \sum_{i: x_i \in R_m} (y_i - \hat{y}_{R_j})^2 + \alpha|T|.
+              \end{align*}
+              \begin{itemize}
+                  \item Select a parameter \( \alpha \).
+                  \item For each \( \alpha \), find the subtree that minimizes the cost.
+                  \item Use cross-validation to select the best \( \alpha \).
+                  \item Instead of evaluating a Model on the data we trained it on we evaluate it on a separate set.
+              \end{itemize}
         \item \textbf{Objective:} Achieve a good tradeoff between bias and variance.
-       \item Large \( \alpha \) results in very small trees, small \( \alpha \) in larger trees.
+        \item Large \( \alpha \) results in very small trees, small \( \alpha \) in larger trees.
     \end{itemize}
 \end{frame}
 
@@ -243,8 +243,8 @@ citestyle=bwl-FU
     \end{figure}
     \begin{itemize}
         \item Pruning helps against overfitting and improves overall performance
-        \item Original Tree MSE on Test set = 198.2861 
-        \item Pruned Tree MSE on Test set = 173.861 
+        \item Original Tree MSE on Test set = 198.2861
+        \item Pruned Tree MSE on Test set = 173.861
         \item Sweet spot balances variance and bias, minimizing overfitting.
         \item Training set used to build model, test set to evaluate performance
     \end{itemize}
@@ -265,9 +265,9 @@ citestyle=bwl-FU
     \begin{itemize}
         \item BART models the response as a sum of many tree-based models plus noise.
         \item \textbf{Model:}
-        \begin{equation}
-            Y_i = \sum_{j=1}^{m} g(X_i; T_j, M_j) + \epsilon_i.
-        \end{equation}
+              \begin{equation}
+                  Y_i = \sum_{j=1}^{m} g(X_i; T_j, M_j) + \epsilon_i.
+              \end{equation}
         \item BART calculates the residuals of the current sum of Trees.
         \item Then modifies one Tree to decrease the residuals.
         \item Then take the average over all but the burn-in iterations.
@@ -280,9 +280,9 @@ citestyle=bwl-FU
 \begin{frame}{Conclusion and Discussion}
     \begin{itemize}
         \item Regression trees are powerful for non-linear and interactive effects.
-        \begin{itemize}
-            \item Will often outperform linear regression.
-        \end{itemize}
+              \begin{itemize}
+                  \item Will often outperform linear regression.
+              \end{itemize}
         \item They are also very easy to interpret.
         \item Trees require pruning to combat overfitting.
         \item By averaging independent Trees or fitting trees on the residuals ensemble methods can improve results.
@@ -296,7 +296,7 @@ citestyle=bwl-FU
         \item Tan, Y. V., Roy, J. (2019). Bayesian additive regression trees and the General BART model. Statistics in Medicine, Band/Volume 38(25), 5048-5069.
         \item Chipman, H. A., George, E. I., McCulloch, R. E. (2010). BART: Bayesian additive regression trees. The Annals of Applied Statistics, Band/Volume 4(1), 266-298.
         \item Townshend, R. Lecture 10 - Decision Trees and Ensemble Methods | Stanford CS229: Machine Learning (Autumn 2018). https://www.youtube.com/watch?v=wr9gUr-eWdA, accessed 21.05.24.
-    \vspace{0.5cm}
+              \vspace{0.5cm}
 
         \item All images were made using R.
         \item Also thanks to Claude and ChatGPT for making \LaTeX\ a lot nicer to use.
