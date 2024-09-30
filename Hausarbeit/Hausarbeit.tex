@@ -215,11 +215,6 @@ For this and all future experiments on the dataset I split the data into trainin
 
 It can be useful to prune some trees manually to get an intuitive feeling for how Regression Trees overfit. Instead of using the sophisticated built-in option to automatically perform 10-fold cross-validation and select the best-performing tree, I did it by hand first.
 
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.30]{big_manual_tree.pdf}
-    \caption{Complex, large Tree}
-\end{figure}
 
 Growing a large tree with the complexity parameter (which only allows splits if they cross a certain threshold in error reduction) cp = 0.01, we get a large tree with a Training MSE of 4.521407 and a Validation MSE of 9.026646. So clearly, this tree is overfitting to a significant degree.
 

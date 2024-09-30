@@ -1,0 +1,38 @@
+\begin{thebibliography}{6}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Biau and Scornet(2016)]{biau2016}
+Gérard Biau and Erwan Scornet.
+\newblock A random forest guided tour.
+\newblock \emph{TEST}, 25:\penalty0 197--227, 2016.
+
+\bibitem[Breiman et~al.(1984)Breiman, Friedman, Olshen, and Stone]{breiman1984}
+Leo Breiman, Jerome~H. Friedman, Richard~A. Olshen, and Charles~J. Stone.
+\newblock \emph{Classification and Regression Trees}.
+\newblock Chapman \& Hall/CRC, Boca Raton, 1984.
+
+\bibitem[Chipman et~al.(2010)Chipman, George, and McCulloch]{chipman2010}
+Hugh~A. Chipman, Edward~I. George, and Robert~E. McCulloch.
+\newblock Bart: Bayesian additive regression trees.
+\newblock \emph{The Annals of Applied Statistics}, 4\penalty0 (1):\penalty0 266--298, 2010.
+
+\bibitem[de~Condorcet(1785)]{condorcet1785}
+Marquis de~Condorcet.
+\newblock \emph{Essai sur l'application de l'analyse à la probabilité des décisions rendues à la pluralité des voix}.
+\newblock De l'Impr. royale, Paris, 1785.
+
+\bibitem[James et~al.(2021)James, Witten, Hastie, and Tibshirani]{hastie2021}
+Gareth James, Daniela Witten, Trevor Hastie, and Robert Tibshirani.
+\newblock \emph{An Introduction to Statistical Learning with Applications in R (Second Edition)}.
+\newblock Springer, 2021.
+
+\bibitem[Tan and Roy(2019)]{tan2019}
+Y.~V. Tan and J.~Roy.
+\newblock Bayesian additive regression trees and the general bart model.
+\newblock \emph{Statistics in Medicine}, 38\penalty0 (25):\penalty0 5048--5069, 2019.
+
+\end{thebibliography}
