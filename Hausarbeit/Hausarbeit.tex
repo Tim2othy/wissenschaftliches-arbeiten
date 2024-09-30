@@ -246,9 +246,21 @@ While we now know that the tree isn't overfitting it also isn't very insightful.
 
 \subsection{Comparing Linear Regression, Regression Trees, and BART}
 
-After examining the tree's performance, it's informative to compare it to the results obtained from linear regression. These are the typical results one gets for Regression Trees and multivariate linear regression. The linear regression is not optimized in any way to counter overfitting. Even without any pruning, linear regression outperforms the tree by a wide margin:
+After examining the regression tree's performance, it's informative to compare it with particularly linear regression and BART, this comparison provides insight into the strengths and weaknesses of different techniques for our dataset. Interestingly, even without any specific optimization to counter overfitting, linear regression outperforms the pruned regression tree by a significant margin.
 
-Invoking Condorcet to assist us, we can use ensemble methods. Using BART with the default hyperparameters, that is, a burn-in and sampling period of 2000 iterations each and 200 Trees per iteration, results in the following MSEs for BART:
+Invoking Condorcet to assist us, we can use ensemble methods.
+
+For our BART implementation, we used the default hyperparameters:
+\begin{itemize}
+    \item Burn-in period: 2000 iterations
+    \item Sampling period: 2000 iterations
+    \item Trees per iteration: 200
+\end{itemize}
+
+The results are shown in Figure~\ref{big_comparison}.
+
+Figure~\ref{big_comparison} presents the MSEs for each model. It's important to note that these results can vary depending on the specific data split into training and validation sets, as well as other random factors in the modeling process. However the single regression tree is typically outperformed by linear regression, and BART generally outperforms both.
+
 
 \begin{wrapfigure}{r}{0.5\textwidth}
     \centering
@@ -262,14 +274,10 @@ Invoking Condorcet to assist us, we can use ensemble methods. Using BART with th
         \hline
     \end{tabular}
     \caption{MSE values for different models}
+    \label{big_comparison}
 \end{wrapfigure}
 
-Depending on how the data is split into training and test sets, and other random factors, the numbers for all three models can vary quite widely. However, the single Tree is almost always outperformed by linear regression, and BART outperforms them both.
-
-In return, BART is far less easy to interpret than the other two methods. We did not attempt to improve the performance of the regression model. Presumably, its performance can be increased in some way. But there are, of course, also other datasets where complicated ensemble methods significantly outperform linear methods.
-
-
-
+While BART demonstrates superior performance in terms of MSE, it comes with a significant trade-off in terms of interpretability. The ensemble nature of BART, combining predictions from hundreds of trees, makes it far less intuitive to understand compared to a single regression tree or a linear model.
 
 
 \section{Conclusion}
